@@ -1,0 +1,33 @@
+{
+  "name": "floor12/yii2-module-files",
+  "description": "Yii2 module to upload and manage files to your models.",
+  "type": "yii2-extension",
+  "minimum-stability": "stable",
+  "keywords": [
+    "floor12",
+    "yii2 module",
+    "yii",
+    "yii2",
+    "yii 2"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "floor12",
+      "email": "primelifecoder@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "yiisoft/yii2": "~2.0.13",
+    "bower-asset/cropper": "*",
+    "rmrevin/yii2-fontawesome": "~2.15"
+  },
+  "autoload": {
+    "psr-4": {
+      "floor12\\files\\": [
+        "src"
+      ]
+    }
+  }
+}

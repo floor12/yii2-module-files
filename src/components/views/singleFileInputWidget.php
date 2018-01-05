@@ -1,0 +1,33 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: floor12
+ * Date: 31.12.2017
+ * Time: 16:10
+ *
+ * @var $this \yii\web\View
+ * @var $uploadButtonText string
+ * @var $uploadButtonClass string
+ * @var $block_id integer
+ * @var $attribute string
+ * @var $scenario string
+ * @var $model \yii\db\ActiveRecord
+ * @var $ratio float
+ *
+ */
+
+use yii\helpers\Html;
+
+?>
+
+<div class="floor12-files-widget-single-block" id="files-widget-block_<?= $block_id ?>" data-ratio="<?= $ratio ?>">
+    <button class="<?= $uploadButtonClass ?>">
+        <?= \Yii::$app->getModule('files')->fontAwesome->icon('plus') ?>
+        <?= $uploadButtonText ?>
+    </button>
+    <?= Html::hiddenInput((new \ReflectionClass($model))->getShortName() . "[{$attribute}_ids][]", null) ?>
+    <div class="floor12-files-widget-list">
+        <?php if ($model->$attribute) foreach ($model->$attribute as $file) echo $this->render('@common/modules/files/views/default/_single', ['model' => $file, 'ratio' => $ratio]) ?>
+    </div>
+    <div class="clearfix"></div>
+</div>
