@@ -45,7 +45,7 @@ class FileInputWidget extends InputWidget
 
         $this->ratio = $this->model->getBehavior('files')->attributes[$this->attribute]['ratio'] ?? null;
 
-        if ($this->model->behaviors['files']->attributes[$this->attribute]['validator']->maxFiles > 1) {
+        if (isset($this->model->behaviors['files']->attributes[$this->attribute]['validator']) && $this->model->behaviors['files']->attributes[$this->attribute]['validator']->maxFiles > 1) {
             $this->mode = self::MODE_MULTI;
             $this->layout = self::VIEW_MULTI;
         }

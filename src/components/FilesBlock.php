@@ -15,13 +15,15 @@ use floor12\files\assets\FilesBlockAsset;
 class FilesBlock extends InputWidget
 {
     public $files;
+    public $title;
 
     public function run()
     {
         FilesBlockAsset::register($this->getView());
 
         return $this->render('filesBlock', [
-            'files' => $this->files
+            'files' => $this->files,
+            'title' => $this->title
         ]);
     }
 }
