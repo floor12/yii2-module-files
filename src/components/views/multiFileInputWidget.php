@@ -27,7 +27,7 @@ use yii\helpers\Html;
     </button>
     <?= Html::hiddenInput((new \ReflectionClass($model))->getShortName() . "[{$attribute}_ids][]", null) ?>
     <div class="floor12-files-widget-list floor12-files-widget-list-multi">
-        <?php if ($model->$attribute) foreach ($model->$attribute as $file) echo $this->render('@common/modules/files/views/default/_file', ['model' => $file, 'ratio' => $ratio]) ?>
+        <?php if ($model->$attribute) foreach ($model->$attribute as $file) echo $this->render('@vendor/floor12/yii2-module-files/src/views/default/_file', ['model' => $file, 'ratio' => $ratio]) ?>
     </div>
     <div class="clearfix"></div>
 </div>

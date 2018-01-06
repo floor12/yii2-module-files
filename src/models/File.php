@@ -10,6 +10,7 @@ namespace floor12\files\models;
 
 
 use Yii;
+use yii\base\ErrorException;
 use yii\helpers\Url;
 use floor12\files\components\SimpleImage;
 
@@ -33,6 +34,7 @@ use floor12\files\components\SimpleImage;
  * @property string $hrefPreview
  * @property string $icon
  * @property string $rootPath
+ * @property string|null $watermark
  */
 class File extends \yii\db\ActiveRecord
 {
@@ -342,5 +344,16 @@ class File extends \yii\db\ActiveRecord
     {
         $this->object_id = 0;
         $this->save(false);
+    }
+
+    public function getWatermark()
+    {
+        $owner = new $this->class;
+
+        try {
+            return $owner->behaviors['files']->attributes[$this->field]['watermark'];
+        } catch (ErrorException $exception) {
+            return null;
+        }
     }
 }

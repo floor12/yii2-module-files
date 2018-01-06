@@ -10,6 +10,7 @@ namespace floor12\files\controllers;
 
 
 use floor12\files\components\FileInputWidget;
+use floor12\files\components\SimpleImage;
 use floor12\files\logic\FileCreateFromInstance;
 use floor12\files\logic\FileCropRotate;
 use floor12\files\logic\FileRename;
@@ -143,9 +144,21 @@ class DefaultController extends Controller
         if (!$model)
             throw new NotFoundHttpException("Запрашиваемый файл не найден");
 
-        $stream = fopen($model->rootPath, 'rb');
+        if ($model->type != File::TYPE_IMAGE) {
+            $stream = fopen($model->rootPath, 'rb');
+            \Yii::$app->response->sendStreamAsFile($stream, $model->title, ['mimeType' => $model->content_type, 'filesize' => $model->size]);
+        } else {
 
-        \Yii::$app->response->sendStreamAsFile($stream, $model->title, ['mimeType' => $model->content_type, 'filesize' => $model->size]);
+            if ($model->watermark) {
+                $image = new SimpleImage();
+                $image->load($model->rootPath);
+                $image->watermark(\Yii::getAlias("@frontend/web/design/logo-big.png"));
+                \Yii::$app->response->sendContentAsFile($image->output(), $model->title);
+            } else {
+                $stream = fopen($model->rootPath, 'rb');
+                \Yii::$app->response->sendStreamAsFile($stream, $model->title, ['mimeType' => $model->content_type, 'filesize' => $model->size]);
+            }
+        }
     }
 
 

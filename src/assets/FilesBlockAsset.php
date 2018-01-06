@@ -12,7 +12,7 @@ namespace floor12\files\assets;
 use yii\web\AssetBundle;
 
 
-class FileInputWidgetAsset extends AssetBundle
+class FilesBlockAsset extends AssetBundle
 {
     public $publishOptions = [
         'forceCopy' => true,
@@ -21,13 +21,13 @@ class FileInputWidgetAsset extends AssetBundle
     public $sourcePath = '@vendor/floor12/yii2-module-files/assets/';
 
     public $css = [
-        'yii2-floor12-files.css',
+        'yii2-floor12-files-block.css',
     ];
     public $js = [
-        'yii2-floor12-files.js',
+        'yii2-floor12-lightbox-params.js'
     ];
     public $depends = [
         'yii\web\JqueryAsset',
-        'floor12\files\assets\SimpleAjaxUploaderAsset',
+        'floor12\files\assets\LightboxAsset'
     ];
 }

@@ -21,7 +21,8 @@
   "require": {
     "yiisoft/yii2": "~2.0.13",
     "bower-asset/cropper": "*",
-    "rmrevin/yii2-fontawesome": "~2.15"
+    "rmrevin/yii2-fontawesome": "~2.15",
+    "bower-asset/lightbox2": "*"
   },
   "autoload": {
     "psr-4": {

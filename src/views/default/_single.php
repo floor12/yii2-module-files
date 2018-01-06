@@ -14,6 +14,15 @@
 use \yii\helpers\Html;
 use \floor12\files\models\File;
 
+$doc_contents = [
+    'application/msword',
+    'application/vnd.ms-excel',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+];
+
 ?>
 <div class="btn-group files-btn-group">
 
@@ -42,6 +51,15 @@ use \floor12\files\models\File;
                 Скачать
             </a>
         </li>
+        <?php if (in_array($model->content_type, $doc_contents)): ?>
+            <li>
+                <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= \Yii::$app->request->hostInfo . $model->href ?>}"
+                   target="_blank">
+                    <?= \Yii::$app->getModule('files')->fontAwesome->icon('eye') ?>
+                    Просмотреть
+                </a>
+            </li>
+        <?php endif; ?>
         <li>
             <a onclick="showRenameFileForm(<?= $model->id ?>, event); return false;">
                 <?= \Yii::$app->getModule('files')->fontAwesome->icon('edit') ?>

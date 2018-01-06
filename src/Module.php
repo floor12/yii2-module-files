@@ -38,6 +38,8 @@ class Module extends \yii\base\Module
 
     public $storageFullPath;
 
+    public $allowOfficePreview = true;
+
     /**
      * @inheritdoc
      */

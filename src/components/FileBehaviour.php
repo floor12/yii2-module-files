@@ -29,7 +29,6 @@ class FileBehaviour extends Behavior
      */
     private $_values = [];
 
-
     /**
      * Вещаем сохранение данных на события.
      */
@@ -116,6 +115,12 @@ class FileBehaviour extends Behavior
                 // Сначала пробегаемся по файловым валидаторам
                 if ($validator::className() == 'yii\validators\FileValidator') {
                     foreach ($this->attributes as $field => $params) {
+
+                        if (is_string($params)) {
+                            $field = $params;
+                            $params = [];
+                        }
+
                         $index = array_search($field, $validator->attributes);
                         if ($index !== false) {
                             $this->attributes[$field]['validator'] = $validator;
@@ -127,6 +132,12 @@ class FileBehaviour extends Behavior
 
                 if ($validator::className() == 'yii\validators\RequiredValidator') {
                     foreach ($this->attributes as $field => $params) {
+
+                        if (is_string($params)) {
+                            $field = $params;
+                            $params = [];
+                        }
+
                         $index = array_search($field, $validator->attributes);
                         if ($index !== false) {
                             unset($validator->attributes[$index]);

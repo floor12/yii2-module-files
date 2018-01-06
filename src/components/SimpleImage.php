@@ -124,8 +124,8 @@ class SimpleImage
 
         imagecopyresampled($new_stamp, $stamp, 0, 0, 0, 0, $stamp_new_width, $stamp_new_height, imagesx($stamp), imagesy($stamp));
 
-        $marge_right = $this->getWidth() / 5;
-        $marge_bottom = $this->getHeight() / 5;
+        $marge_right = $this->getWidth() / 10;
+        $marge_bottom = $this->getHeight() / 10;
 
         imagecopyresampled($this->image, $new_stamp, imagesx($this->image) - $stamp_new_width - $marge_right, imagesy($this->image) - $stamp_new_height - $marge_bottom, 0, 0, $stamp_new_width, $stamp_new_height, $stamp_new_width, $stamp_new_height);
 
