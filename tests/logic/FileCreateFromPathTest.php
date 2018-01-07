@@ -10,31 +10,52 @@ namespace floor12\files\tests\logic;
 
 
 use floor12\files\logic\FileCreateFromPath;
+use floor12\files\migration_yii2_module_files;
 use floor12\files\models\File;
 use floor12\files\tests\TestCase;
 use yii\base\ErrorException;
 
 class FileCreateFromPathTest extends TestCase
 {
+
+    public $sqlite = 'tests/sqlite.db';
     private $testFilePath = "tests/data/testImage.jpg";
     private $testFileName = "testFileName.jpg";
-    private $testOwnerClassName = "floor12\files\tests\data\Person";
+    private $testOwnerClassName = "floor12\files\tests\Person";
     private $testOwnerFieldName = "files";
     private $storagePath = "tests/storage";
     private $model;
 
 
-    public function setUp()
+    /**
+     * Настраиваем основные параметры приложения: базу данных и модуль
+     */
+
+    private function setApp()
     {
+        $files = [
+            'class' => 'floor12\files\Module',
+            'storage' => '@vendor/../tests/storage',
+        ];
+        \Yii::$app->setModule('files', $files);
 
-        $this->model = $this->getMockBuilder('floor12\files\models\File')
-            ->setMethods(['save'])
-            ->getMock();
-        $this->model->method('save')->willReturn(true);
 
+        $db = [
+            'class' => 'yii\db\Connection',
+            'dsn' => "sqlite:$this->sqlite",
+        ];
+        \Yii::$app->set('db', $db);
 
-        http://www.yiiframework.com/forum/index.php/topic/71516-how-to-mock-activerecord/
-        parent::setUp();
+        \Yii::createObject(migration_yii2_module_files::class, [])->safeUp();
+    }
+
+    /**
+     * Чистим за собой временную базу данных
+     */
+
+    private function clearDb()
+    {
+        \Yii::createObject(migration_yii2_module_files::class, [])->safeDown();
     }
 
     /** Вызываем несуществуюий файл
@@ -45,7 +66,7 @@ class FileCreateFromPathTest extends TestCase
     public function testFileNotExists()
     {
         new FileCreateFromPath(
-            $this->model,
+            new File(),
             "wrongTestFileName.png",
             $this->testOwnerClassName,
             $this->testOwnerFieldName,
@@ -62,7 +83,7 @@ class FileCreateFromPathTest extends TestCase
     public function testEmptyParams()
     {
         new FileCreateFromPath(
-            $this->model,
+            new File(),
             "wrongTestFileName.png",
             "",
             $this->testOwnerFieldName,
@@ -79,7 +100,7 @@ class FileCreateFromPathTest extends TestCase
     public function testWrongStorage()
     {
         new FileCreateFromPath(
-            $this->model,
+            new File(),
             $this->testFilePath,
             $this->testOwnerClassName,
             $this->testOwnerFieldName,
@@ -97,7 +118,7 @@ class FileCreateFromPathTest extends TestCase
     public function testNotWritableStorage()
     {
         new FileCreateFromPath(
-            $this->model,
+            new File(),
             $this->testFilePath,
             $this->testOwnerClassName,
             $this->testOwnerFieldName,
@@ -109,23 +130,35 @@ class FileCreateFromPathTest extends TestCase
     /**Нормальный сценарий который пока протестировать нормально не удается.
      */
 
-//    public function testCreate()
-//    {
-//        $logicObject = new FileCreateFromPath(
-//            $this->model,
-//            $this->testFilePath,
-//            $this->testOwnerClassName,
-//            $this->testOwnerFieldName,
-//            $this->storagePath,
-//            $this->testFileName
-//        );
-//
-//        $this->assertTrue(is_object($logicObject));
-//
-//        $file = $logicObject->execute();
-//
-//        is_object($file);
-//    }
+    public function testCreate()
+    {
+        $this->setApp();
+
+        $logicObject = new FileCreateFromPath(
+            new File(),
+            $this->testFilePath,
+            $this->testOwnerClassName,
+            $this->testOwnerFieldName,
+            $this->storagePath,
+            $this->testFileName
+        );
+
+        $this->assertTrue(is_object($logicObject));
+        /**
+         * @var $file File
+         */
+        $file = $logicObject->execute();
+
+        // Проверяем, что файл сохранился нормально.
+        $this->assertFalse($file->isNewRecord);
+        $this->assertTrue(is_integer($file->id));
+        $this->assertEquals($this->testOwnerClassName, $file->class);
+        $this->assertEquals(File::TYPE_IMAGE, $file->type);
+        $this->assertEquals("image/jpeg", $file->content_type);
+        $this->assertTrue(file_exists($file->rootPath), $file->rootPath);
+
+        $this->clearDb();
+    }
 
 
 }

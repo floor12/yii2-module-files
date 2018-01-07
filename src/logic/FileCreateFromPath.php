@@ -12,8 +12,6 @@ namespace floor12\files\logic;
 use floor12\files\components\SimpleImage;
 use floor12\files\models\File;
 use yii\base\ErrorException;
-use floor12\files\logic\PathGenerator;
-use yii\db\ActiveRecord;
 use yii\db\ActiveRecordInterface;
 
 class FileCreateFromPath
