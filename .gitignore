@@ -30,3 +30,6 @@ phpunit.phar
 /.vagrant
 
 tests/_output/*
+
+/composer.lock
+/phpunit.xml
