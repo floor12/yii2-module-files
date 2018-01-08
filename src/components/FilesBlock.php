@@ -21,9 +21,10 @@ class FilesBlock extends InputWidget
     {
         FilesBlockAsset::register($this->getView());
 
-        return $this->render('filesBlock', [
-            'files' => $this->files,
-            'title' => $this->title
-        ]);
+        if ($this->files)
+            return $this->render('filesBlock', [
+                'files' => $this->files,
+                'title' => $this->title,
+            ]);
     }
 }

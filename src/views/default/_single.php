@@ -22,14 +22,13 @@ $doc_contents = [
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     'application/vnd.openxmlformats-officedocument.presentationml.presentation'
 ];
-
 ?>
 <div class="btn-group files-btn-group">
 
     <div data-title="<?= $model->title ?>"
          id="yii2-file-object-<?= $model->id ?>"
          class="dropdown-toggle btn-group floor12-single-file-object <?= ($model->type == \floor12\files\models\File::TYPE_IMAGE) ? "floor12-file-object-image" : NULL ?>"
-         style="background-image: url(<?= $model->href ?>); <?= $ratio ? "padding-bottom: " . $ratio * 100 . "%" : NULL ?>"
+         style="background-image: url(<?= $model->href ?>); <?= $ratio ? "padding-bottom: " . 1 / $ratio * 100 . "%" : NULL ?>"
          data-toggle="dropdown" aria-haspopup="true"
          aria-expanded="false" title="<?= $model->title ?>">
 
@@ -53,7 +52,7 @@ $doc_contents = [
         </li>
         <?php if (in_array($model->content_type, $doc_contents)): ?>
             <li>
-                <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= \Yii::$app->request->hostInfo . $model->href ?>"
+                <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= \Yii::$app->request->hostInfo . $model->href ?>}"
                    target="_blank">
                     <?= \Yii::$app->getModule('files')->fontAwesome->icon('eye') ?>
                     Просмотреть

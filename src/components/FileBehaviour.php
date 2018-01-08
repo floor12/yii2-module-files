@@ -196,8 +196,18 @@ class FileBehaviour extends Behavior
                     ->orderBy($order)
                     ->all();
             }
-        } else
-            return File::find()
+        } else {
+            if (isset($this->attributes[$att_name]['validator']) && $this->attributes[$att_name]['validator']->maxFiles > 1)
+                return File::find()
+                    ->where(
+                        [
+                            'object_id' => $this->owner->id,
+                            'field' => $att_name,
+                            'class' => $this->owner->className()
+                        ])
+                    ->orderBy('ordering ASC')
+                    ->all();
+            else return File::find()
                 ->where(
                     [
                         'object_id' => $this->owner->id,
@@ -205,7 +215,8 @@ class FileBehaviour extends Behavior
                         'class' => $this->owner->className()
                     ])
                 ->orderBy('ordering ASC')
-                ->all();
+                ->one();
+        }
     }
 
 

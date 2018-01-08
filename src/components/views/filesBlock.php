@@ -6,15 +6,16 @@
  * Time: 12:09
  *
  * @var $this \yii\web\View
- * @var $files \floor12\files\models\File[]
  * @var $title string
+ * @var $files \floor12\files\models\File[]
  */
 
 ?>
 
-
-<label><?= $files ? $title : NULL ?></label>
 <div class="files-block">
+    <?php if ($title): ?>
+        <label><?= $title ?></label><br>
+    <?php endif; ?>
     <?php foreach ($files as $file) {
         echo $this->render('_filesBlock', ['model' => $file]);
     } ?>

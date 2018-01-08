@@ -144,6 +144,9 @@ class DefaultController extends Controller
         if (!$model)
             throw new NotFoundHttpException("Запрашиваемый файл не найден");
 
+        if (!file_exists($model->rootPath))
+            throw new NotFoundHttpException('Запрашиваемый файл не найден на диске.');
+
         if ($model->type != File::TYPE_IMAGE) {
             $stream = fopen($model->rootPath, 'rb');
             \Yii::$app->response->sendStreamAsFile($stream, $model->title, ['mimeType' => $model->content_type, 'filesize' => $model->size]);
@@ -171,7 +174,7 @@ class DefaultController extends Controller
         $model = File::findOne(['hash' => $hash]);
 
         if (!$model)
-            throw new NotFoundHttpException("Запрашиваемый файл не найден");
+            throw new NotFoundHttpException("Запрашиваемый файл не найден в базе.");
 
         $response = \Yii::$app->response;
         $response->format = Response::FORMAT_RAW;
