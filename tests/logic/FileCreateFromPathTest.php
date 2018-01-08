@@ -10,7 +10,6 @@ namespace floor12\files\tests\logic;
 
 
 use floor12\files\logic\FileCreateFromPath;
-use floor12\files\migration_yii2_module_files;
 use floor12\files\models\File;
 use floor12\files\tests\TestCase;
 use yii\base\ErrorException;
@@ -18,7 +17,6 @@ use yii\base\ErrorException;
 class FileCreateFromPathTest extends TestCase
 {
 
-    public $sqlite = 'tests/sqlite.db';
     private $testFilePath = "tests/data/testImage.jpg";
     private $testFileName = "testFileName.jpg";
     private $testOwnerClassName = "floor12\files\tests\Person";
@@ -27,36 +25,6 @@ class FileCreateFromPathTest extends TestCase
     private $model;
 
 
-    /**
-     * Настраиваем основные параметры приложения: базу данных и модуль
-     */
-
-    private function setApp()
-    {
-        $files = [
-            'class' => 'floor12\files\Module',
-            'storage' => '@vendor/../tests/storage',
-        ];
-        \Yii::$app->setModule('files', $files);
-
-
-        $db = [
-            'class' => 'yii\db\Connection',
-            'dsn' => "sqlite:$this->sqlite",
-        ];
-        \Yii::$app->set('db', $db);
-
-        \Yii::createObject(migration_yii2_module_files::class, [])->safeUp();
-    }
-
-    /**
-     * Чистим за собой временную базу данных
-     */
-
-    private function clearDb()
-    {
-        \Yii::createObject(migration_yii2_module_files::class, [])->safeDown();
-    }
 
     /** Вызываем несуществуюий файл
      * @expectedException ErrorException

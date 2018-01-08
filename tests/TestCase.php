@@ -9,21 +9,67 @@
 namespace floor12\files\tests;
 
 use yii\console\Application;
+use floor12\files\migration_yii2_module_files;
+
 
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
+
+    public $sqlite = 'tests/sqlite.db';
+
+
+    /**
+     * @inheritdoc
+     */
     protected function setUp()
     {
         parent::setUp();
         $this->mockApplication();
     }
 
+
+    /**
+     * Настраиваем основные параметры приложения: базу данных и модуль
+     */
+
+    protected function setApp()
+    {
+        $files = [
+            'class' => 'floor12\files\Module',
+            'storage' => '@app/storage',
+        ];
+        \Yii::$app->setModule('files', $files);
+
+
+        $db = [
+            'class' => 'yii\db\Connection',
+            'dsn' => "sqlite:$this->sqlite",
+        ];
+        \Yii::$app->set('db', $db);
+
+        \Yii::createObject(migration_yii2_module_files::class, [])->safeUp();
+    }
+
+    /**
+     * Чистим за собой временную базу данных
+     */
+    protected function clearDb()
+    {
+        \Yii::createObject(migration_yii2_module_files::class, [])->safeDown();
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function tearDown()
     {
         $this->destroyApplication();
         parent::tearDown();
     }
 
+    /**
+     *  Запускаем приложение
+     */
     protected function mockApplication()
     {
         new Application([
@@ -34,6 +80,10 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         ]);
     }
 
+
+    /**
+     * Убиваем приложение
+     */
     protected function destroyApplication()
     {
         \Yii::$app = null;

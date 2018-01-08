@@ -9,6 +9,7 @@
 namespace floor12\files\logic;
 
 
+use yii\base\ErrorException;
 use yii\db\ActiveRecord;
 
 class PathGenerator
@@ -19,6 +20,13 @@ class PathGenerator
 
     public function __construct($storagePath)
     {
+
+        if (!$storagePath)
+            throw new ErrorException('Storage path not set for path generator.');
+
+        if (!file_exists($storagePath))
+            throw new ErrorException('Storage not found.');
+
         $folderName0 = rand(10, 99);
         $folderName1 = rand(10, 99);
 

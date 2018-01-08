@@ -22,16 +22,28 @@ class FileCreateFromInstance
     private $_attribute;
     private $_instance;
     private $_fullPath;
+    private $_onlyUploaded;
 
-    public function __construct(UploadedFile $file, array $data, IdentityInterface $identity = null)
+    public function __construct(UploadedFile $file, array $data, IdentityInterface $identity = null, $onlyUploaded = true)
     {
+
+        $this->_onlyUploaded = $onlyUploaded;
+
+        if (!isset($data['attribute']) || !$data['attribute'] || !isset($data['modelClass']) || !$data['modelClass'])
+            throw new BadRequestHttpException("Attribute or class name not set.");
+
         // Загружаем полученные данные
         $this->_instance = $file;
         $this->_attribute = $data['attribute'];
 
+        if (!file_exists($this->_instance->tempName))
+            throw new ErrorException("Tmp file not found on disk.");
+
         // Инициализируем класс владельца файла для валидаций и ставим сценарий
         $this->_owner = new $data['modelClass'];
-        $this->_owner->setScenario($data['scenario']);
+
+        if (isset($data['scenario']))
+            $this->_owner->setScenario($data['scenario']);
 
 
         if (isset($this->_owner->behaviors['files']->attributes[$this->_attribute]['validator'])) {
@@ -70,7 +82,10 @@ class FileCreateFromInstance
         $path = \Yii::$app->getModule('files')->storageFullPath . $this->_model->filename;
 
         if ($this->_model->save()) {
-            $this->_instance->saveAs($this->_fullPath);
+            if (!$this->_onlyUploaded)
+                copy($this->_instance->tempName, $this->_fullPath);
+            else
+                $this->_instance->saveAs($this->_fullPath, false);
             $this->_model->updatePreview();
         }
 

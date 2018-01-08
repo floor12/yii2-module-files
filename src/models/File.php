@@ -34,6 +34,7 @@ use floor12\files\components\SimpleImage;
  * @property string $hrefPreview
  * @property string $icon
  * @property string $rootPath
+ * @property string $rootPreviewPath
  * @property string|null $watermark
  */
 class File extends \yii\db\ActiveRecord

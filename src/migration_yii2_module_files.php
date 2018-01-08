@@ -28,7 +28,7 @@ class migration_yii2_module_files extends Migration
                 'video_status' => $this->integer(1)->null()->defaultValue(null),
                 'ordering' => $this->integer(11)->notNull()->defaultValue(0),
                 'created' => $this->integer(11)->notNull(),
-                'user_id' => $this->integer(11)->notNull(),
+                'user_id' => $this->integer(11)->null(),
                 'size' => $this->integer(20)->notNull(),
                 'hash' => $this->string(255)->null(),
             ], $tableOptions
@@ -37,6 +37,7 @@ class migration_yii2_module_files extends Migration
 
     public function safeDown()
     {
+
         $this->dropTable('{{%file}}');
     }
 }

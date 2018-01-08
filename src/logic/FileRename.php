@@ -11,6 +11,7 @@ namespace floor12\files\logic;
 
 use floor12\files\models\File;
 use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * Class FileRename
@@ -25,10 +26,11 @@ class FileRename
 
     public function __construct(array $data)
     {
+
         if (!isset($data['id']))
             throw new BadRequestHttpException('ID of file is not set.');
 
-        if (!isset($data['title']) || !$data['title'])
+        if (!isset($data['title']))
             throw new BadRequestHttpException('Title of file is not set.');
 
         $this->_title = $data['title'];
@@ -36,7 +38,7 @@ class FileRename
         $this->_file = File::findOne($data['id']);
 
         if (!$this->_file)
-        throw new NotFoundHttpException('File not found');
+            throw new NotFoundHttpException('File not found.');
 
     }
 
