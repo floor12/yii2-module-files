@@ -46,7 +46,7 @@ $doc_contents = [
 
     <ul class="dropdown-menu dropdown-menu-file-object dropdown-menu-file-object-multi">
         <li>
-            <a href="<?= $model->href ?>" target="_blank">
+            <a href="<?= $model->href ?>" target="_blank" data-pjax="0">
                 <?= \Yii::$app->getModule('files')->fontAwesome->icon('cloud-download') ?>
                 Скачать
             </a>
@@ -54,7 +54,7 @@ $doc_contents = [
         <?php if (in_array($model->content_type, $doc_contents)): ?>
             <li>
                 <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= \Yii::$app->request->hostInfo . $model->href ?>}"
-                   target="_blank">
+                   target="_blank" data-pjax="0">
                     <?= \Yii::$app->getModule('files')->fontAwesome->icon('eye') ?>
                     Просмотреть
                 </a>
