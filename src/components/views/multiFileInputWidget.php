@@ -18,7 +18,17 @@
 
 use yii\helpers\Html;
 
-?>
+if (YII_ENV == 'test')
+    echo Html::fileInput('files', null, [
+        'id' => "files-upload-field-{$attribute}",
+        'class' => 'yii2-files-upload-field',
+        'data-modelclass' => $model::className(),
+        'data-attribute' => $attribute,
+        'data-mode' => 'multi',
+        'data-ratio' => $ratio ?? 0,
+        'data-block' => $block_id,
+
+    ]) ?>
 
 <div class="floor12-files-widget-block" id="files-widget-block_<?= $block_id ?>" data-ratio="<?= $ratio ?>">
     <button class="<?= $uploadButtonClass ?>">

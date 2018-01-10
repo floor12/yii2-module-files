@@ -6,6 +6,33 @@ var currentRenamingFileId;
 var cropper;
 var removeFileOnCropCancel;
 
+
+$(document).on('change', '.yii2-files-upload-field', function () {
+
+    obj = $(this);
+
+    var formData = new FormData();
+    formData.append('file', obj[0].files[0]);
+    formData.append('modelClass', obj.data('modelclass'));
+    formData.append('attribute', obj.data('attribute'));
+    formData.append('mode', obj.data('mode'));
+    formData.append('ratio', obj.data('ratio'));
+    formData.append('_fileFormToken', yii2FileFormToken);
+
+
+    $.ajax({
+        url: yii2UploadRoute,
+        type: 'POST',
+        data: formData,
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,  // tell jQuery not to set contentType
+        success: function (response) {
+            id = '#files-widget-block_' + obj.data('block');
+            $(response).appendTo(id).find('div.floor12-files-widget-list');
+        }
+    });
+})
+
 function Yii2FilesUploaderSet(id, className, attribute, scenario) {
 
     var mode = 'multi';
