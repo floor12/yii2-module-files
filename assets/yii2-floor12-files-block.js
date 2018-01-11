@@ -1,4 +1,4 @@
-function filesDownloadAll(title, event) {
+function filesDownloadAll(title, event, yiiDownloadAllLink) {
     obj = $(event.target).parents('div.files-block');
     hashes = "";
     $.each(obj.find('.floor12-file-object'), function (key, val) {
