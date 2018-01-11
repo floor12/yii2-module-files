@@ -9,6 +9,7 @@
 namespace floor12\files\components;
 
 
+use yii\helpers\Url;
 use yii\jui\InputWidget;
 use floor12\files\assets\FilesBlockAsset;
 
@@ -16,15 +17,20 @@ class FilesBlock extends InputWidget
 {
     public $files;
     public $title;
+    public $zipTitle = 'files';
+    public $downloadAll = false;
 
     public function run()
     {
         FilesBlockAsset::register($this->getView());
+        $this->getView()->registerJs("yiiDownloadAllLink = '" . Url::toRoute('files/default/zip') . "'", \yii\web\View::POS_BEGIN, 'yiiDownloadAllLink');
 
         if ($this->files)
             return $this->render('filesBlock', [
                 'files' => $this->files,
+                'zipTitle' => $this->zipTitle,
                 'title' => $this->title,
+                'downloadAll' => $this->downloadAll,
             ]);
     }
 }
