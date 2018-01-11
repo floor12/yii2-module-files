@@ -10,7 +10,6 @@ namespace floor12\files\controllers;
 
 
 use yii\console\Controller;
-use Yii;
 use floor12\files\models\File;
 
 class ConsoleController extends Controller
@@ -41,19 +40,18 @@ class ConsoleController extends Controller
 //        }
 //
 //    }
-
-//    function actionUpgrade1()
-//    {
-//        $files = File::find()->all();
-//        if ($files)
-//            foreach ($files as $file) {
-//                if (!$file->hash) {
-//                    $file->hash = md5(rand(100000, 100000000) . time());
-//                    $file->save();
-//                    echo "{$file->hash}\n";
-//                }
-//            }
-//    }
+    function actionHash()
+    {
+        $files = File::find()->all();
+        if ($files)
+            foreach ($files as $file) {
+                if (!$file->hash) {
+                    $file->hash = md5(rand(100000, 100000000) . time());
+                    $file->save();
+                    echo "{$file->hash}\n";
+                }
+            }
+    }
 
 
 }
