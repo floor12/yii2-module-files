@@ -24,7 +24,8 @@ class FilesBlockAsset extends AssetBundle
         'yii2-floor12-files-block.css',
     ];
     public $js = [
-        'yii2-floor12-lightbox-params.js'
+        'yii2-floor12-lightbox-params.js',
+        'yii2-floor12-files-block.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',

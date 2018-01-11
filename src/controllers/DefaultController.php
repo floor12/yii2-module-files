@@ -38,6 +38,7 @@ class DefaultController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
+                    'zip' => ['GET'],
                     'cropper' => ['GET'],
                     'crop' => ['POST'],
                     'rename' => ['POST'],
@@ -64,6 +65,30 @@ class DefaultController extends Controller
         return parent::beforeAction($action);
     }
 
+    public function actionZip(array $hash, $title = 'files')
+    {
+        $files = File::find()->where(["IN", "hash", $hash])->all();
+
+        $zip = new  \ZipArchive;
+        $filename = \Yii::getAlias("@webroot/assets/files}.zip");
+        if (sizeof($files) && $zip->open($filename, \ZipArchive::CREATE)) {
+
+            foreach ($files as $file)
+                $zip->addFile($file->rootPath, $file->title);
+
+
+            $zip->close();
+            echo 'Archive created!';
+            header("Content-disposition: attachment; filename={$title}.zip");
+            header('Content-type: application/zip');
+            readfile($filename);
+        } else {
+            echo 'Failed!';
+        }
+
+
+        return sizeof($files);
+    }
 
     /** Првоеряем токен
      * @throws BadRequestHttpException

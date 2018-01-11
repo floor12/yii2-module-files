@@ -30,6 +30,7 @@ $doc_contents = [
 
         <a data-title="<?= $model->title ?>"
            href="<?= $model->href ?>"
+           data-hash="<?= $model->hash ?>"
            class="floor12-file-object"
            style="background-image: url(<?= $model->href ?>)" data-toggle="dropdown" aria-haspopup="true"
            aria-expanded="false" title="<?= $model->title ?>"
@@ -39,6 +40,7 @@ $doc_contents = [
 
         <div data-title="<?= $model->title ?>"
              class="floor12-file-object"
+             data-hash="<?= $model->hash ?>"
              data-toggle="dropdown" aria-haspopup="true"
              aria-expanded="false" title="<?= $model->title ?>">
             <?= \Yii::$app->getModule('files')->fontAwesome->icon($model->icon) ?>
@@ -47,7 +49,7 @@ $doc_contents = [
 
         <ul class="dropdown-menu dropdown-menu-file-object dropdown-menu-file-object-multi">
             <li>
-                <a href="<?= $model->href ?>" target="_blank" data-pjax="0">
+                <a href="" target="_blank" data-pjax="0">
                     <?= \Yii::$app->getModule('files')->fontAwesome->icon('cloud-download') ?>
                     Скачать
                 </a>
