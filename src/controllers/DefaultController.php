@@ -71,6 +71,8 @@ class DefaultController extends Controller
 
         $zip = new  \ZipArchive;
         $filename = \Yii::getAlias("@webroot/assets/files}.zip");
+        if (file_exists($filename))
+            @unlink($filename);
         if (sizeof($files) && $zip->open($filename, \ZipArchive::CREATE)) {
 
             foreach ($files as $file)
