@@ -49,7 +49,7 @@ $doc_contents = [
 
         <ul class="dropdown-menu dropdown-menu-file-object dropdown-menu-file-object-multi">
             <li>
-                <a href="" target="_blank" data-pjax="0">
+                <a href="<?= $model->href ?>" target="_blank" data-pjax="0">
                     <?= \Yii::$app->getModule('files')->fontAwesome->icon('cloud-download') ?>
                     Скачать
                 </a>
