@@ -56,7 +56,7 @@ $doc_contents = [
             </li>
             <?php if (\Yii::$app->getModule('files')->allowOfficePreview && in_array($model->content_type, $doc_contents)): ?>
                 <li>
-                    <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= \Yii::$app->request->hostInfo . $model->href ?>}"
+                    <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= \Yii::$app->request->hostInfo . $model->href ?>"
                        target="_blank" data-pjax="0">
                         <?= \Yii::$app->getModule('files')->fontAwesome->icon('eye') ?>
                         Просмотреть
