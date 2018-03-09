@@ -78,31 +78,31 @@ class File extends \yii\db\ActiveRecord
      */
     public function getIcon()
     {
-        $icon = 'file-o';
+        $icon = 'file';
 
         if ($this->content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-            $icon = 'file-word-o';
+            $icon = 'file-word';
 
         if ($this->content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            $icon = 'file-excel-o';
+            $icon = 'file-excel';
 
         if ($this->content_type == 'application/vnd.openxmlformats-officedocument.presentationml.presentation')
-            $icon = 'file-powerpoint-o';
+            $icon = 'file-powerpoint';
 
         if ($this->content_type == 'application/x-zip-compressed')
-            $icon = 'file-archive-o';
+            $icon = 'file-archive';
 
         if ($this->content_type == 'application/octet-stream')
-            $icon = 'file-archive-o';
+            $icon = 'file-archive';
 
         if (preg_match('/audio/', $this->content_type))
-            $icon = 'file-audio-o';
+            $icon = 'file-audio';
 
         if (preg_match('/pdf/', $this->content_type))
-            $icon = 'file-pdf-o';
+            $icon = 'file-pdf';
 
         if ($this->type == self::TYPE_VIDEO)
-            $icon = 'file-video-o';
+            $icon = 'file-video';
 
 
         return $icon;

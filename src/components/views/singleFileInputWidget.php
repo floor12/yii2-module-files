@@ -32,7 +32,7 @@ if (YII_ENV == 'test')
 
 <div class="floor12-files-widget-single-block" id="files-widget-block_<?= $block_id ?>" data-ratio="<?= $ratio ?>">
     <button class="<?= $uploadButtonClass ?>">
-        <?= \Yii::$app->getModule('files')->fontAwesome->icon('plus') ?>
+        <div class="icon"><?= \Yii::$app->getModule('files')->fontAwesome->icon('plus') ?></div>
         <?= $uploadButtonText ?>
     </button>
     <?= Html::hiddenInput((new \ReflectionClass($model))->getShortName() . "[{$attribute}_ids][]", null) ?>

@@ -20,10 +20,10 @@
     background-size: cover;
 }
 
-div.floor12-file-object i.fa {
-    font-size: 390%;
+div.floor12-file-object div.icon {
+    font-size: 360%;
     display: block;
-    margin: 8px 0 5px;
+    margin: 0px 0 0px;
     color: #787878;
 }
 

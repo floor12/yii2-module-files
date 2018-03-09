@@ -38,12 +38,14 @@ $doc_contents = [
 
     <?php else: ?>
 
+
         <div data-title="<?= $model->title ?>"
              class="floor12-file-object"
              data-hash="<?= $model->hash ?>"
              data-toggle="dropdown" aria-haspopup="true"
              aria-expanded="false" title="<?= $model->title ?>">
-            <?= \Yii::$app->getModule('files')->fontAwesome->icon($model->icon) ?>
+
+            <div class="icon"><?= \Yii::$app->getModule('files')->fontAwesome->icon($model->icon) ?></div>
             <?= $model->title ?>
         </div>
 

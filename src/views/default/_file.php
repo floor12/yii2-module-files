@@ -37,7 +37,7 @@ $doc_contents = [
         <?= Html::hiddenInput((new \ReflectionClass($model->class))->getShortName() . "[{$model->field}]", 1) ?>
 
         <?php if ($model->type != \floor12\files\models\File::TYPE_IMAGE): ?>
-            <?= \Yii::$app->getModule('files')->fontAwesome->icon($model->icon) ?>
+            <div class="file-icon"><?= \Yii::$app->getModule('files')->fontAwesome->icon($model->icon) ?></div>
             <?= $model->title ?>
         <?php endif; ?>
 
@@ -53,7 +53,7 @@ $doc_contents = [
         </li>
         <?php if (in_array($model->content_type, $doc_contents)): ?>
             <li>
-                <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= \Yii::$app->request->hostInfo . $model->href ?>"
+                <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= \Yii::$app->request->hostInfo . $model->href ?>}"
                    target="_blank" data-pjax="0">
                     <?= \Yii::$app->getModule('files')->fontAwesome->icon('eye') ?>
                     Просмотреть
@@ -69,7 +69,7 @@ $doc_contents = [
         <?php if ($model->type == File::TYPE_IMAGE): ?>
             <li>
                 <a onclick="initCropper(<?= $model->id ?>,'<?= $model->href ?>',<?= $ratio ?>)">
-                    <?= \Yii::$app->getModule('files')->fontAwesome->icon('picture-o') ?>
+                    <?= \Yii::$app->getModule('files')->fontAwesome->icon('picture') ?>
                     Редактировать
                 </a>
             </li>

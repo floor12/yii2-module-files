@@ -13,7 +13,7 @@ div.floor12-files-widget-block button.btn-upload {
     height: 60px;
     margin: 0 14px 8px 0;
     transition: all 0.3s;
-    width: 90px;
+    width: 80px;
     background-color: #c0c0c0;
     color: #ffffff;
     background: linear-gradient(45deg, rgb(151, 151, 151) 0%, rgb(184, 184, 184) 92%);
@@ -28,10 +28,9 @@ div.floor12-files-widget-single-block button.btn-upload {
     border: none;
 }
 
-div.floor12-files-widget-block button.btn-upload i.fa {
+div.floor12-files-widget-block button.btn-upload div.icon {
     display: block;
     font-size: 200%;
-    margin-top: 3px;
 }
 
 div.floor12-files-widget-block-drug-over {
@@ -59,10 +58,10 @@ div.floor12-file-object {
     padding: 0 4px;
 }
 
-div.floor12-file-object i.fa {
-    font-size: 390%;
+div.floor12-file-object div.file-icon {
+    font-size: 360%;
     display: block;
-    margin: 8px 0 5px;
+    margin: 0px 0 0px;
     color: #787878;
 }
 
