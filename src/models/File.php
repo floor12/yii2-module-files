@@ -357,4 +357,10 @@ class File extends \yii\db\ActiveRecord
             return null;
         }
     }
+
+
+    public function __toString()
+    {
+        return $this->href;
+    }
 }

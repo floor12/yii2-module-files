@@ -14,6 +14,9 @@
 use \yii\helpers\Html;
 use \floor12\files\models\File;
 
+if (is_array($model))
+    $model = $model[0];
+
 $doc_contents = [
     'application/msword',
     'application/vnd.ms-excel',
