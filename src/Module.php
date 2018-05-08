@@ -32,6 +32,8 @@ class Module extends \yii\base\Module
      */
     public $storage = '@vendor/../storage';
 
+    public $ffmpeg = 'ffmpeg';
+
     public $token_salt = 'randomString412DDs@#KJH';
 
     public $fontAwesome = 'rmrevin\yii\fontawesome\FontAwesome';

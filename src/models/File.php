@@ -228,17 +228,17 @@ class File extends \yii\db\ActiveRecord
 
     public function updatePreview()
     {
-        if ($this->type == self::TYPE_VIDEO) {
-            if (file_exists($this->rootPath)) {
-                exec(Yii::getAlias('@ffmpeg') . " -i {$this->rootPath} -ss 00:00:15.000 -vframes 1  {$this->rootPreviewPath}");
-            }
-            if (!file_exists($this->rootPreviewPath)) {
-                exec(Yii::getAlias('@ffmpeg') . " -i {$this->rootPath} -ss 00:00:6.000 -vframes 1  {$this->rootPreviewPath}");
-            }
-            if (!file_exists($this->rootPreviewPath)) {
-                exec(Yii::getAlias('@ffmpeg') . " -i {$this->rootPath} -ss 00:00:2.000 -vframes 1  {$this->rootPreviewPath}");
-            }
-        }
+//        if ($this->type == self::TYPE_VIDEO) {
+//            if (file_exists($this->rootPath)) {
+//                @exec(Yii::$app->getModule('files')->ffmpeg . " -i {$this->rootPath} -ss 00:00:15.000 -vframes 1  {$this->rootPreviewPath}");
+//            }
+//            if (!file_exists($this->rootPreviewPath)) {
+//                @exec(Yii::$app->getModule('files')->ffmpeg . " -i {$this->rootPath} -ss 00:00:6.000 -vframes 1  {$this->rootPreviewPath}");
+//            }
+//            if (!file_exists($this->rootPreviewPath)) {
+//                @exec(Yii::$app->getModule('files')->ffmpeg . " -i {$this->rootPath} -ss 00:00:2.000 -vframes 1  {$this->rootPreviewPath}");
+//            }
+//        }
 
         if ($this->type == self::TYPE_IMAGE)
             if (file_exists($this->rootPath)) {
