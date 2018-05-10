@@ -56,11 +56,11 @@ class FileInputWidget extends InputWidget
     public function run()
     {
 
-        $uploadRoute = \yii\helpers\Url::toRoute(['files/default/upload']);
-        $deleteRoute = \yii\helpers\Url::toRoute(['files/default/delete']);
-        $cropperRoute = \yii\helpers\Url::toRoute(['files/default/cropper']);
-        $cropRoute = \yii\helpers\Url::toRoute(['files/default/crop']);
-        $renameRoute = \yii\helpers\Url::toRoute(['files/default/rename']);
+        $uploadRoute = \yii\helpers\Url::toRoute(['/files/default/upload']);
+        $deleteRoute = \yii\helpers\Url::toRoute(['/files/default/delete']);
+        $cropperRoute = \yii\helpers\Url::toRoute(['/files/default/cropper']);
+        $cropRoute = \yii\helpers\Url::toRoute(['/files/default/crop']);
+        $renameRoute = \yii\helpers\Url::toRoute(['/files/default/rename']);
 
         $className = new ClassnameEncoder($this->model->classname());
 
