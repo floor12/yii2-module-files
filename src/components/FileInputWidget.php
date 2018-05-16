@@ -8,11 +8,12 @@
 
 namespace floor12\files\components;
 
-
 use floor12\files\logic\ClassnameEncoder;
 use yii\jui\InputWidget;
 use floor12\files\assets\FileInputWidgetAsset;
 use floor12\files\assets\CropperAsset;
+use yii\helpers\Url;
+use yii\web\View;
 
 class FileInputWidget extends InputWidget
 {
@@ -56,21 +57,21 @@ class FileInputWidget extends InputWidget
     public function run()
     {
 
-        $uploadRoute = \yii\helpers\Url::toRoute(['/files/default/upload']);
-        $deleteRoute = \yii\helpers\Url::toRoute(['/files/default/delete']);
-        $cropperRoute = \yii\helpers\Url::toRoute(['/files/default/cropper']);
-        $cropRoute = \yii\helpers\Url::toRoute(['/files/default/crop']);
-        $renameRoute = \yii\helpers\Url::toRoute(['/files/default/rename']);
+        $uploadRoute = Url::toRoute(['/files/default/upload']);
+        $deleteRoute = Url::toRoute(['/files/default/delete']);
+        $cropperRoute = Url::toRoute(['/files/default/cropper']);
+        $cropRoute = Url::toRoute(['/files/default/crop']);
+        $renameRoute = Url::toRoute(['/files/default/rename']);
 
         $className = new ClassnameEncoder($this->model->classname());
 
-        $this->getView()->registerJs("Yii2FilesUploaderSet('files-widget-block_{$this->block_id}','{$className}','{$this->attribute}','{$this->model->scenario}')", \yii\web\View::POS_READY, $this->block_id);
-        $this->getView()->registerJs("yii2UploadRoute = '{$uploadRoute}'", \yii\web\View::POS_BEGIN, 'yii2UploadRoute');
-        $this->getView()->registerJs("yii2DeleteRoute = '{$deleteRoute}'", \yii\web\View::POS_BEGIN, 'yii2DeleteRoute');
-        $this->getView()->registerJs("yii2CropperRoute = '{$cropperRoute}'", \yii\web\View::POS_BEGIN, 'yii2DeleteRoute');
-        $this->getView()->registerJs("yii2CropRoute = '{$cropRoute}'", \yii\web\View::POS_BEGIN, 'yii2CropRoute');
-        $this->getView()->registerJs("yii2RenameRoute = '{$renameRoute}'", \yii\web\View::POS_BEGIN, 'yii2RenameRoute');
-        $this->getView()->registerJs("yii2FileFormToken = '" . self::generateToken() . "'", \yii\web\View::POS_BEGIN, 'yii2FileFormToken');
+        $this->getView()->registerJs("Yii2FilesUploaderSet('files-widget-block_{$this->block_id}','{$className}','{$this->attribute}','{$this->model->scenario}')", View::POS_READY, $this->block_id);
+        $this->getView()->registerJs("yii2UploadRoute = '{$uploadRoute}'", View::POS_BEGIN, 'yii2UploadRoute');
+        $this->getView()->registerJs("yii2DeleteRoute = '{$deleteRoute}'", View::POS_BEGIN, 'yii2DeleteRoute');
+        $this->getView()->registerJs("yii2CropperRoute = '{$cropperRoute}'", View::POS_BEGIN, 'yii2DeleteRoute');
+        $this->getView()->registerJs("yii2CropRoute = '{$cropRoute}'", View::POS_BEGIN, 'yii2CropRoute');
+        $this->getView()->registerJs("yii2RenameRoute = '{$renameRoute}'", View::POS_BEGIN, 'yii2RenameRoute');
+        $this->getView()->registerJs("yii2FileFormToken = '" . self::generateToken() . "'", View::POS_BEGIN, 'yii2FileFormToken');
 
         FileInputWidgetAsset::register($this->getView());
         CropperAsset::register($this->getView());
