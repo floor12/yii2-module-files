@@ -36,6 +36,18 @@ $doc_contents = [
            aria-expanded="false" title="<?= $model->title ?>"
            data-lightbox="yii2-files-images-<?= $model->field ?>-<?= $model->object_id ?>"></a>
 
+
+    <?php elseif ($model->content_type == 'application/pdf'): ?>
+        <a href="<?= $model->href ?>" target="_blank" data-pjax="0">
+            <div data-title="<?= $model->title ?>"
+                 class="floor12-file-object"
+                 data-hash="<?= $model->hash ?>"
+                 title="<?= $model->title ?>">
+
+                <div class="icon"><?= \Yii::$app->getModule('files')->fontAwesome->icon($model->icon) ?></div>
+                <?= $model->title ?>
+            </div>
+        </a>
     <?php else: ?>
 
 
