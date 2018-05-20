@@ -176,7 +176,11 @@ class DefaultController extends Controller
 
         if ($model->type != File::TYPE_IMAGE) {
             $stream = fopen($model->rootPath, 'rb');
-            \Yii::$app->response->sendStreamAsFile($stream, $model->title, ['mimeType' => $model->content_type, 'filesize' => $model->size]);
+            header("Content-Type: {$model->content_type}");
+            header("Content-Length: " . $model->size);
+            header("Content-disposition: filename=\"{$model->title}\"");
+            fpassthru($stream);
+            //\Yii::$app->response->sendStreamAsFile($stream, $model->title, ['mimeType' => $model->content_type, 'filesize' => $model->size]);
         } else {
 
             if ($model->watermark) {
@@ -186,7 +190,10 @@ class DefaultController extends Controller
                 \Yii::$app->response->sendContentAsFile($image->output(), $model->title);
             } else {
                 $stream = fopen($model->rootPath, 'rb');
-                \Yii::$app->response->sendStreamAsFile($stream, $model->title, ['mimeType' => $model->content_type, 'filesize' => $model->size]);
+                header("Content-Type: {$model->content_type}");
+                header("Content-Length: " . $model->size);
+                fpassthru($stream);
+                //\Yii::$app->response->sendStreamAsFile($stream, $model->title, ['mimeType' => $model->content_type, 'filesize' => $model->size]);
             }
         }
     }
