@@ -177,7 +177,7 @@ class DefaultController extends Controller
         if ($model->type != File::TYPE_IMAGE) {
             $stream = fopen($model->rootPath, 'rb');
             header("Content-Type: {$model->content_type}");
-            header("Content-Length: " . $model->size);
+          //  header("Content-Length: " . $model->size);
             header("Content-disposition: filename=\"{$model->title}\"");
             fpassthru($stream);
             //\Yii::$app->response->sendStreamAsFile($stream, $model->title, ['mimeType' => $model->content_type, 'filesize' => $model->size]);
@@ -191,7 +191,7 @@ class DefaultController extends Controller
             } else {
                 $stream = fopen($model->rootPath, 'rb');
                 header("Content-Type: {$model->content_type}");
-                header("Content-Length: " . $model->size);
+            //    header("Content-Length: " . $model->size);
                 fpassthru($stream);
                 //\Yii::$app->response->sendStreamAsFile($stream, $model->title, ['mimeType' => $model->content_type, 'filesize' => $model->size]);
             }
