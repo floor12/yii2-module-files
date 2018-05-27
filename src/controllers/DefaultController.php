@@ -81,15 +81,23 @@ class DefaultController extends Controller
 
             $zip->close();
             echo 'Archive created!';
-            header("Content-disposition: attachment; filename={$title}.zip");
-            header('Content-type: application/zip');
+            header("Pragma: public");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Cache-Control: public");
+            header("Content-Description: File Transfer");
+            header("Content-type: application/octet-stream");
+            header("Content-Disposition: attachment; filename={$title}.zip");
+            header("Content-Transfer-Encoding: binary");
+            header("Content-Length: ".filesize($filename));
+
+            while (ob_get_level()) {
+                ob_end_clean();
+            }
             readfile($filename);
         } else {
             echo 'Failed!';
         }
-
-
-        return sizeof($files);
     }
 
     /** Првоеряем токен
@@ -175,12 +183,10 @@ class DefaultController extends Controller
             throw new NotFoundHttpException('Запрашиваемый файл не найден на диске.');
 
         if ($model->type != File::TYPE_IMAGE) {
-            $stream = fopen($model->rootPath, 'rb');
             header("Content-Type: {$model->content_type}");
-          //  header("Content-Length: " . $model->size);
+            header("Content-Length: " . $model->size);
             header("Content-disposition: filename=\"{$model->title}\"");
-            fpassthru($stream);
-            //\Yii::$app->response->sendStreamAsFile($stream, $model->title, ['mimeType' => $model->content_type, 'filesize' => $model->size]);
+            readfile($model->rootPath);
         } else {
 
             if ($model->watermark) {
@@ -191,7 +197,7 @@ class DefaultController extends Controller
             } else {
                 $stream = fopen($model->rootPath, 'rb');
                 header("Content-Type: {$model->content_type}");
-            //    header("Content-Length: " . $model->size);
+                //    header("Content-Length: " . $model->size);
                 fpassthru($stream);
                 //\Yii::$app->response->sendStreamAsFile($stream, $model->title, ['mimeType' => $model->content_type, 'filesize' => $model->size]);
             }
