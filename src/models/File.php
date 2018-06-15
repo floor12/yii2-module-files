@@ -51,6 +51,15 @@ class File extends \yii\db\ActiveRecord
 
 
     /**
+     * {@inheritdoc}
+     */
+    public static function getDb()
+    {
+        return Yii::$app->getModule('files')->db;
+    }
+
+
+    /**
      * Меняем или усанавливаем хеш. По нему идет доступ к файлу.
      */
     public function changeHash()

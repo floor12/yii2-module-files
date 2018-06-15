@@ -8,6 +8,7 @@
 
 namespace floor12\files;
 
+use \Yii;
 
 /**
  * Class Module
@@ -18,8 +19,6 @@ namespace floor12\files;
  * @property string $controllerNamespace
  *
  */
-
-
 class Module extends \yii\base\Module
 {
     /**
@@ -42,14 +41,23 @@ class Module extends \yii\base\Module
 
     public $allowOfficePreview = true;
 
+    public $params = ['db' => 'db'];
+
+    public $db;
+
     /**
      * @inheritdoc
      */
     public function init()
     {
-        $this->fontAwesome = \Yii::createObject($this->fontAwesome);
-        $this->storageFullPath = \Yii::getAlias($this->storage);
+
         parent::init();
+
+        $this->db = Yii::$app->{$this->params['db']};
+
+        $this->fontAwesome = Yii::createObject($this->fontAwesome);
+        $this->storageFullPath = Yii::getAlias($this->storage);
+
 
     }
 }
