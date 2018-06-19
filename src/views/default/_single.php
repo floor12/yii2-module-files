@@ -28,23 +28,29 @@ $doc_contents = [
 ?>
 <div class="btn-group files-btn-group">
 
-    <div data-title="<?= $model->title ?>"
-         id="yii2-file-object-<?= $model->id ?>"
-         class="dropdown-toggle btn-group floor12-single-file-object <?= ($model->type == \floor12\files\models\File::TYPE_IMAGE) ? "floor12-file-object-image" : NULL ?>"
-         style="background-image: url(<?= $model->href ?>); <?= $ratio ? "padding-bottom: " . 1 / $ratio * 100 . "%" : NULL ?>"
-         data-toggle="dropdown" aria-haspopup="true"
-         aria-expanded="false" title="<?= $model->title ?>">
+    <?php if (!$ratio && $model->type == \floor12\files\models\File::TYPE_IMAGE): ?>
+        <div id="yii2-file-object-<?= $model->id ?>" data-toggle="dropdown" aria-haspopup="true"
+             aria-expanded="false" class="floor12-single-file-object">
+            <img src="<?= $model->href ?>" class="img-responsive">
+            <?= Html::hiddenInput((new \ReflectionClass($model->class))->getShortName() . "[{$model->field}_ids][]", $model->id) ?>
+        </div>
+    <?php else: ?>
+        <div data-title="<?= $model->title ?>"
+             id="yii2-file-object-<?= $model->id ?>"
+             class="dropdown-toggle btn-group floor12-single-file-object floor12-single-file-ratio <?= ($model->type == \floor12\files\models\File::TYPE_IMAGE) ? "floor12-file-object-image" : NULL ?>"
+             style="background-image: url(<?= $model->href ?>); <?= $ratio ? "padding-bottom: " . 1 / $ratio * 100 . "%" : NULL ?>"
+             data-toggle="dropdown" aria-haspopup="true"
+             aria-expanded="false" title="<?= $model->title ?>">
 
 
-        <?= Html::hiddenInput((new \ReflectionClass($model->class))->getShortName() . "[{$model->field}_ids][]", $model->id) ?>
+            <?= Html::hiddenInput((new \ReflectionClass($model->class))->getShortName() . "[{$model->field}_ids][]", $model->id) ?>
 
-        <?php if ($model->type != \floor12\files\models\File::TYPE_IMAGE): ?>
-            <?= \Yii::$app->getModule('files')->fontAwesome->icon($model->icon) ?>
-            <?= $model->title ?>
-        <?php endif; ?>
-
-
-    </div>
+            <?php if ($model->type != \floor12\files\models\File::TYPE_IMAGE): ?>
+                <?= \Yii::$app->getModule('files')->fontAwesome->icon($model->icon) ?>
+                <?= $model->title ?>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
 
     <ul class="dropdown-menu dropdown-menu-file-object dropdown-menu-file-object-single">
         <li>
@@ -85,5 +91,4 @@ $doc_contents = [
     </ul>
 
 </div>
-
 
