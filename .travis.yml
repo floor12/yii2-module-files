@@ -30,7 +30,8 @@ cache:
 install:
   - travis_retry composer self-update && composer --version
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - travis_retry composer install --prefer-dist --no-interaction
+  - composer global require "fxp/composer-asset-plugin:~1.4"
+  - travis_retry composer install
 
 before_script:
   - |
@@ -38,7 +39,7 @@ before_script:
       PHPUNIT_FLAGS="--coverage-clover=coverage.clover"
     fi
   - composer require --prefer-dist --no-interaction 'phpunit/phpunit:4.8.27|~5.7.21|^6.2'
-  - composer global require "fxp/composer-asset-plugin:~1.4"
+
 
 script:
   - vendor/bin/phpunit --verbose $PHPUNIT_FLAGS
