@@ -9,7 +9,7 @@
 namespace floor12\files\tests;
 
 use yii\console\Application;
-use floor12\files\migration_yii2_module_files;
+use floor12\files\migrations\migration_yii2_module_files;
 
 
 abstract class TestCase extends \PHPUnit_Framework_TestCase
