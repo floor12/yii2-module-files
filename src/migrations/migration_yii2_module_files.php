@@ -1,6 +1,6 @@
 <?php
 
-namespace floor12\files;
+namespace floor12\files\migrations;
 
 use yii\db\Migration;
 
