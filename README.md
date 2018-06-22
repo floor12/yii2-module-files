@@ -95,7 +95,7 @@ public function rules()
 Если maxFiles будет равен единице, то доступ к объекту floor12\files\models\File можно получить напрямую $model->avatar. Например:
 ```php
 echo Html::img($model->avatar->href)            // путь к файлу
-echo Html::img($model->avatar)->hrefPreview     // путь к миниатюре, если это изображение
+echo Html::img($model->avatar->hrefPreview)     // путь к миниатюре, если это изображение
 echo Html::img($model->avatar)                  // объект приводится к строке, содержащей путь к файлу для удобства
 ```
 
