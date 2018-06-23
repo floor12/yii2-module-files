@@ -78,8 +78,8 @@ As for the other attributes of the model, specify the `attributeLabels()`:
  public function attributeLabels()
     {
         return [
-            'avatar' => 'Аватар',
-            'documents' => 'Документы',
+            'avatar' => 'User avatar',
+            'documents' => 'Attachments',
         ];
     }
 ```
@@ -114,15 +114,13 @@ In addition, there is a widget for displaying all files, which makes it possible
  ```php
 echo \floor12\files\components\FilesBlock::widget([
     'files' => $model->docs, 
-    'title' => 'Приложенные документы:',            // по-умолчанию будет использован Label из модели 
+    'title' => 'Attachments:',            // by default Label from model will used 
     'downloadAll' => true, 
     'zipTitle' => "docs_of_model_" . $model->id
 ]) 
 ```
 
 ### Widget for ActiveFrom
-
-Во время редактирования модели, необходимо использовать виджет floor12\files\components\FileInputWidget:
 
 Use special widget to upload and reorder (both with drug-and-drop), crop and rename files in forms.
 
