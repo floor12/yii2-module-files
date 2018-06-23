@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.org/floor12/yii2-module-files.svg?branch=master)](https://travis-ci.org/floor12/yii2-module-files)
 
-Модуль позволяет добавить к AR моделям поля с файлами, позволяет управлять ими. 
+*This readme is available in [english](README_EN.md).*
+
+Модуль позволяет добавить к ActiveRecord моделям поля с файлами и гибко управлять ими. 
 
 В поставку входят виджет для форм редактирования, а так же виджет для отображения приложенных файлов (его использовать не обязательно).
 
@@ -42,17 +44,17 @@ $ ./yii migrate --migrationPath=@vendor/floor12/yii2-module-files/src/migrations
 
 Параметры:
 
-1. **editRole** - роль пользователей, которым доступно управление. Можно использовать "@".
-2. **storage** - алиас пути к хранилищу файлов на диске, по умолчанию располагается в папке storage в корне проекта.
-2. **ffmpeg** - путь к ffmpeg для конвертации видео и нарезке изображений-привью для видео-роликов.
-2. **token_salt** - уникальная соль для безопасностой работы виджетов.
+1. `editRole` - роль пользователей, которым доступно управление. Можно использовать `@`.
+2. `storage` - алиас пути к хранилищу файлов на диске, по умолчанию располагается в папке storage в корне проекта.
+2. `ffmpeg` - путь к ffmpeg для конвертации видео и нарезке изображений-привью для видео-роликов.
+2. `token_salt` - уникальная соль для безопасностой работы виджетов.
 
 
 Использование
 -----
 
 ### Работа с моделью ActiveRecord
-Для подключения модуля к модели ActiveRecord, необходимо назначить ей FileBehaviour 
+Для подключения модуля к модели `ActiveRecord`, необходимо назначить ей `FileBehaviour` 
 и указать, в параметре attributes какие поля с файлами необходимо создать:
 
 ```php 
@@ -69,7 +71,7 @@ $ ./yii migrate --migrationPath=@vendor/floor12/yii2-module-files/src/migrations
          ...
 ```
 
-Как и для других атрибутов модели, указываем ей attributeLabels:
+Как и для других атрибутов модели, указываем ей `attributeLabels()`:
 
 ```
  public function attributeLabels()
@@ -81,7 +83,7 @@ $ ./yii migrate --migrationPath=@vendor/floor12/yii2-module-files/src/migrations
     }
 ```
 
-В rules описываем правила валидации:
+В `rules()` описываем правила валидации:
 ```php
 public function rules()
 {
@@ -92,14 +94,14 @@ public function rules()
     ...    
 ```
 
-Если maxFiles будет равен единице, то доступ к объекту floor12\files\models\File можно получить напрямую $model->avatar. Например:
+Если `maxFiles` будет равен единице, то доступ к объекту `floor12\files\models\File` можно получить напрямую `$model->avatar`. Например:
 ```php
 echo Html::img($model->avatar->href)            // путь к файлу
 echo Html::img($model->avatar->hrefPreview)     // путь к миниатюре, если это изображение
 echo Html::img($model->avatar)                  // объект приводится к строке, содержащей путь к файлу для удобства
 ```
 
-В случае, если maxFiles > 1 и файлов можно загрузить несколько, то поле будет содержать массив объектов floor12\files\models\File:
+В случае, если `maxFiles` > 1 и файлов можно загрузить несколько, то поле будет содержать массив объектов `floor12\files\models\File`:
 
 
 ```php
@@ -107,7 +109,7 @@ foreach ($model->docs as $doc}
     Html::a($doc->title, $doc->href);
 ```
 Помимо этого, есть отдельный виджет для вывода всех файлов, который дает возможность просматривать 
-изображения в галереи Lightbox2 и осуществлять предпросмотр файлов Office. Так же имеется возможно скачать все приложенные к модели файлы архивом.
+изображения в галереи [Lightbox2](https://lokeshdhakar.com/projects/lightbox2/) и осуществлять предпросмотр файлов Office. Так же имеется возможно скачать все приложенные к модели файлы архивом.
  ```php
 echo \floor12\files\components\FilesBlock::widget([
     'files' => $model->docs, 
@@ -119,13 +121,13 @@ echo \floor12\files\components\FilesBlock::widget([
 
 ### Работа c виджетом формы
 
-Во время редактирования модели, необходимо использовать виджет floor12\files\components\FileInputWidget:
+Во время редактирования модели, необходимо использовать виджет `floor12\files\components\FileInputWidget`:
 
 ```php
     <?= $form->field($model, 'avatar')->widget(FileInputWidget::class, []) ?>
     
     <?= $form->field($model, 'docs')->widget(FileInputWidget::class, []) ?>
 ```
-При этом, виджет сам примет нужный вид, в случае добавления 1 или нескольких файлов. 
-Если указан обязательный ratio для изображений, автоматически откроет окно с кропером изображений.
+При этом, виджет сам примет нужный вид, в случае добавления одного или нескольких файлов. 
+Если указан обязательный `ratio` для изображений, автоматически откроет окно с кропером изображений.
 
