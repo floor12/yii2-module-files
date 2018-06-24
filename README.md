@@ -2,34 +2,34 @@
 
 [![Build Status](https://travis-ci.org/floor12/yii2-module-files.svg?branch=master)](https://travis-ci.org/floor12/yii2-module-files)
 
-*This readme is available in [english](README_EN.md).*
+*Этот файл доступен на [русском языке](README_RU.md).*
+ 
+This module allows to add files attributes to your ActiveRecord Models.
 
-Модуль позволяет добавить к ActiveRecord моделям поля с файлами и гибко управлять ими. 
+This module includes widgets for ActiveForm to upload and, crop and edit files, and widget to show files in frontend. 
 
-В поставку входят виджет для форм редактирования, а так же виджет для отображения приложенных файлов (его использовать не обязательно).
-
-Установка
+Installation
 ------------
 
-#### Ставим модуль
+#### Installation of module in you app
 
-Выполняем команду
+Just run:
 ```bash
 $ composer require floor12/yii2-module-files
 ```
 
-иди добавляем в секцию "requred" файла composer.json
+or add this to the require section of your composer.json.
 ```json
 "floor12/yii2-module-files": "dev-master"
 ```
 
 
-#### Выполняем миграцию для созданию необходимых таблиц
+Run the migration to create a table for `File` model:
 ```bash
 $ ./yii migrate --migrationPath=@vendor/floor12/yii2-module-files/src/migrations/
 ```
 
-#### Добавляем модуль в конфиг приложения
+Add this to **modules** section
 ```php  
 'modules' => [
         'files' => [
@@ -42,20 +42,21 @@ $ ./yii migrate --migrationPath=@vendor/floor12/yii2-module-files/src/migrations
     ...
 ```
 
-Параметры:
+Params:
 
-1. `editRole` - роль пользователей, которым доступно управление. Можно использовать `@`.
-2. `storage` - алиас пути к хранилищу файлов на диске, по умолчанию располагается в папке storage в корне проекта.
-2. `ffmpeg` - путь к ffmpeg для конвертации видео и нарезке изображений-привью для видео-роликов.
-2. `token_salt` - уникальная соль для безопасностой работы виджетов.
+1. `editRole` - user role that allowed to manage files. You can use `@`.
+2. `storage` - path alias to folder where files must be stored. Default is *storage* folder in root of your app.
+2. `ffmpeg` - system path to Ffmpeg (in case when video files used).
+2. `token_salt` - unique salt to protect file edit forms.
 
 
-Использование
+Usage
 -----
 
-### Работа с моделью ActiveRecord
-Для подключения модуля к модели `ActiveRecord`, необходимо назначить ей `FileBehaviour` 
-и указать, в параметре attributes какие поля с файлами необходимо создать:
+### Work with the ActiveRecord model
+
+To connect the module to the `ActiveRecord` model, you must assign it a `FileBehaviour`
+and specify the attributes parameter, what fields with files need to be created:
 
 ```php 
  public function behaviors()
@@ -71,19 +72,19 @@ $ ./yii migrate --migrationPath=@vendor/floor12/yii2-module-files/src/migrations
          ...
 ```
 
-Как и для других атрибутов модели, указываем ей `attributeLabels()`:
+As for the other attributes of the model, specify the `attributeLabels()`:
 
 ```
  public function attributeLabels()
     {
         return [
-            'avatar' => 'Аватар',
-            'documents' => 'Документы',
+            'avatar' => 'User avatar',
+            'documents' => 'Attachments',
         ];
     }
 ```
 
-В `rules()` описываем правила валидации:
+ Specify the the validation `rules()`:
 ```php
 public function rules()
 {
@@ -94,40 +95,40 @@ public function rules()
     ...    
 ```
 
-Если `maxFiles` будет равен единице, то доступ к объекту `floor12\files\models\File` можно получить напрямую `$model->avatar`. Например:
+If `maxFiles` is equal to one, then access to the `floor12\files\models\File` object can be obtained directly from $model-> avatar. For example:
 ```php
-echo Html::img($model->avatar->href)            // путь к файлу
-echo Html::img($model->avatar->hrefPreview)     // путь к миниатюре, если это изображение
-echo Html::img($model->avatar)                  // объект приводится к строке, содержащей путь к файлу для удобства
+echo Html::img($model->avatar->href)            // the web path to file
+echo Html::img($model->avatar->hrefPreview)     // the  web path to file preview, if the file is image
+echo Html::img($model->avatar)                  // __toString of File returns the web path
 ```
 
-В случае, если `maxFiles` > 1 и файлов можно загрузить несколько, то поле будет содержать массив объектов `floor12\files\models\File`:
-
+In case `maxFiles` > 1, for multiple file upload, the attribute will contain an array of objects `floor12\files\models\File`:
 
 ```php
 foreach ($model->docs as $doc}
     Html::a($doc->title, $doc->href);
 ```
-Помимо этого, есть отдельный виджет для вывода всех файлов, который дает возможность просматривать 
-изображения в галереи [Lightbox2](https://lokeshdhakar.com/projects/lightbox2/) и осуществлять предпросмотр файлов Office. Так же имеется возможно скачать все приложенные к модели файлы архивом.
+
+In addition, there is a widget for displaying all files, which makes it possible to view images in the [Lightbox2](https://lokeshdhakar.com/projects/lightbox2/)  gallery and preview the Office files. It is also possible to download all the files attached to current model attribute archived in ZIP format.
+
  ```php
 echo \floor12\files\components\FilesBlock::widget([
     'files' => $model->docs, 
-    'title' => 'Приложенные документы:',            // по-умолчанию будет использован Label из модели 
+    'title' => 'Attachments:',            // by default Label from model will used 
     'downloadAll' => true, 
     'zipTitle' => "docs_of_model_" . $model->id
 ]) 
 ```
 
-### Работа c виджетом формы
+### Widget for ActiveFrom
 
-Во время редактирования модели, необходимо использовать виджет `floor12\files\components\FileInputWidget`:
+Use special widget to upload and reorder (both with drug-and-drop), crop and rename files in forms.
 
 ```php
     <?= $form->field($model, 'avatar')->widget(FileInputWidget::class, []) ?>
     
     <?= $form->field($model, 'docs')->widget(FileInputWidget::class, []) ?>
 ```
-При этом, виджет сам примет нужный вид, в случае добавления одного или нескольких файлов. 
-Если указан обязательный `ratio` для изображений, автоматически откроет окно с кропером изображений.
+The widget itself will take the desired form, in the case of adding 1 or more files.
+If you specify the required `ratio` for images, it will automatically open the window with the image crapper.
 
