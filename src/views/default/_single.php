@@ -56,7 +56,7 @@ $doc_contents = [
         <li>
             <a href="<?= $model->href ?>" target="_blank" data-pjax="0">
                 <?= \Yii::$app->getModule('files')->fontAwesome->icon('cloud-download') ?>
-                Скачать
+                <?= Yii::t('files', 'Download') ?>
             </a>
         </li>
         <?php if (in_array($model->content_type, $doc_contents)): ?>
@@ -64,28 +64,28 @@ $doc_contents = [
                 <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= \Yii::$app->request->hostInfo . $model->href ?>}"
                    target="_blank" data-pjax="0">
                     <?= \Yii::$app->getModule('files')->fontAwesome->icon('eye') ?>
-                    Просмотреть
+                    <?= Yii::t('files', 'View') ?>
                 </a>
             </li>
         <?php endif; ?>
         <li>
             <a onclick="showRenameFileForm(<?= $model->id ?>, event); return false;">
                 <?= \Yii::$app->getModule('files')->fontAwesome->icon('edit') ?>
-                Переименовать
+                <?= Yii::t('files', 'Rename') ?>
             </a>
         </li>
         <?php if ($model->type == File::TYPE_IMAGE): ?>
             <li>
                 <a onclick="initCropper(<?= $model->id ?>,'<?= $model->href ?>',<?= $ratio ?>)">
                     <?= \Yii::$app->getModule('files')->fontAwesome->icon('picture-o') ?>
-                    Редактировать
+                    <?= Yii::t('files', 'Edit') ?>
                 </a>
             </li>
         <?php endif; ?>
         <li>
             <a onclick="removeFile(<?= $model->id ?>); showUploadButton(event); return false;">
                 <?= \Yii::$app->getModule('files')->fontAwesome->icon('trash') ?>
-                Удалить
+                <?= Yii::t('files', 'Delete') ?>
             </a>
         </li>
     </ul>

@@ -26,8 +26,7 @@ class Module extends \yii\base\Module
      */
     public $controllerNamespace = 'floor12\files\controllers';
 
-    /** Путь к файловому хранилищу
-     * @var string
+    /** Путь к файловому хранилищу* @var string
      */
     public $storage = '@vendor/../storage';
 
@@ -50,14 +49,10 @@ class Module extends \yii\base\Module
      */
     public function init()
     {
-
-        parent::init();
-
         $this->db = Yii::$app->{$this->params['db']};
 
         $this->fontAwesome = Yii::createObject($this->fontAwesome);
+
         $this->storageFullPath = Yii::getAlias($this->storage);
-
-
     }
 }

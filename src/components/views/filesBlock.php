@@ -23,6 +23,8 @@ use  \yii\helpers\Html;
     <?php foreach ($files as $file) {
         echo $this->render('_filesBlock', ['model' => $file]);
     } ?>
-    <?php if ($downloadAll && sizeof($files) >1) echo Html::a(\Yii::$app->getModule('files')->fontAwesome->icon('cloud-download') .
-        ' скачать все', null, ['class' => 'btn btn-default btn-xs', 'onclick' => "filesDownloadAll('{$zipTitle}', event,'" . \yii\helpers\Url::toRoute(['files/default/zip']) . "')"]) ?>
+    <?php if ($downloadAll && sizeof($files) > 1) echo Html::a(\Yii::$app->getModule('files')->fontAwesome->icon('cloud-download') .
+        Yii::t('files', 'Download all'),
+        null,
+        ['class' => 'btn btn-default btn-xs', 'onclick' => "filesDownloadAll('{$zipTitle}', event,'" . \yii\helpers\Url::toRoute(['files/default/zip']) . "')"]) ?>
 </div>

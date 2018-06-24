@@ -14,16 +14,17 @@
 
 <div id="yii2-file-title-editor">
     <div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">Имя файла:</span>
-        <input type="text" class="form-control" id="yii2-file-title-input" placeholder="Имя файла"
+        <span class="input-group-addon" id="basic-addon1"><?= Yii::t('files', 'Filename') ?>:</span>
+        <input type="text" class="form-control" id="yii2-file-title-input" placeholder="<?= Yii::t('files', 'Filename') ?>
                aria-describedby="basic-addon1">
         <span class="input-group-btn">
         <button class="btn btn-default" type="button" onclick="saveFileTitle()">
             <?= \Yii::$app->getModule('files')->fontAwesome->icon('save') ?>
-            Сохранить</button>
+            <?= Yii::t('files', 'Save') ?>
+        </button>
         <button class="btn btn-default" type="button" onclick="hideYii2FileTitleEditor()">
             <?= \Yii::$app->getModule('files')->fontAwesome->icon('close') ?>
-            Отмена
+            <?= Yii::t('files', 'Cancel') ?>
         </button>
       </span>
     </div>
@@ -33,7 +34,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Редактирование изображения</h2>
+                <h2><?= Yii::t('files', 'Image editor') ?></h2>
             </div>
             <div class="modal-body">
                 <div id="cropperArea"></div>
@@ -67,8 +68,8 @@
                         </div>
                     </div>
                     <div class="col-md-6 text-right">
-                        <button type="button" class="btn btn-default" onclick="stopCrop()">Отмена</button>
-                        <button type="button" class="btn btn-success" onclick="cropImage()">Сохранить</button>
+                        <button type="button" class="btn btn-default" onclick="stopCrop()"><?= Yii::t('files', 'Cancel') ?></button>
+                        <button type="button" class="btn btn-success" onclick="cropImage()"><?= Yii::t('files', 'Save') ?></button>
                     </div>
                 </div>
             </div>

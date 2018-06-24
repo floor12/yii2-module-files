@@ -18,7 +18,7 @@
 
 use yii\helpers\Html;
 
-if (YII_ENV == 'test')
+if (YII_ENV == 'test') // This code is only for testing
     echo Html::fileInput('files', null, [
         'id' => "files-upload-field-{$attribute}",
         'class' => 'yii2-files-upload-field',

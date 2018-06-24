@@ -65,7 +65,7 @@ $doc_contents = [
             <li>
                 <a href="<?= $model->href ?>" target="_blank" data-pjax="0">
                     <?= \Yii::$app->getModule('files')->fontAwesome->icon('cloud-download') ?>
-                    Скачать
+                    <?= Yii::t('files', 'Download') ?>
                 </a>
             </li>
             <?php if (\Yii::$app->getModule('files')->allowOfficePreview && in_array($model->content_type, $doc_contents)): ?>
@@ -73,7 +73,7 @@ $doc_contents = [
                     <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= \Yii::$app->request->hostInfo . $model->href ?>"
                        target="_blank" data-pjax="0">
                         <?= \Yii::$app->getModule('files')->fontAwesome->icon('eye') ?>
-                        Просмотреть
+                        <?= Yii::t('files', 'View') ?>
                     </a>
                 </li>
             <?php endif; ?>

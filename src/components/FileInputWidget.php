@@ -8,12 +8,15 @@
 
 namespace floor12\files\components;
 
+use \Yii;
 use floor12\files\logic\ClassnameEncoder;
 use yii\jui\InputWidget;
 use floor12\files\assets\FileInputWidgetAsset;
 use floor12\files\assets\CropperAsset;
 use yii\helpers\Url;
 use yii\web\View;
+use floor12\files\Module;
+
 
 class FileInputWidget extends InputWidget
 {
@@ -23,7 +26,7 @@ class FileInputWidget extends InputWidget
     const VIEW_SINGLE = 'singleFileInputWidget';
     const VIEW_MULTI = 'multiFileInputWidget';
 
-    public $uploadButtonText = "Загрузить";
+    public $uploadButtonText;
     public $uploadButtonClass = "btn btn-default btn-sm btn-upload";
 
     private $block_id;
@@ -36,13 +39,14 @@ class FileInputWidget extends InputWidget
      */
     public static function generateToken()
     {
-        return md5(\Yii::$app->getModule('files')->token_salt . \Yii::$app->request->userAgent . \Yii::$app->name);
+        return md5(Yii::$app->getModule('files')->token_salt . Yii::$app->request->userAgent . Yii::$app->name);
     }
 
 
     public function init()
     {
         $this->block_id = rand(9999999, 999999999);
+        $this->uploadButtonText = Yii::t('files', 'Upload');
 
         $this->ratio = $this->model->getBehavior('files')->attributes[$this->attribute]['ratio'] ?? null;
 
