@@ -45,6 +45,7 @@ class FileInputWidget extends InputWidget
 
     public function init()
     {
+        $this->registerTranslations();
         $this->block_id = rand(9999999, 999999999);
         $this->uploadButtonText = Yii::t('files', 'Upload');
 
@@ -56,6 +57,16 @@ class FileInputWidget extends InputWidget
         }
 
         parent::init();
+    }
+
+    public function registerTranslations()
+    {
+        $i18n = Yii::$app->i18n;
+        $i18n->translations['files'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'en-US',
+            'basePath' => '@vendor/floor12/yii2-module-files/src/messages',
+        ];
     }
 
     public function run()

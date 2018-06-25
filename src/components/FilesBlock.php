@@ -21,6 +21,23 @@ class FilesBlock extends InputWidget
     public $downloadAll = false;
     public $passFirst = false;
 
+
+    public function init()
+    {
+        $this->registerTranslations();
+        parent::init();
+    }
+
+    public function registerTranslations()
+    {
+        $i18n = Yii::$app->i18n;
+        $i18n->translations['files'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'en-US',
+            'basePath' => '@vendor/floor12/yii2-module-files/src/messages',
+        ];
+    }
+
     public function run()
     {
         FilesBlockAsset::register($this->getView());
