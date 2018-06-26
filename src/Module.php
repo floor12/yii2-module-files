@@ -9,6 +9,7 @@
 namespace floor12\files;
 
 use \Yii;
+use yii\i18n\PhpMessageSource;
 
 /**
  * Class Module
@@ -44,15 +45,37 @@ class Module extends \yii\base\Module
 
     public $db;
 
+    public $editRole = '@';
+
     /**
      * @inheritdoc
      */
     public function init()
     {
+        $this->registerTranslations();
+
         $this->db = Yii::$app->{$this->params['db']};
 
         $this->fontAwesome = Yii::createObject($this->fontAwesome);
 
         $this->storageFullPath = Yii::getAlias($this->storage);
+    }
+
+    public function registerTranslations()
+    {
+        $i18n = Yii::$app->i18n;
+        $i18n->translations['files'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'en-US',
+            'basePath' => '@vendor/floor12/yii2-module-files/src/messages',
+        ];
+    }
+
+    public function adminMode()
+    {
+        if ($this->editRole == '@')
+            return !\Yii::$app->user->isGuest;
+        else
+            return \Yii::$app->user->can($this->editRole);
     }
 }
