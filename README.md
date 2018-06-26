@@ -44,10 +44,9 @@ Add this to **modules** section
 
 Params:
 
-1. `editRole` - user role that allowed to manage files. You can use `@`.
-2. `storage` - path alias to folder where files must be stored. Default is *storage* folder in root of your app.
-2. `ffmpeg` - system path to Ffmpeg (in case when video files used).
-2. `token_salt` - unique salt to protect file edit forms.
+- `editRole` - user role that allowed to manage files. You can use `@`.
+- `storage` - path alias to folder where files must be stored. Default is *storage* folder in root of your app.
+- `token_salt` - unique salt to protect file edit forms.
 
 
 Usage
