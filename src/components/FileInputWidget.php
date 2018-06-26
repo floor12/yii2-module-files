@@ -87,6 +87,12 @@ class FileInputWidget extends InputWidget
         $this->getView()->registerJs("yii2CropRoute = '{$cropRoute}'", View::POS_BEGIN, 'yii2CropRoute');
         $this->getView()->registerJs("yii2RenameRoute = '{$renameRoute}'", View::POS_BEGIN, 'yii2RenameRoute');
         $this->getView()->registerJs("yii2FileFormToken = '" . self::generateToken() . "'", View::POS_BEGIN, 'yii2FileFormToken');
+        $this->getView()->registerJs("FileUploadedText = '" . Yii::t('files', 'The file is uploaded') . "'", View::POS_BEGIN, 'FileUploadedText');
+        $this->getView()->registerJs("FileSavedText = '" . Yii::t('files', 'The file is saved') . "'", View::POS_BEGIN, 'FileSavedText');
+        $this->getView()->registerJs("FileRemovedText = '" . Yii::t('files', 'The file is removed') . "'", View::POS_BEGIN, 'FileRemovedText');
+        $this->getView()->registerJs("FilesRemovedText = '" . Yii::t('files', 'The files are removed') . "'", View::POS_BEGIN, 'FilesRemovedText');
+        $this->getView()->registerJs("FileRenamedText = '" . Yii::t('files', 'The file is renamed') . "'", View::POS_BEGIN, 'FileRenamedText');
+
 
         FileInputWidgetAsset::register($this->getView());
         CropperAsset::register($this->getView());

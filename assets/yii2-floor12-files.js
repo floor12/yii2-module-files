@@ -84,6 +84,7 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
                 return false;
             }
 
+            info(FileUploadedText, 1);
             idName = "#" + generateId(filename);
             $(idName).replaceWith($(response));
 
@@ -145,7 +146,7 @@ function removeFile(id) {
 
     $(id).parents('div.files-btn-group').fadeOut(200, function () {
         $(this).remove();
-        info('Файл удален.', 1);
+        info(FileRemovedText, 1);
     });
     return false;
 }
@@ -155,7 +156,7 @@ function removeAllFiles(event) {
     $(event.target).parents('div.floor12-files-widget-list').find('div.files-btn-group').fadeOut(200, function () {
         $(this).remove();
     });
-    info('Файлы удалены.', 1);
+    info(FilesRemovedText, 1);
     return false;
 }
 
@@ -241,7 +242,7 @@ function cropImage() {
             $(id).css('background-image', 'none');
             $(id).css('background-image', 'url(' + response + ')');
             stopCrop();
-            info('Файл сохранен.', 1);
+            info(FileSavedText, 1);
         },
         error: function (response) {
             processError(response);
@@ -274,7 +275,7 @@ function saveFileTitle() {
             method: 'POST',
             data: {id: currentRenamingFileId, title: val, _fileFormToken: yii2FileFormToken},
             success: function () {
-                info('Файл переименован.', 1);
+                info(FileRenamedText, 1);
             },
             error: function (response) {
                 processError(response);
