@@ -8,7 +8,7 @@
 
 namespace floor12\files\components;
 
-
+use \Yii;
 use yii\helpers\Url;
 use yii\jui\InputWidget;
 use floor12\files\assets\FilesBlockAsset;
