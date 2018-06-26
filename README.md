@@ -32,13 +32,13 @@ $ ./yii migrate --migrationPath=@vendor/floor12/yii2-module-files/src/migrations
 Add this to **modules** section
 ```php  
 'modules' => [
-        'files' => [
-            'class' => 'floor12\files\Module',
-            'editRole' => 'admin',
-            'storage' = '@vendor/../storage';
-            'token_salt' = '!FgGGsdfsef23@Ejhfskj34';
+            'files' => [
+                'class' => 'floor12\files\Module',
+                'editRole' => 'admin',
+                'storage' => '@vendor/../storage',
+                'token_salt' => '!FgGGsdfsef23@Ejhfskj34',
+            ],
         ],
-    ]
     ...
 ```
 
