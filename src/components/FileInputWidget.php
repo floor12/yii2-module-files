@@ -12,8 +12,6 @@ use \Yii;
 use floor12\files\logic\ClassnameEncoder;
 use yii\jui\InputWidget;
 use floor12\files\assets\FileInputWidgetAsset;
-use floor12\notification\NotificationAsset;
-use floor12\files\assets\CropperAsset;
 use yii\helpers\Url;
 use yii\web\View;
 use floor12\files\Module;
@@ -94,10 +92,7 @@ class FileInputWidget extends InputWidget
         $this->getView()->registerJs("FilesRemovedText = '" . Yii::t('files', 'The files are removed') . "'", View::POS_BEGIN, 'FilesRemovedText');
         $this->getView()->registerJs("FileRenamedText = '" . Yii::t('files', 'The file is renamed') . "'", View::POS_BEGIN, 'FileRenamedText');
 
-
-        NotificationAsset::register($this->getView());
         FileInputWidgetAsset::register($this->getView());
-        CropperAsset::register($this->getView());
 
         return $this->render($this->layout, [
             'uploadButtonText' => $this->uploadButtonText,

@@ -29,6 +29,7 @@ class FilesBlockAsset extends AssetBundle
     ];
     public $depends = [
         'yii\web\JqueryAsset',
+        'floor12\notification\NotificationAsset',
         'floor12\files\assets\LightboxAsset'
     ];
 }
