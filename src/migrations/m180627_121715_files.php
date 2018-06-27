@@ -1,7 +1,5 @@
 <?php
 
-namespace floor12\files\migrations;
-
 use yii\db\Migration;
 
 class m180627_121715_files extends Migration
