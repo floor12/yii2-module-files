@@ -28,6 +28,7 @@ class FileInputWidgetAsset extends AssetBundle
     ];
     public $depends = [
         'yii\web\JqueryAsset',
+        'yii\jui\JuiAsset',
         'floor12\files\assets\SimpleAjaxUploaderAsset',
     ];
 }
