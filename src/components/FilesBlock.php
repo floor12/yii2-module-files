@@ -11,7 +11,9 @@ namespace floor12\files\components;
 use \Yii;
 use yii\helpers\Url;
 use yii\jui\InputWidget;
+use floor12\notification\NotificationAsset;
 use floor12\files\assets\FilesBlockAsset;
+
 
 class FilesBlock extends InputWidget
 {
@@ -40,7 +42,9 @@ class FilesBlock extends InputWidget
 
     public function run()
     {
+        NotificationAsset::register($this->getView());
         FilesBlockAsset::register($this->getView());
+
         $this->getView()->registerJs("yiiDownloadAllLink = '" . Url::toRoute('files/default/zip') . "'", \yii\web\View::POS_BEGIN, 'yiiDownloadAllLink');
 
         if ($this->passFirst && sizeof($this->files) > 0)
