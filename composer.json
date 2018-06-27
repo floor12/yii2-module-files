@@ -22,7 +22,6 @@
     "php": ">=7.1.0",
     "yiisoft/yii2": "~2.0.13",
     "bower-asset/cropper": "*",
-    "floor12/yii2-notification": "*",
     "rmrevin/yii2-fontawesome": "~2.15",
     "bower-asset/lightbox2": "*",
     "bower-asset/simple-ajax-uploader": "~2.6.2"
