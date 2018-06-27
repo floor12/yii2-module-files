@@ -8,7 +8,6 @@
 
 namespace floor12\files\controllers;
 
-
 use \Yii;
 use floor12\files\components\FileInputWidget;
 use floor12\files\components\SimpleImage;
@@ -41,7 +40,7 @@ class DefaultController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => [Yii::$app->getModule('files')->editRole],
+                        'roles' => Yii::$app->getModule('files')->editRoles,
                     ],
                 ],
             ],

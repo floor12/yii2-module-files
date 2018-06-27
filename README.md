@@ -34,7 +34,7 @@ Add this to **modules** section
 'modules' => [
             'files' => [
                 'class' => 'floor12\files\Module',
-                'editRole' => 'admin',
+                'editRoles' => ['admin'],
                 'storage' => '@vendor/../storage',
                 'token_salt' => '!FgGGsdfsef23@Ejhfskj34',
             ],

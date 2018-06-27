@@ -34,7 +34,7 @@ $ ./yii migrate --migrationPath=@vendor/floor12/yii2-module-files/src/migrations
 'modules' => [
             'files' => [
                 'class' => 'floor12\files\Module',
-                'editRole' => 'admin',
+                'editRoles' => ['admin'],
                 'storage' => '@vendor/../storage',
                 'token_salt' => '!FgGGsdfsef23@Ejhfskj34',
             ],
