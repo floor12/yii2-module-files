@@ -4,7 +4,7 @@ namespace floor12\files\migrations;
 
 use yii\db\Migration;
 
-class migration_yii2_module_files extends Migration
+class m180627_121715_files extends Migration
 {
 
     public function safeUp()
