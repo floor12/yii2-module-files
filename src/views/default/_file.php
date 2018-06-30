@@ -48,7 +48,7 @@ $doc_contents = [
         <li>
             <a href="<?= $model->href ?>" target="_blank" data-pjax="0">
                 <?= \Yii::$app->getModule('files')->fontAwesome->icon('cloud-download') ?>
-                Скачать
+                <?= Yii::t('files', 'Download') ?>
             </a>
         </li>
         <?php if (in_array($model->content_type, $doc_contents)): ?>
