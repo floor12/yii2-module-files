@@ -1,6 +1,10 @@
 # yii2-module-files
 
 [![Build Status](https://travis-ci.org/floor12/yii2-module-files.svg?branch=master)](https://travis-ci.org/floor12/yii2-module-files)
+[![Latest Stable Version](https://poser.pugx.org/floor12/yii2-module-files/v/stable)](https://packagist.org/packages/floor12/yii2-module-files)
+[![Latest Unstable Version](https://poser.pugx.org/floor12/yii2-module-files/v/unstable)](https://packagist.org/packages/floor12/yii2-module-files)
+[![Total Downloads](https://poser.pugx.org/floor12/yii2-module-files/downloads)](https://packagist.org/packages/floor12/yii2-module-files)
+[![License](https://poser.pugx.org/floor12/yii2-module-files/license)](https://packagist.org/packages/floor12/yii2-module-files)
 
 *This readme is available in [english](README.md).*
 
