@@ -238,8 +238,12 @@ function cropImage() {
         data: data,
         success: function (response) {
             id = '#yii2-file-object-' + currentCroppingImageId;
-            $(id).css('background-image', 'none');
-            $(id).css('background-image', 'url(' + response + ')');
+            if ($(id).find('img').length)
+                $(id).find('img').attr('src', response)
+            else {
+                $(id).css('background-image', 'none');
+                $(id).css('background-image', 'url(' + response + ')');
+            }
             stopCrop();
             info(FileSavedText, 1);
         },
