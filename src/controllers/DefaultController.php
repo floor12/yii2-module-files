@@ -21,7 +21,6 @@ use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 use yii\web\Response;
-use yii\filters\AccessControl;
 
 class DefaultController extends Controller
 {
@@ -35,15 +34,6 @@ class DefaultController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => Yii::$app->getModule('files')->editRoles,
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

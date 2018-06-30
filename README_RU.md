@@ -34,7 +34,6 @@ $ ./yii migrate --migrationPath=@vendor/floor12/yii2-module-files/src/migrations
 'modules' => [
             'files' => [
                 'class' => 'floor12\files\Module',
-                'editRoles' => ['admin'],
                 'storage' => '@vendor/../storage',
                 'token_salt' => '!FgGGsdfsef23@Ejhfskj34',
             ],
@@ -44,7 +43,6 @@ $ ./yii migrate --migrationPath=@vendor/floor12/yii2-module-files/src/migrations
 
 Параметры:
 
-- `editRole` - роль пользователей, которым доступно управление. Можно использовать `@`.
 - `storage` - алиас пути к хранилищу файлов на диске, по умолчанию располагается в папке storage в корне проекта.
 - `token_salt` - уникальная соль для безопасностой работы виджетов.
 

@@ -45,7 +45,6 @@ class Module extends \yii\base\Module
 
     public $db;
 
-    public $editRoles = ['@'];
 
     /**
      * @inheritdoc
@@ -71,13 +70,4 @@ class Module extends \yii\base\Module
         ];
     }
 
-    public function adminMode()
-    {
-        if (!$this->editRoles)
-            return true;
-        if ($this->editRoles == ['@'])
-            return !\Yii::$app->user->isGuest;
-        else
-            return \Yii::$app->user->can($this->editRole);
-    }
 }

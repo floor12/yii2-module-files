@@ -34,7 +34,6 @@ Add this to **modules** section
 'modules' => [
             'files' => [
                 'class' => 'floor12\files\Module',
-                'editRoles' => ['admin'],
                 'storage' => '@vendor/../storage',
                 'token_salt' => '!FgGGsdfsef23@Ejhfskj34',
             ],
@@ -44,7 +43,6 @@ Add this to **modules** section
 
 Params:
 
-- `editRole` - user role that allowed to manage files. You can use `@`.
 - `storage` - path alias to folder where files must be stored. Default is *storage* folder in root of your app.
 - `token_salt` - unique salt to protect file edit forms.
 
