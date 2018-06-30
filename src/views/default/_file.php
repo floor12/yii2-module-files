@@ -69,7 +69,7 @@ $doc_contents = [
         <?php if ($model->type == File::TYPE_IMAGE): ?>
             <li>
                 <a onclick="initCropper(<?= $model->id ?>,'<?= $model->href ?>',<?= $ratio ?>)">
-                    <?= \Yii::$app->getModule('files')->fontAwesome->icon('picture') ?>
+                    <?= \Yii::$app->getModule('files')->fontAwesome->icon('crop') ?>
                     <?= Yii::t('files', 'Edit') ?>
                 </a>
             </li>
