@@ -24,7 +24,7 @@ $ composer require floor12/yii2-module-files
 
 иди добавляем в секцию "requred" файла composer.json
 ```json
-"floor12/yii2-module-files": "dev-master"
+"floor12/yii2-module-files": ">=0.1.2"
 ```
 
 
