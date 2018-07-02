@@ -23,7 +23,7 @@
     "yiisoft/yii2": "~2.0.13",
     "yiisoft/yii2-jui": "*",
     "bower-asset/cropper": "*",
-    "floor12/yii2-notification": ">=0.1.0",
+    "floor12/yii2-notification": "~0.1.0",
     "rmrevin/yii2-fontawesome": "~2.15",
     "bower-asset/lightbox2": "*",
     "bower-asset/simple-ajax-uploader": "~2.6.2"
