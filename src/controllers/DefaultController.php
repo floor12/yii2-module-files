@@ -181,6 +181,8 @@ class DefaultController extends Controller
         if (!file_exists($model->rootPath))
             throw new NotFoundHttpException('Запрашиваемый файл не найден на диске.');
 
+        Yii::$app->response->headers->set('Last-Modified', date("c", $model->created));
+        Yii::$app->response->headers->set('Cache-Control', 'public, max-age=' . (60 * 60 * 24 * 15));
 
         if ($model->type == File::TYPE_IMAGE && $model->watermark) {
             $image = new SimpleImage();
@@ -209,6 +211,9 @@ class DefaultController extends Controller
         $response = \Yii::$app->response;
         $response->format = Response::FORMAT_RAW;
         $response->getHeaders()->set('Content-Type', 'image/jpeg; charset=utf-8');
+
+        Yii::$app->response->headers->set('Last-Modified', date("c", $model->created));
+        Yii::$app->response->headers->set('Cache-Control', 'public, max-age=' . (60 * 60 * 24 * 15));
 
         if (!file_exists($model->rootPreviewPath))
             throw new NotFoundHttpException('Preview not found.');
