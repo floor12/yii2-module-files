@@ -8,19 +8,19 @@
 
 namespace floor12\files\controllers;
 
-use \Yii;
 use floor12\files\components\FileInputWidget;
 use floor12\files\components\SimpleImage;
 use floor12\files\logic\FileCreateFromInstance;
 use floor12\files\logic\FileCropRotate;
 use floor12\files\logic\FileRename;
 use floor12\files\models\File;
+use Yii;
+use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
-use yii\web\UploadedFile;
 use yii\web\Response;
+use yii\web\UploadedFile;
 
 class DefaultController extends Controller
 {
@@ -188,7 +188,12 @@ class DefaultController extends Controller
             $image = new SimpleImage();
             $image->load($model->rootPath);
             $image->watermark(\Yii::getAlias("@frontend/web/design/logo-big.png"));
-            \Yii::$app->response->sendContentAsFile($image->output(), $model->title, ['inline' => true]);
+            $tmpName = Yii::getAlias("@runtime/" . md5(time() . $model->id));
+            $image->save($tmpName, IMAGETYPE_JPEG);
+            $stream = fopen($tmpName, 'rb');
+            unlink($tmpName);
+            \Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => "image/jpeg", 'filesize' => $model->size]);
+
         } else {
             $stream = fopen($model->rootPath, 'rb');
             \Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => $model->content_type, 'filesize' => $model->size]);
