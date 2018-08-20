@@ -25,7 +25,7 @@ class PathGenerator
             throw new ErrorException('Storage path not set for path generator.');
 
         if (!file_exists($storagePath))
-            throw new ErrorException("Storage not found: {$storagePath}");
+            throw new ErrorException("Storage not found.");
 
         $folderName0 = rand(10, 99);
         $folderName1 = rand(10, 99);

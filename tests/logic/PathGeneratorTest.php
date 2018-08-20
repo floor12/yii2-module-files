@@ -46,7 +46,7 @@ class PathGeneratorTest extends TestCase
      */
     public function testWrongStoragePath()
     {
-        new PathGenerator("/wrong/path");
+        new PathGenerator("badpath");
     }
 
     /**
