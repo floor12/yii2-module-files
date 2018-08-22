@@ -9,8 +9,8 @@
 namespace floor12\files\components;
 
 
-use yii\base\Behavior;
 use floor12\files\models\File;
+use yii\base\Behavior;
 use yii\base\ErrorException;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
@@ -113,7 +113,7 @@ class FileBehaviour extends Behavior
             foreach ($validators as $key => $validator) {
 
                 // Сначала пробегаемся по файловым валидаторам
-                if ($validator::className() == 'yii\validators\FileValidator') {
+                if ($validator::className() == 'yii\validators\FileValidator' || $validator::className() == 'floor12\files\components\ReformatValidator') {
                     foreach ($this->attributes as $field => $params) {
 
                         if (is_string($params)) {
@@ -123,7 +123,7 @@ class FileBehaviour extends Behavior
 
                         $index = array_search($field, $validator->attributes);
                         if ($index !== false) {
-                            $this->attributes[$field]['validator'] = $validator;
+                            $this->attributes[$field]['validator'][$validator::className()] = $validator;
                             unset($validator->attributes[$index]);
                         }
                     }
@@ -197,7 +197,11 @@ class FileBehaviour extends Behavior
                     ->all();
             }
         } else {
-            if (isset($this->attributes[$att_name]['validator']) && $this->attributes[$att_name]['validator']->maxFiles > 1)
+            if (
+                isset($this->attributes[$att_name]['validator']) &&
+                isset($this->attributes[$att_name]['validator']['yii\validators\FileValidator']) &&
+                $this->attributes[$att_name]['validator']['yii\validators\FileValidator']->maxFiles > 1
+            )
                 return File::find()
                     ->where(
                         [

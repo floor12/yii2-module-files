@@ -8,18 +8,15 @@
 
 namespace floor12\files\logic;
 
-use floor12\files\models\File;
 use floor12\files\components\SimpleImage;
+use floor12\files\models\File;
+use Yii;
 use yii\base\ErrorException;
-use \Yii;
 
 class FileReformat
 {
     private $_file;
-    private $_maxWidth;
-    private $_maxHeight;
     private $_compression;
-    private $_imageType = IMAGETYPE_JPEG;
 
     /**
      * FileReformat constructor.
@@ -40,53 +37,80 @@ class FileReformat
     }
 
 
-    public function execute()
+    static public function convert(string $filepath, $format = null)
     {
+        if (!$format)
+            return false;
+
+        // читоаем картинку
         $image = new SimpleImage();
-        $image->load($this->_file->rootPath);
-
-        $tmpName = md5(time() . $this->_file->rootPath);
-        $tmpPngName = Yii::$app->getModule('files')->storageFullPath . "/" . $tmpName . ".png";
-        $tmpJpegName = Yii::$app->getModule('files')->storageFullPath . "/" . $tmpName . ".jpeg";
-
-        $image->save($tmpPngName, IMAGETYPE_PNG);
-        $pngSize = filesize($tmpPngName);
-        $image->save($tmpJpegName, IMAGETYPE_JPEG, $this->_compression);
-        $jpgSize = filesize($tmpJpegName);
+        $image->load($filepath);
+        $image->save($filepath, $format);
+    }
 
 
-        @unlink($this->_file->rootPath);
-        @unlink($this->_file->rootPreviewPath);
-        list($filename) = explode('.', $this->_file->filename);
-        $this->_file->filename = $filename;
-        $filepath = $this->_file->rootPath;
+    public static function checkBestFormat($filepath)
+    {
+        if (!file_exists($filepath))
+            throw new \ErrorException("File not found: {$filepath}");
 
-        if ($pngSize < $jpgSize) {
-            $this->_file->size = $pngSize;
-            $text = "PNG is better";
-            $convertTo = IMAGETYPE_PNG;
-            $this->_file->filename .= ".png";
-            $this->_file->content_type = "image/png";
-            $percent = $pngSize / $jpgSize * 100;
-        } else {
-            $this->_file->size = $jpgSize;
-            $text = "JPEG is better";
-            $convertTo = IMAGETYPE_JPEG;
-            $this->_file->filename .= ".jpeg";
-            $this->_file->content_type = "image/jpeg";
-            $percent = $jpgSize / $pngSize * 100;
+        Yii::debug("--- best format detecting ---");
+        Yii::debug("file: {$filepath}");
+
+        $originalSize = filesize($filepath);
+        Yii::debug("Original size: {$originalSize}");
+
+        // читоаем картинку
+        $image = new SimpleImage();
+        $image->load($filepath);
+
+        // Если это PNG то в цикле пробегаемся по всем пикселям и ищем там альфа канал.
+        // если он есть, значит возрвщаем false, что пережимать ничего не надо.
+        if ($image->image_type == IMAGETYPE_PNG) {
+            $alphaExist = false;
+            $height = $image->getHeight();
+            $width = $image->getWidth();
+            for ($x = 0; $x < $width; $x++) {
+                for ($y = 0; $y < $height; $y++) {
+                    $rgba = imagecolorat($image->image, $x, $y);
+                    $alpha = ($rgba & 0x7F000000) >> 24;
+                    if ($alpha > 0) {
+                        $alphaExist = true;
+                    }
+                }
+            }
+            if ($alphaExist)
+                return false;
         }
 
-        echo "{$text} {$percent}\n";
+        // сохраняем в двух форматах и сравниваем размеры
+        $tmpName = md5(time() . $filepath);
+
+        $tmpPngName = sys_get_temp_dir() . "/" . $tmpName . ".png";
+        $tmpJpegName = sys_get_temp_dir() . "/" . $tmpName . ".jpeg";
+
+        $image->save($tmpPngName, IMAGETYPE_PNG, 10);
+        $pngSize = filesize($tmpPngName);
+        Yii::debug("PNG size: {$pngSize}");
+
+        $image->save($tmpJpegName, IMAGETYPE_JPEG, 70);
+        $jpgSize = filesize($tmpJpegName);
+        Yii::debug("JPG size: {$jpgSize}");
+
+        // чистим временные файлы
         unlink($tmpJpegName);
         unlink($tmpPngName);
-
-        $image->save($this->_file->rootPath, $convertTo, $this->_compression);
-        echo $this->_file->filename . "\n";
-        $this->_file->save(false);
-        $this->_file->updatePreview();
-
-        return true;
+        if ($jpgSize < $originalSize || $pngSize < $originalSize) {
+            if ($jpgSize < $pngSize) {
+                Yii::debug('File need to be converted to JPG');
+                return IMAGETYPE_JPEG;
+            } else {
+                Yii::debug('File need to be converted to PNG');
+                return IMAGETYPE_PNG;
+            }
+        } else
+            Yii::debug('File already has good compression.');
+        return false;
     }
 
 }

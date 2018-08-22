@@ -9,10 +9,10 @@
 namespace floor12\files\models;
 
 
+use floor12\files\components\SimpleImage;
 use Yii;
 use yii\base\ErrorException;
 use yii\helpers\Url;
-use floor12\files\components\SimpleImage;
 
 
 /**
@@ -256,8 +256,12 @@ class File extends \yii\db\ActiveRecord
 
                 if ($image->getWidth() > 1920 || $image->getHeight() > 1080) {
                     $image->resizeToWidth(1920);
-                    $image->save($this->rootPath);
+                    if ($this->content_type == 'image/png')
+                        $image->save($this->rootPath, IMAGETYPE_PNG);
+                    else
+                        $image->save($this->rootPath);
                 }
+
                 $image->resizeToWidth(350);
                 $image->save($this->rootPreviewPath);
             }

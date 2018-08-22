@@ -8,13 +8,12 @@
 
 namespace floor12\files\components;
 
-use \Yii;
-use floor12\files\logic\ClassnameEncoder;
-use yii\jui\InputWidget;
 use floor12\files\assets\FileInputWidgetAsset;
+use floor12\files\logic\ClassnameEncoder;
+use Yii;
 use yii\helpers\Url;
+use yii\jui\InputWidget;
 use yii\web\View;
-use floor12\files\Module;
 
 
 class FileInputWidget extends InputWidget
@@ -50,7 +49,11 @@ class FileInputWidget extends InputWidget
 
         $this->ratio = $this->model->getBehavior('files')->attributes[$this->attribute]['ratio'] ?? null;
 
-        if (isset($this->model->behaviors['files']->attributes[$this->attribute]['validator']) && $this->model->behaviors['files']->attributes[$this->attribute]['validator']->maxFiles > 1) {
+        if (
+            isset($this->model->behaviors['files']->attributes[$this->attribute]['validator']) &&
+            isset($this->model->behaviors['files']->attributes[$this->attribute]['validator']['yii\validators\FileValidator']) &&
+            $this->model->behaviors['files']->attributes[$this->attribute]['validator']['yii\validators\FileValidator']->maxFiles > 1
+        ) {
             $this->mode = self::MODE_MULTI;
             $this->layout = self::VIEW_MULTI;
         }

@@ -11,8 +11,8 @@ namespace floor12\files\logic;
 use floor12\files\models\File;
 use yii\base\ErrorException;
 use yii\web\BadRequestHttpException;
-use \yii\web\UploadedFile;
 use yii\web\IdentityInterface;
+use yii\web\UploadedFile;
 
 class FileCreateFromInstance
 {
@@ -47,8 +47,11 @@ class FileCreateFromInstance
 
 
         if (isset($this->_owner->behaviors['files']->attributes[$this->_attribute]['validator'])) {
-            if (!$this->_owner->behaviors['files']->attributes[$this->_attribute]['validator']->validate($this->_instance, $error))
-                throw new BadRequestHttpException($error);
+            foreach ($this->_owner->behaviors['files']->attributes[$this->_attribute]['validator'] as $validator) {
+                if (!$validator->validate($this->_instance, $error))
+                    throw new BadRequestHttpException($error);
+            }
+
         }
 
 

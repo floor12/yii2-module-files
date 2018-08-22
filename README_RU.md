@@ -90,6 +90,7 @@ public function rules()
 {
     return [
         ['avatar', 'required],
+        ['avatar', ReformatValidator::class]            // Автоматически конвертирует PNG и JPG
         ['avatar', 'file', 'extensions' => ['jpg', 'png', 'jpeg', 'gif'], 'maxFiles' => 1, 'ratio'=>1], 
         ['docs', 'file', 'extensions' => ['docx','xlsx], 'maxFiles' => 10],
     ...    
