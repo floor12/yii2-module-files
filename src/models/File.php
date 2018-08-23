@@ -315,8 +315,7 @@ class File extends \yii\db\ActiveRecord
 
     public function afterDelete()
     {
-        @unlink($this->rootPath);
-        // @unlink($this->rootPreviewPath);
+        @unlink($this->rootPath . '*');
         parent::afterDelete();
     }
 
@@ -375,5 +374,29 @@ class File extends \yii\db\ActiveRecord
     public function __toString()
     {
         return $this->href;
+    }
+
+    /** Возвращает модифицированне имя файла хранения кеш картинки после ресайза
+     * @param $width
+     * @param $height
+     * @return string
+     */
+    public function getPreviewRootPath($width = 0, $height = 0)
+    {
+        if ($this->type != self::TYPE_IMAGE)
+            throw new \ErrorException('Requiested file is not an image and its implsible to resize it.');
+        return $this->rootPath . "_w" . $width . "h" . $height;
+    }
+
+    /** Возвращает модифицированный урл картинки
+     * @param $width
+     * @param $height
+     * @return string
+     */
+    public function getPreviewWebPath($width = 0, $height = 0)
+    {
+        if ($this->type != self::TYPE_IMAGE)
+            throw new \ErrorException('Requiested file is not an image and its implsible to resize it.');
+        return Url::toRoute(['/files/default/image', 'hash' => $this->hash, 'width' => $width, 'height' => $height]);
     }
 }
