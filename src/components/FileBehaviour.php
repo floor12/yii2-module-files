@@ -37,6 +37,7 @@ class FileBehaviour extends Behavior
         return [
             ActiveRecord::EVENT_AFTER_INSERT => 'filesSave',
             ActiveRecord::EVENT_AFTER_UPDATE => 'filesSave',
+            ActiveRecord::EVENT_AFTER_DELETE => 'filesDelete',
             ActiveRecord::EVENT_BEFORE_VALIDATE => 'validateRequiredFields'
         ];
     }
@@ -78,6 +79,14 @@ class FileBehaviour extends Behavior
                 }
             }
         }
+    }
+
+    public function filesDelete()
+    {
+        File::deleteAll([
+            'class' => $this->owner->className(),
+            'object_id' => $this->owner->id,
+        ]);
     }
 
     public function validateRequiredFields()
