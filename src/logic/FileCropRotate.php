@@ -70,7 +70,7 @@ class FileCropRotate
         imagedestroy($src);
 
         $this->_file->filename = $newName;
-        $this->_file->content_type = File::mime_content_type($newPath);
+        $this->_file->content_type = $this->_file->mime_content_type($newPath);
         $this->_file->size = filesize($newPath);
         $this->_file->changeHash();
         if ($this->_file->save()) {
