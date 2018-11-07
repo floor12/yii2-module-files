@@ -67,7 +67,7 @@ class FileCreateFromPath
         $this->model->class = $this->className;
         $this->model->filename = $filename;
         if ($this->model->filename)
-            $this->model->title = $this->model->fileName;
+            $this->model->title = $this->model->filename;
         else
             $this->model->title = rand(0, 99999); #такой прикол )
         $this->model->content_type = $this->model->mime_content_type($new_path);
