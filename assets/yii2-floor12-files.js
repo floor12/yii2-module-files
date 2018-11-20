@@ -190,6 +190,7 @@ function initCropper(id, url, ratio, remove) {
     if (ratio) {
         autoCrop = true;
         aspectRatio = ratio;
+        $('.cropper-ratio-btn-group').hide();
     }
 
     setTimeout(function () {
