@@ -48,7 +48,7 @@
                             <button type="button" onclick="cropper.cropper('rotate', 90);"
                                     class="btn btn-default"><?= \Yii::$app->getModule('files')->fontAwesome->icon('repeat') ?></button>
                         </div>
-                        <div class="btn-group" role="group">
+                        <div class="btn-group cropper-ratio-btn-group" role="group">
                             <button type="button" class="btn btn-default"
                                     onclick="cropper.cropper('setAspectRatio', 1);">
                                 1/1

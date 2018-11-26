@@ -67,14 +67,14 @@ class FileCreateFromPath
         $this->model->class = $this->className;
         $this->model->filename = $filename;
         if ($this->model->filename)
-            $this->model->title = $this->fileName;
+            $this->model->title = $this->model->filename;
         else
             $this->model->title = rand(0, 99999); #такой прикол )
         $this->model->content_type = $this->model->mime_content_type($new_path);
         $this->model->type = $this->detectType();
         $this->model->size = filesize($new_path);
         $this->model->created = time();
-        $this->model->user_id = (isset(\Yii::$app->user) && \Yii::$app->user->id) ? \Yii::$app->user->id : 0;
+        //$this->model->user_id = (isset(\Yii::$app->user) && \Yii::$app->user->id) ? \Yii::$app->user->id : 0;
         if ($this->model->type == File::TYPE_VIDEO)
             $this->model->video_status = 0;
         if ($this->model->save()) {
