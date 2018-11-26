@@ -148,3 +148,13 @@ div#cropperModal {
 .input-group-btn .btn {
     padding-bottom: 7px;
 }
+
+div.floor12-single-file-object-no-image {
+    padding: 5px 12px;
+    border-radius: 2px;
+    transition: all 0.3s;
+    background-color: #c0c0c0;
+    color: #ffffff;
+    background: linear-gradient(45deg, rgb(151, 151, 151) 0%, rgb(184, 184, 184) 92%);
+    border: none;
+}
