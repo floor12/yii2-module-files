@@ -294,6 +294,8 @@ class File extends \yii\db\ActiveRecord
 
     public function getHref()
     {
+        if (Yii::$app->getModule('files')->hostStatic)
+            return Yii::$app->getModule('files')->hostStatic . $this->filename;
         return Url::to(['/files/default/get', 'hash' => $this->hash]);
     }
 
@@ -315,8 +317,17 @@ class File extends \yii\db\ActiveRecord
 
     public function afterDelete()
     {
-        @unlink($this->rootPath . '*');
+        $this->deleteFiles();
         parent::afterDelete();
+    }
+
+    /**
+     * Delete all files
+     */
+    public function deleteFiles()
+    {
+        $extension = pathinfo($this->rootPath, PATHINFO_EXTENSION);
+        array_map('unlink', glob(str_replace(".{$extension}", '*', $this->rootPath)));
     }
 
     /**
@@ -376,6 +387,13 @@ class File extends \yii\db\ActiveRecord
         return $this->href;
     }
 
+
+    public function makeNameWithSize($name, $width = 0, $height = 0)
+    {
+        $extension = pathinfo($this->rootPath, PATHINFO_EXTENSION);
+        return str_replace(".{$extension}", '', $name) . "_w" . $width . "h" . $height . ".{$extension}";
+    }
+
     /** Возвращает модифицированне имя файла хранения кеш картинки после ресайза
      * @param $width
      * @param $height
@@ -385,7 +403,7 @@ class File extends \yii\db\ActiveRecord
     {
         if ($this->type != self::TYPE_IMAGE)
             throw new \ErrorException('Requiested file is not an image and its implsible to resize it.');
-        return $this->rootPath . "_w" . $width . "h" . $height;
+        return $this->makeNameWithSize($this->rootPath, $width, $height);
     }
 
     /** Возвращает модифицированный урл картинки
@@ -397,6 +415,40 @@ class File extends \yii\db\ActiveRecord
     {
         if ($this->type != self::TYPE_IMAGE)
             throw new \ErrorException('Requiested file is not an image and its implsible to resize it.');
+
+        if (!file_exists($this->makeNameWithSize($this->rootPath, $width, $height)))
+            $this->makePreview($width, $height);
+
+        if (Yii::$app->getModule('files')->hostStatic)
+            return Yii::$app->getModule('files')->hostStatic . $this->makeNameWithSize($this->filename, $width, $height);
+
         return Url::toRoute(['/files/default/image', 'hash' => $this->hash, 'width' => $width, 'height' => $height]);
     }
+
+    /**
+     * @param $width
+     * @param $height
+     */
+    public function makePreview($width, $height)
+    {
+        $filename = $this->getPreviewRootPath($width, $height);
+        if (!file_exists($filename)) {
+
+            $img = new SimpleImage();
+            $img->load($this->rootPath);
+            if ($width) {
+                $ratio = $width / $img->getWidth();
+
+                $img->resizeToWidth($width);
+            } elseif ($height) {
+                $ratio = $height / $img->getHeight();
+
+                $img->resizeToHeight($width, $height);
+            }
+
+
+            $img->save($this->getPreviewRootPath($width, $height), $img->image_type);
+        }
+    }
+
 }

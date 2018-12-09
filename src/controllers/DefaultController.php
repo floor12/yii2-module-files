@@ -225,23 +225,6 @@ class DefaultController extends Controller
         if ($width || $height) {
 
             $filename = $model->getPreviewRootPath($width, $height);
-            if (!file_exists($filename)) {
-
-                $img = new SimpleImage();
-                $img->load($model->rootPath);
-                if ($width) {
-                    $ratio = $width / $img->getWidth();
-
-                    $img->resizeToWidth($width);
-                } elseif ($height) {
-                    $ratio = $height / $img->getHeight();
-
-                    $img->resizeToHeight($width, $height);
-                }
-
-
-                $img->save($model->getPreviewRootPath($width, $height), $img->image_type);
-            }
 
             $response = \Yii::$app->response;
             $response->format = Response::FORMAT_RAW;
@@ -249,6 +232,7 @@ class DefaultController extends Controller
 
             Yii::$app->response->headers->set('Last-Modified', date("c", $model->created));
             Yii::$app->response->headers->set('Cache-Control', 'public, max-age=' . (60 * 60 * 24 * 15));
+            Yii::$app->response->headers->set('ETag', md5($model->created . $filename));
 
 
             $response->sendFile($filename, $model->title, ['inline' => true]);
