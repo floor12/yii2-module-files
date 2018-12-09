@@ -413,6 +413,9 @@ class File extends \yii\db\ActiveRecord
      */
     public function getPreviewWebPath($width = 0, $height = 0)
     {
+        if (!file_exists($this->getRootPath()))
+            return;
+
         if ($this->type != self::TYPE_IMAGE)
             throw new \ErrorException('Requiested file is not an image and its implsible to resize it.');
 
