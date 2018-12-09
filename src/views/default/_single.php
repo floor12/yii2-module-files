@@ -11,8 +11,8 @@
  *
  */
 
-use \yii\helpers\Html;
-use \floor12\files\models\File;
+use floor12\files\models\File;
+use yii\helpers\Html;
 
 if (is_array($model))
     $model = $model[0];
@@ -34,11 +34,12 @@ $doc_contents = [
             <img src="<?= $model->href ?>" class="img-responsive">
             <?= Html::hiddenInput((new \ReflectionClass($model->class))->getShortName() . "[{$model->field}_ids][]", $model->id) ?>
         </div>
+
     <?php else: ?>
+
         <div data-title="<?= $model->title ?>"
              id="yii2-file-object-<?= $model->id ?>"
-             class="dropdown-toggle btn-group floor12-single-file-object floor12-single-file-ratio <?= ($model->type == \floor12\files\models\File::TYPE_IMAGE) ? "floor12-file-object-image" : NULL ?>"
-             style="background-image: url(<?= $model->href ?>); <?= $ratio ? "padding-bottom: " . 1 / $ratio * 100 . "%" : NULL ?>"
+             class="dropdown-toggle btn-group floor12-single-file-object floor12-single-file-object-no-image"
              data-toggle="dropdown" aria-haspopup="true"
              aria-expanded="false" title="<?= $model->title ?>">
 
