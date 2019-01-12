@@ -28,7 +28,7 @@ $doc_contents = [
 ?>
 <div class="btn-group files-btn-group">
 
-    <?php if (!$ratio && $model->type == \floor12\files\models\File::TYPE_IMAGE): ?>
+    <?php if ($model->type == \floor12\files\models\File::TYPE_IMAGE): ?>
         <div id="yii2-file-object-<?= $model->id ?>" data-toggle="dropdown" aria-haspopup="true"
              aria-expanded="false" class="floor12-single-file-object">
             <img src="<?= $model->href ?>" class="img-responsive">
