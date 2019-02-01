@@ -5,6 +5,7 @@ var currentCroppingImageId;
 var currentRenamingFileId;
 var cropper;
 var removeFileOnCropCancel;
+var yii2CropperRoute;
 
 $(document).on('change', '.yii2-files-upload-field', function () {
 
