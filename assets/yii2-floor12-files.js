@@ -161,15 +161,16 @@ function removeAllFiles(event) {
 }
 
 function initCropperLayout() {
-    $.get(yii2CropperRoute, function (response) {
-        $('body').append(response);
+    if (yii2CropperRoute.length > 0)
+        $.get(yii2CropperRoute, function (response) {
+            $('body').append(response);
 
-        $('#yii2-file-title-editor input').on('keyup', function (e) {
-            if (e.keyCode == 13) {
-                saveFileTitle()
-            }
-        });
-    })
+            $('#yii2-file-title-editor input').on('keyup', function (e) {
+                if (e.keyCode == 13) {
+                    saveFileTitle()
+                }
+            });
+        })
 }
 
 function initCropper(id, url, ratio, remove) {
