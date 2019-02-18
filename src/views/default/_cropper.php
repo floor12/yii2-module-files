@@ -12,10 +12,11 @@
 </div>
 
 
-<div id="yii2-file-title-editor">
+<div id="yii2-file-title-editor" style="display: none;">
     <div class="input-group">
         <span class="input-group-addon" id="basic-addon1"><?= Yii::t('files', 'Filename') ?>:</span>
-        <input type="text" class="form-control" id="yii2-file-title-input" placeholder="<?= Yii::t('files', 'Filename') ?>
+        <input type="text" class="form-control" id="yii2-file-title-input"
+               placeholder="<?= Yii::t('files', 'Filename') ?>"
                aria-describedby="basic-addon1">
         <span class="input-group-btn">
         <button class="btn btn-default" type="button" onclick="saveFileTitle()">
@@ -68,8 +69,10 @@
                         </div>
                     </div>
                     <div class="col-md-6 text-right">
-                        <button type="button" class="btn btn-default" onclick="stopCrop()"><?= Yii::t('files', 'Cancel') ?></button>
-                        <button type="button" class="btn btn-success" onclick="cropImage()"><?= Yii::t('files', 'Save') ?></button>
+                        <button type="button" class="btn btn-default"
+                                onclick="stopCrop()"><?= Yii::t('files', 'Cancel') ?></button>
+                        <button type="button" class="btn btn-success"
+                                onclick="cropImage()"><?= Yii::t('files', 'Save') ?></button>
                     </div>
                 </div>
             </div>
