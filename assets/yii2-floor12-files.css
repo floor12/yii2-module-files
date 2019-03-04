@@ -95,11 +95,8 @@ ul.dropdown-menu-file-object > li > a {
     padding: 3px 10px;
 }
 
-ul.dropdown-menu-file-object > li > a > i.fa {
-    text-align: center;
-    display: block;
-    float: left;
-    width: 25px;
+ul.dropdown-menu-file-object > li > a > svg {
+    width: 18px;
 }
 
 div.floor12-file-object:hover {

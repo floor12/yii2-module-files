@@ -24,5 +24,5 @@ return [
     'The file is uploaded' => 'Файл загружен',
     'The file is saved' => 'Файл сохранен',
     'The file is renamed' => 'Файл переименован',
-    '' => '',
+    'Copy link to clipboard' => 'Копировать ссылку',
 ];

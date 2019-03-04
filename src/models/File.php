@@ -9,6 +9,7 @@
 namespace floor12\files\models;
 
 
+use floor12\files\assets\IconHelper;
 use floor12\files\components\SimpleImage;
 use Yii;
 use yii\base\ErrorException;
@@ -87,32 +88,31 @@ class File extends \yii\db\ActiveRecord
      */
     public function getIcon()
     {
-        $icon = 'file';
+        $icon = IconHelper::FILE;
 
         if ($this->content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-            $icon = 'file-word';
+            $icon = IconHelper::FILE_WORD;
 
         if ($this->content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            $icon = 'file-excel';
+            $icon = IconHelper::FILE_EXCEL;
 
         if ($this->content_type == 'application/vnd.openxmlformats-officedocument.presentationml.presentation')
-            $icon = 'file-powerpoint';
+            $icon = IconHelper::FILE_POWERPOINT;
 
         if ($this->content_type == 'application/x-zip-compressed')
-            $icon = 'file-archive';
+            $icon = IconHelper::FILE_ARCHIVE;
 
         if ($this->content_type == 'application/octet-stream')
-            $icon = 'file-archive';
+            $icon = IconHelper::FILE_ARCHIVE;
 
         if (preg_match('/audio/', $this->content_type))
-            $icon = 'file-audio';
+            $icon = IconHelper::FILE_AUDIO;
 
         if (preg_match('/pdf/', $this->content_type))
-            $icon = 'file-pdf';
+            $icon = IconHelper::FILE_PDF;
 
         if ($this->type == self::TYPE_VIDEO)
-            $icon = 'file-video';
-
+            $icon = IconHelper::FILE_VIDEO;
 
         return $icon;
     }

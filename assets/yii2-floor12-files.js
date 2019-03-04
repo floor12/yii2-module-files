@@ -33,6 +33,18 @@ $(document).on('change', '.yii2-files-upload-field', function () {
     });
 })
 
+
+function clipboard(text) {
+    //based on https://stackoverflow.com/a/12693636
+    document.oncopy = function (event) {
+        event.clipboardData.setData("Text", text);
+        event.preventDefault();
+    };
+    document.execCommand("Copy");
+    document.oncopy = undefined;
+    info(text, 1);
+}
+
 function Yii2FilesUploaderSet(id, className, attribute, scenario) {
 
     var mode = 'multi';

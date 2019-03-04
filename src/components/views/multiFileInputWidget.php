@@ -16,6 +16,7 @@
  *
  */
 
+use floor12\files\assets\IconHelper;
 use yii\helpers\Html;
 
 if (YII_ENV == 'test')
@@ -32,7 +33,7 @@ if (YII_ENV == 'test')
 
 <div class="floor12-files-widget-block" id="files-widget-block_<?= $block_id ?>" data-ratio="<?= $ratio ?>">
     <button class="<?= $uploadButtonClass ?>">
-        <div class="icon"><?= \Yii::$app->getModule('files')->fontAwesome->icon('plus') ?></div>
+        <div class="icon"><?= IconHelper::PLUS ?></div>
         <?= $uploadButtonText ?>
     </button>
     <?= Html::hiddenInput((new \ReflectionClass($model))->getShortName() . "[{$attribute}_ids][]", null) ?>

@@ -8,14 +8,12 @@
 
 namespace floor12\files;
 
-use \Yii;
-use yii\i18n\PhpMessageSource;
+use Yii;
 
 /**
  * Class Module
  * @package floor12\files
  * @property string $token_salt
- * @property string $fontAwesome
  * @property string $storage
  * @property string $controllerNamespace
  *
@@ -37,8 +35,6 @@ class Module extends \yii\base\Module
 
     public $token_salt = 'randomString412DDs@#KJH';
 
-    public $fontAwesome = 'rmrevin\yii\fontawesome\FontAwesome';
-
     public $storageFullPath;
 
     public $allowOfficePreview = true;
@@ -56,8 +52,6 @@ class Module extends \yii\base\Module
         $this->registerTranslations();
 
         $this->db = Yii::$app->{$this->params['db']};
-
-        $this->fontAwesome = Yii::createObject($this->fontAwesome);
 
         $this->storageFullPath = Yii::getAlias($this->storage);
     }

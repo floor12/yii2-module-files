@@ -12,7 +12,8 @@
  * @var $files \floor12\files\models\File[]
  */
 
-use  \yii\helpers\Html;
+use floor12\files\assets\IconHelper;
+use yii\helpers\Html;
 
 ?>
 
@@ -23,7 +24,7 @@ use  \yii\helpers\Html;
     <?php foreach ($files as $file) {
         echo $this->render('_filesBlock', ['model' => $file]);
     } ?>
-    <?php if ($downloadAll && sizeof($files) > 1) echo Html::a(\Yii::$app->getModule('files')->fontAwesome->icon('cloud-download') .
+    <?php if ($downloadAll && sizeof($files) > 1) echo Html::a(IconHelper::DOWNLOAD .
         Yii::t('files', 'Download all'),
         null,
         ['class' => 'btn btn-default btn-xs', 'onclick' => "filesDownloadAll('{$zipTitle}', event,'" . \yii\helpers\Url::toRoute(['files/default/zip']) . "')"]) ?>

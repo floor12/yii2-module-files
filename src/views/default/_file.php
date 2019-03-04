@@ -11,8 +11,9 @@
  *
  */
 
-use \yii\helpers\Html;
-use \floor12\files\models\File;
+use floor12\files\assets\IconHelper;
+use floor12\files\models\File;
+use yii\helpers\Html;
 
 $doc_contents = [
     'application/msword',
@@ -37,52 +38,58 @@ $doc_contents = [
         <?= Html::hiddenInput((new \ReflectionClass($model->class))->getShortName() . "[{$model->field}]", 1) ?>
 
         <?php if ($model->type != \floor12\files\models\File::TYPE_IMAGE): ?>
-            <div class="file-icon"><?= \Yii::$app->getModule('files')->fontAwesome->icon($model->icon) ?></div>
+            <div class="file-icon"><?= $model->icon ?></div>
             <?= $model->title ?>
         <?php endif; ?>
 
 
     </div>
 
-    <ul class="dropdown-menu dropdown-menu-file-object dropdown-menu-file-object-multi">
+    <ul class="dropdown-menu dropdown-menu-file-object dropdown-menu-file-object-single">
         <li>
             <a href="<?= $model->href ?>" target="_blank" data-pjax="0">
-                <?= \Yii::$app->getModule('files')->fontAwesome->icon('cloud-download') ?>
+                <?= IconHelper::DOWNLOAD ?>
                 <?= Yii::t('files', 'Download') ?>
+            </a>
+        </li>
+        <li>
+            <a onclick="clipboard('<?= $model->href ?>'); return false;">
+                <?= IconHelper::LINK ?>
+                <?= Yii::t('files', 'Copy link to clipboard') ?>
             </a>
         </li>
         <?php if (in_array($model->content_type, $doc_contents)): ?>
             <li>
                 <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= \Yii::$app->request->hostInfo . $model->href ?>}"
                    target="_blank" data-pjax="0">
-                    <?= \Yii::$app->getModule('files')->fontAwesome->icon('eye') ?>
+                    <?= IconHelper::VIEW ?>
                     <?= Yii::t('files', 'View') ?>
                 </a>
             </li>
         <?php endif; ?>
         <li>
             <a onclick="showRenameFileForm(<?= $model->id ?>, event); return false;">
-                <?= \Yii::$app->getModule('files')->fontAwesome->icon('edit') ?>
+                <?= IconHelper::RENAME ?>
                 <?= Yii::t('files', 'Rename') ?>
             </a>
         </li>
         <?php if ($model->type == File::TYPE_IMAGE): ?>
             <li>
                 <a onclick="initCropper(<?= $model->id ?>,'<?= $model->href ?>',<?= $ratio ?>)">
-                    <?= \Yii::$app->getModule('files')->fontAwesome->icon('crop') ?>
+                    <?= IconHelper::CROP ?>
                     <?= Yii::t('files', 'Edit') ?>
                 </a>
             </li>
         <?php endif; ?>
         <li>
-            <a onclick="removeFile(<?= $model->id ?>); return false;">
-                <?= \Yii::$app->getModule('files')->fontAwesome->icon('trash') ?>
+            <a onclick="removeFile(<?= $model->id ?>); showUploadButton(event); return false;">
+                <?= IconHelper::TRASH ?>
                 <?= Yii::t('files', 'Delete') ?>
             </a>
         </li>
         <li>
             <a onclick="removeAllFiles(event); return false;">
-                <?= \Yii::$app->getModule('files')->fontAwesome->icon('exclamation-triangle') ?>
+                <?= IconHelper::EXCLAMATION ?>
                 <?= Yii::t('files', 'Delete all') ?>
             </a>
         </li>

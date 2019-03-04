@@ -10,8 +10,7 @@
  *
  */
 
-use \yii\helpers\Html;
-use \floor12\files\models\File;
+use floor12\files\assets\IconHelper;
 
 $doc_contents = [
     'application/msword',
@@ -44,7 +43,7 @@ $doc_contents = [
                  data-hash="<?= $model->hash ?>"
                  title="<?= $model->title ?>">
 
-                <div class="icon"><?= \Yii::$app->getModule('files')->fontAwesome->icon($model->icon) ?></div>
+                <div class="icon"><?= $model->icon ?></div>
                 <?= $model->title ?>
             </div>
         </a>
@@ -57,14 +56,14 @@ $doc_contents = [
              data-toggle="dropdown" aria-haspopup="true"
              aria-expanded="false" title="<?= $model->title ?>">
 
-            <div class="icon"><?= \Yii::$app->getModule('files')->fontAwesome->icon($model->icon) ?></div>
+            <div class="icon"><?= $model->icon ?></div>
             <?= $model->title ?>
         </div>
 
         <ul class="dropdown-menu dropdown-menu-file-object dropdown-menu-file-object-multi">
             <li>
                 <a href="<?= $model->href ?>" target="_blank" data-pjax="0">
-                    <?= \Yii::$app->getModule('files')->fontAwesome->icon('cloud-download') ?>
+                    <?= IconHelper::DOWNLOAD ?>
                     <?= Yii::t('files', 'Download') ?>
                 </a>
             </li>
@@ -72,7 +71,7 @@ $doc_contents = [
                 <li>
                     <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= \Yii::$app->request->hostInfo . $model->href ?>"
                        target="_blank" data-pjax="0">
-                        <?= \Yii::$app->getModule('files')->fontAwesome->icon('eye') ?>
+                        <?= IconHelper::VIEW ?>
                         <?= Yii::t('files', 'View') ?>
                     </a>
                 </li>
