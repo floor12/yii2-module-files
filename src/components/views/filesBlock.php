@@ -24,7 +24,7 @@ use yii\helpers\Html;
     <?php foreach ($files as $file) {
         echo $this->render('_filesBlock', ['model' => $file]);
     } ?>
-    <?php if ($downloadAll && sizeof($files) > 1) echo Html::a(IconHelper::DOWNLOAD .
+    <?php if ($downloadAll && sizeof($files) > 1) echo Html::a(IconHelper::DOWNLOAD . " " .
         Yii::t('files', 'Download all'),
         null,
         ['class' => 'btn btn-default btn-xs', 'onclick' => "filesDownloadAll('{$zipTitle}', event,'" . \yii\helpers\Url::toRoute(['files/default/zip']) . "')"]) ?>
