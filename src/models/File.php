@@ -249,7 +249,7 @@ class File extends \yii\db\ActiveRecord
 //            }
 //        }
 
-        if ($this->type == self::TYPE_IMAGE)
+        if ($this->type == self::TYPE_IMAGE && !$this->isSvg())
             if (file_exists($this->rootPath)) {
                 $image = new SimpleImage();
                 $image->load($this->rootPath);
@@ -265,6 +265,14 @@ class File extends \yii\db\ActiveRecord
                 $image->resizeToWidth(350);
                 $image->save($this->rootPreviewPath);
             }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSvg()
+    {
+        return $this->content_type == 'image/svg+xml';
     }
 
     /**
@@ -284,6 +292,9 @@ class File extends \yii\db\ActiveRecord
 
     public function getRootPreviewPath()
     {
+        if ($this->isSvg())
+            return $this->getRootPath();
+
         return Yii::$app->getModule('files')->storageFullPath . DIRECTORY_SEPARATOR . $this->filename . '.jpg';
     }
 
@@ -307,6 +318,9 @@ class File extends \yii\db\ActiveRecord
 
     public function getHrefPreview()
     {
+        if ($this->isSvg())
+            return $this->getHref();
+        
         return Url::to(['/files/default/preview', 'hash' => $this->hash]);
     }
 

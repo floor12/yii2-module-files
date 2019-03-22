@@ -73,7 +73,7 @@ $doc_contents = [
                 <?= Yii::t('files', 'Rename') ?>
             </a>
         </li>
-        <?php if ($model->type == File::TYPE_IMAGE): ?>
+        <?php if ($model->type == File::TYPE_IMAGE && !$model->isSvg()): ?>
             <li>
                 <a onclick="initCropper(<?= $model->id ?>,'<?= $model->href ?>',<?= $ratio ?>)">
                     <?= IconHelper::CROP ?>
