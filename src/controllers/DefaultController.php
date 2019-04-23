@@ -64,6 +64,15 @@ class DefaultController extends Controller
         return parent::beforeAction($action);
     }
 
+    /** Првоеряем токен
+     * @throws BadRequestHttpException
+     */
+    private function checkFormToken()
+    {
+        if (in_array($this->action->id, $this->actionsToCheck) && FileInputWidget::generateToken() != \Yii::$app->request->post('_fileFormToken'))
+            throw new BadRequestHttpException('File-form token is wrong or missing.');
+    }
+
     public function actionZip(array $hash, $title = 'files')
     {
         $files = File::find()->where(["IN", "hash", $hash])->all();
@@ -97,15 +106,6 @@ class DefaultController extends Controller
         } else {
             echo 'Failed!';
         }
-    }
-
-    /** Првоеряем токен
-     * @throws BadRequestHttpException
-     */
-    private function checkFormToken()
-    {
-        if (in_array($this->action->id, $this->actionsToCheck) && FileInputWidget::generateToken() != \Yii::$app->request->post('_fileFormToken'))
-            throw new BadRequestHttpException('File-form token is wrong or missing.');
     }
 
     /** Возвращаем HTML шаблон для внедрения в основной макет
@@ -225,6 +225,9 @@ class DefaultController extends Controller
         if ($width || $height) {
 
             $filename = $model->getPreviewRootPath($width, $height);
+
+            if (!file_exists($filename))
+                throw new NotFoundHttpException('Запрашиваемый файл не найден на диске.');
 
             $response = \Yii::$app->response;
             $response->format = Response::FORMAT_RAW;
