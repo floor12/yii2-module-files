@@ -13,6 +13,7 @@ use floor12\files\components\SimpleImage;
 use floor12\files\logic\FileCreateFromInstance;
 use floor12\files\logic\FileCropRotate;
 use floor12\files\logic\FileRename;
+use floor12\files\logic\ImagePreviewer;
 use floor12\files\models\File;
 use Yii;
 use yii\filters\VerbFilter;
@@ -64,6 +65,15 @@ class DefaultController extends Controller
         return parent::beforeAction($action);
     }
 
+    /** Првоеряем токен
+     * @throws BadRequestHttpException
+     */
+    private function checkFormToken()
+    {
+        if (in_array($this->action->id, $this->actionsToCheck) && FileInputWidget::generateToken() != \Yii::$app->request->post('_fileFormToken'))
+            throw new BadRequestHttpException('File-form token is wrong or missing.');
+    }
+
     public function actionZip(array $hash, $title = 'files')
     {
         $files = File::find()->where(["IN", "hash", $hash])->all();
@@ -97,15 +107,6 @@ class DefaultController extends Controller
         } else {
             echo 'Failed!';
         }
-    }
-
-    /** Првоеряем токен
-     * @throws BadRequestHttpException
-     */
-    private function checkFormToken()
-    {
-        if (in_array($this->action->id, $this->actionsToCheck) && FileInputWidget::generateToken() != \Yii::$app->request->post('_fileFormToken'))
-            throw new BadRequestHttpException('File-form token is wrong or missing.');
     }
 
     /** Возвращаем HTML шаблон для внедрения в основной макет
@@ -205,7 +206,7 @@ class DefaultController extends Controller
    * Выдача картинок с опциональным кропом
    */
 
-    public function actionImage($hash, $width = null, $height = null)
+    public function actionImage($hash, $width = null, $height = null, $webp = null)
     {
         $model = File::findOne(['hash' => $hash]);
 
@@ -224,11 +225,11 @@ class DefaultController extends Controller
 
         if ($width || $height) {
 
-            $filename = $model->getPreviewRootPath($width, $height);
+            $filename = Yii::createObject(ImagePreviewer::class, [$model, $width, $webp])->getUrl();
 
             $response = \Yii::$app->response;
             $response->format = Response::FORMAT_RAW;
-            $response->getHeaders()->set('Content-Type', $model->content_type . '; charset=utf-8');
+            $response->getHeaders()->set('Content-Type', $webp ? "image/webp" : $model->content_type . '; charset=utf-8');
 
             Yii::$app->response->headers->set('Last-Modified', date("c", $model->created));
             Yii::$app->response->headers->set('Cache-Control', 'public, max-age=' . (60 * 60 * 24 * 15));

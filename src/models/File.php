@@ -59,14 +59,13 @@ class File extends \yii\db\ActiveRecord
         return Yii::$app->getModule('files')->db;
     }
 
-
     /**
-     * Меняем или усанавливаем хеш. По нему идет доступ к файлу.
+     * @inheritdoc
      */
-    public function changeHash()
-    {
-        $this->hash = md5(time() . rand(99999, 99999999));
 
+    public static function tableName()
+    {
+        return 'file';
     }
 
     /**
@@ -82,6 +81,14 @@ class File extends \yii\db\ActiveRecord
         return parent::beforeSave($insert);
     }
 
+    /**
+     * Меняем или усанавливаем хеш. По нему идет доступ к файлу.
+     */
+    public function changeHash()
+    {
+        $this->hash = md5(time() . rand(99999, 99999999));
+
+    }
 
     /**
      * @return string
@@ -116,7 +123,6 @@ class File extends \yii\db\ActiveRecord
 
         return $icon;
     }
-
 
     function mime_content_type($filename)
     {
@@ -194,15 +200,6 @@ class File extends \yii\db\ActiveRecord
      * @inheritdoc
      */
 
-    public static function tableName()
-    {
-        return 'file';
-    }
-
-    /**
-     * @inheritdoc
-     */
-
     public function rules()
     {
         return [
@@ -237,17 +234,6 @@ class File extends \yii\db\ActiveRecord
 
     public function updatePreview()
     {
-//        if ($this->type == self::TYPE_VIDEO) {
-//            if (file_exists($this->rootPath)) {
-//                @exec(Yii::$app->getModule('files')->ffmpeg . " -i {$this->rootPath} -ss 00:00:15.000 -vframes 1  {$this->rootPreviewPath}");
-//            }
-//            if (!file_exists($this->rootPreviewPath)) {
-//                @exec(Yii::$app->getModule('files')->ffmpeg . " -i {$this->rootPath} -ss 00:00:6.000 -vframes 1  {$this->rootPreviewPath}");
-//            }
-//            if (!file_exists($this->rootPreviewPath)) {
-//                @exec(Yii::$app->getModule('files')->ffmpeg . " -i {$this->rootPath} -ss 00:00:2.000 -vframes 1  {$this->rootPreviewPath}");
-//            }
-//        }
 
         if ($this->type == self::TYPE_IMAGE && !$this->isSvg())
             if (file_exists($this->rootPath)) {
@@ -276,16 +262,6 @@ class File extends \yii\db\ActiveRecord
     }
 
     /**
-     * Return root path of image
-     * @return string
-     */
-
-    public function getRootPath()
-    {
-        return Yii::$app->getModule('files')->storageFullPath . DIRECTORY_SEPARATOR . $this->filename;
-    }
-
-    /**
      * Return root path of preview
      * @return string
      */
@@ -299,17 +275,14 @@ class File extends \yii\db\ActiveRecord
     }
 
     /**
-     * Return web path
+     * Return root path of image
      * @return string
      */
 
-    public function getHref()
+    public function getRootPath()
     {
-        if (Yii::$app->getModule('files')->hostStatic)
-            return Yii::$app->getModule('files')->hostStatic . $this->filename;
-        return Url::to(['/files/default/get', 'hash' => $this->hash]);
+        return Yii::$app->getModule('files')->storageFullPath . DIRECTORY_SEPARATOR . $this->filename;
     }
-
 
     /**
      * Return web path of preview
@@ -320,10 +293,21 @@ class File extends \yii\db\ActiveRecord
     {
         if ($this->isSvg())
             return $this->getHref();
-        
+
         return Url::to(['/files/default/preview', 'hash' => $this->hash]);
     }
 
+    /**
+     * Return web path
+     * @return string
+     */
+
+    public function getHref()
+    {
+        if (Yii::$app->getModule('files')->hostStatic)
+            return Yii::$app->getModule('files')->hostStatic . $this->filename;
+        return Url::to(['/files/default/get', 'hash' => $this->hash]);
+    }
 
     /**
      * Delete files from disk
@@ -401,31 +385,12 @@ class File extends \yii\db\ActiveRecord
         return $this->href;
     }
 
-
-    public function makeNameWithSize($name, $width = 0, $height = 0)
-    {
-        $extension = pathinfo($this->rootPath, PATHINFO_EXTENSION);
-        return str_replace(".{$extension}", '', $name) . "_w" . $width . "h" . $height . ".{$extension}";
-    }
-
-    /** Возвращает модифицированне имя файла хранения кеш картинки после ресайза
-     * @param $width
-     * @param $height
-     * @return string
-     */
-    public function getPreviewRootPath($width = 0, $height = 0)
-    {
-        if ($this->type != self::TYPE_IMAGE)
-            throw new \ErrorException('Requiested file is not an image and its implsible to resize it.');
-        return $this->makeNameWithSize($this->rootPath, $width, $height);
-    }
-
     /** Возвращает модифицированный урл картинки
      * @param $width
      * @param $height
      * @return string
      */
-    public function getPreviewWebPath($width = 0, $height = 0)
+    public function getPreviewWebPath($width = 0, $height = 0, $webp = false)
     {
         if (!file_exists($this->getRootPath()))
             return;
@@ -433,13 +398,29 @@ class File extends \yii\db\ActiveRecord
         if ($this->type != self::TYPE_IMAGE)
             throw new \ErrorException('Requiested file is not an image and its implsible to resize it.');
 
-        if (!file_exists($this->makeNameWithSize($this->rootPath, $width, $height)))
-            $this->makePreview($width, $height);
+//        if (!file_exists($this->makeNameWithSize($this->rootPath, $width, $height)))
+//            $this->makePreview($width, $height);
 
         if (Yii::$app->getModule('files')->hostStatic)
-            return Yii::$app->getModule('files')->hostStatic . $this->makeNameWithSize($this->filename, $width, $height);
+            return Yii::$app->getModule('files')->hostStatic . $this->makeNameWithSize($this->filename, $width, $height, $webp = false);
 
-        return Url::toRoute(['/files/default/image', 'hash' => $this->hash, 'width' => $width, 'height' => $height]);
+        return Url::toRoute(['/files/default/image', 'hash' => $this->hash, 'width' => $width, 'height' => $height, 'webp' => $webp]);
+    }
+
+    /**
+     * @param $name
+     * @param int $width
+     * @param int $height
+     * @param bool $webp
+     * @return string
+     */
+    public function makeNameWithSize($name, $width = 0, $height = 0, $webp = false)
+    {
+        $extension = pathinfo($this->rootPath, PATHINFO_EXTENSION);
+        $rootPath = str_replace(".{$extension}", '', $name) . "_w" . $width . "h" . $height . ".{$extension}";
+        if ($webp)
+            $rootPath = str_replace($extension, 'webp', $rootPath);
+        return $rootPath;
     }
 
     /**
@@ -449,6 +430,7 @@ class File extends \yii\db\ActiveRecord
     public function makePreview($width, $height)
     {
         $filename = $this->getPreviewRootPath($width, $height);
+
         if (!file_exists($filename)) {
 
             $img = new SimpleImage();
@@ -463,9 +445,21 @@ class File extends \yii\db\ActiveRecord
                 $img->resizeToHeight($width, $height);
             }
 
+            $img->save($filename, $img->image_type);
 
-            $img->save($this->getPreviewRootPath($width, $height), $img->image_type);
         }
+    }
+
+    /** Возвращает модифицированне имя файла хранения кеш картинки после ресайза
+     * @param $width
+     * @param $height
+     * @return string
+     */
+    public function getPreviewRootPath($width = 0, $height = 0, $webp = false)
+    {
+        if ($this->type != self::TYPE_IMAGE)
+            throw new \ErrorException('Requiested file is not an image and its implsible to resize it.');
+        return $this->makeNameWithSize($this->rootPath, $width, $height, $webp);
     }
 
 }
