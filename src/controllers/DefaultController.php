@@ -227,6 +227,9 @@ class DefaultController extends Controller
 
             $filename = Yii::createObject(ImagePreviewer::class, [$model, $width, $webp])->getUrl();
 
+            if (!file_exists($filename))
+                throw new NotFoundHttpException('Запрашиваемый файл не найден на диске.');
+
             $response = \Yii::$app->response;
             $response->format = Response::FORMAT_RAW;
             $response->getHeaders()->set('Content-Type', $webp ? "image/webp" : $model->content_type . '; charset=utf-8');
