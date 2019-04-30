@@ -48,7 +48,7 @@ class ImagePreviewer
         if (!file_exists($this->fileName))
             $this->createPreview();
 
-        if (!file_exists($this->fileNameWebp))
+        if ($this->webp && !file_exists($this->fileNameWebp))
             $this->createPreviewWebp();
 
         if ($this->webp)
@@ -65,13 +65,14 @@ class ImagePreviewer
         $img = new SimpleImage();
         $img->load($this->model->rootPath);
 
-        if ($this->width) {
-            $ratio = $this->width / $img->getWidth();
+        $imgWidth = $img->getWidth();
+        $imgHeight = $img->getHeight();
+
+        if ($this->width && $this->width < $imgWidth) {
+            $ratio = $this->width / $imgWidth;
             $img->resizeToWidth($this->width);
-        } elseif ($this->height) {
-            $ratio = $this->height / $img->getHeight();
-            $img->resizeToHeight($this->height);
         }
+
         $img->save($this->fileName, $img->image_type);
     }
 
