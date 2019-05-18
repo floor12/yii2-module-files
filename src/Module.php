@@ -44,9 +44,6 @@ class Module extends \yii\base\Module
 
     public $db;
 
-    public $cwebp = '/usr/local/bin/cwebp';
-
-
     /**
      * @inheritdoc
      */
@@ -57,9 +54,6 @@ class Module extends \yii\base\Module
         $this->db = Yii::$app->{$this->params['db']};
 
         $this->storageFullPath = Yii::getAlias($this->storage);
-
-        if (!is_executable($this->cwebp))
-            throw new ErrorException('CWEBP cli is not found or not executable.');
     }
 
     public function registerTranslations()

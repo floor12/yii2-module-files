@@ -81,7 +81,8 @@ class ImagePreviewer
      */
     protected function createPreviewWebp()
     {
-        $command = Yii::$app->getModule('files')->cwebp . " {$this->fileName} -o {$this->fileNameWebp}";
-        exec($command, $ret);
+        $im = imagecreatefromjpeg($this->fileName);
+        imagewebp($im, $this->fileNameWebp, 70);
+        imagedestroy($im);
     }
 }
