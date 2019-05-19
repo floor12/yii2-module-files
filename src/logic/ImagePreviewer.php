@@ -81,8 +81,8 @@ class ImagePreviewer
      */
     protected function createPreviewWebp()
     {
-        $im = imagecreatefromjpeg($this->fileName);
-        imagewebp($im, $this->fileNameWebp, 70);
-        imagedestroy($im);
+        $img = new SimpleImage();
+        $img->load($this->model->rootPath);
+        $img->save($this->fileNameWebp,IMAGETYPE_WEBP,70);
     }
 }

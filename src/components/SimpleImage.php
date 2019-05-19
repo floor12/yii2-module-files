@@ -36,7 +36,10 @@ class SimpleImage
             imagegif($this->image, $filename);
         } elseif ($image_type == IMAGETYPE_PNG) {
             imagepng($this->image, $filename);
+        } elseif ($image_type == IMAGETYPE_WEBP) {
+            imagewebp($this->image, $filename);
         }
+
         if ($permissions != null) {
             chmod($filename, $permissions);
         }
@@ -53,9 +56,11 @@ class SimpleImage
         }
     }
 
-    function getWidth()
+    function resizeToHeight($height)
     {
-        return imagesx($this->image);
+        $ratio = $height / $this->getHeight();
+        $width = $this->getWidth() * $ratio;
+        $this->resize($width, $height);
     }
 
     function getHeight()
@@ -63,11 +68,20 @@ class SimpleImage
         return imagesy($this->image);
     }
 
-    function resizeToHeight($height)
+    function getWidth()
     {
-        $ratio = $height / $this->getHeight();
-        $width = $this->getWidth() * $ratio;
-        $this->resize($width, $height);
+        return imagesx($this->image);
+    }
+
+    function resize($width, $height)
+    {
+        $new_image = imagecreatetruecolor($width, $height);
+        imagealphablending($new_image, false);
+        imagesavealpha($new_image, true);
+        $transparent = imagecolorallocatealpha($new_image, 255, 255, 255, 127);
+        imagefilledrectangle($new_image, 0, 0, $width, $height, $transparent);
+        imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
+        $this->image = $new_image;
     }
 
     function resizeToWidth($width)
@@ -82,17 +96,6 @@ class SimpleImage
         $width = $this->getWidth() * $scale / 100;
         $height = $this->getheight() * $scale / 100;
         $this->resize($width, $height);
-    }
-
-    function resize($width, $height)
-    {
-        $new_image = imagecreatetruecolor($width, $height);
-        imagealphablending($new_image, false);
-        imagesavealpha($new_image, true);
-        $transparent = imagecolorallocatealpha($new_image, 255, 255, 255, 127);
-        imagefilledrectangle($new_image, 0, 0, $width, $height, $transparent);
-        imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
-        $this->image = $new_image;
     }
 
     function rotate($direction)
