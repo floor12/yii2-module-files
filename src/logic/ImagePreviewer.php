@@ -82,7 +82,7 @@ class ImagePreviewer
     protected function createPreviewWebp()
     {
         $img = new SimpleImage();
-        $img->load($this->model->rootPath);
+        $img->load($this->fileName);
         $img->save($this->fileNameWebp,IMAGETYPE_WEBP,70);
     }
 }
