@@ -37,7 +37,9 @@ class SimpleImage
         } elseif ($image_type == IMAGETYPE_PNG) {
             imagepng($this->image, $filename);
         } elseif ($image_type == IMAGETYPE_WEBP) {
-            imagewebp($this->image, $filename);
+            $dst = imagecreatetruecolor(imagesx($this->image), imagesy($this->image));
+            imagecopy($dst, $this->image, 0, 0, 0, 0, imagesx($this->image), imagesy($this->image));
+            imagewebp($dst, $filename);
         }
 
         if ($permissions != null) {
