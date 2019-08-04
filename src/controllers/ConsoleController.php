@@ -9,8 +9,12 @@
 namespace floor12\files\controllers;
 
 
-use yii\console\Controller;
 use floor12\files\models\File;
+use floor12\files\models\FileType;
+use floor12\files\models\VideoStatus;
+use Yii;
+use yii\console\Controller;
+use yii\helpers\Console;
 
 class ConsoleController extends Controller
 {
@@ -23,23 +27,41 @@ class ConsoleController extends Controller
         }
     }
 
-//
-//    function actionConvert()
-//    {
-//        $file = File::find()->where(['type' => File::TYPE_VIDEO, 'video_status' => File::VIDEO_STATUS_QUEUE])->one();
-//        if ($file && file_exists($file->rootPath)) {
-//            $file->video_status = File::VIDEO_STATUS_CONVERTING;
-//            $file->save();
-//            exec(Yii::getAlias('@ffmpeg') . " -i {$file->rootPath} -threads 4 {$file->rootPath}.mp4");
-//            @unlink($file->rootPath);
-//            @unlink($file->rootPreviewPath);
-//            $file->filename = $file->filename . ".mp4";
-//            $file->video_status = File::VIDEO_STATUS_READY;
-//            $file->save();
-//            $file->updatePreview();
-//        }
-//
-//    }
+
+    function actionConvert()
+    {
+        $ffmpeg = Yii::$app->getModule('files')->ffmpeg;
+
+        if (!file_exists($ffmpeg))
+            return $this->stdout("ffmpeg is not found: {$ffmpeg}" . PHP_EOL, Console::FG_RED);
+
+        if (!is_executable($ffmpeg))
+            return $this->stdout("ffmpeg is not executable: {$ffmpeg}" . PHP_EOL, Console::FG_RED);
+
+        $file = File::find()
+            ->where(['type' => FileType::VIDEO, 'video_status' => VideoStatus::QUEUE])
+            ->andWhere(['!=', 'object_id', 0])
+            ->one();
+
+        if (!$file)
+            return $this->stdout("Convert queue is empty" . PHP_EOL, Console::FG_GREEN);
+
+        if (!file_exists($file->rootPath))
+            return $this->stdout("Source file is not found: {$file->rootPath}" . PHP_EOL, Console::FG_RED);
+
+
+        $file->video_status = VideoStatus::CONVERTING;
+        $file->save();
+        exec(Yii::$app->getModule('files')->ffmpeg . " -i {$file->rootPath} -vf scale=1280:-1 -threads 4 {$file->rootPath}.mp4");
+        @unlink($file->rootPath);
+        $file->filename = $file->filename . ".mp4";
+        $file->video_status = VideoStatus::READY;
+        $file->save();
+
+
+    }
+
+
     function actionHash()
     {
         $files = File::find()->all();

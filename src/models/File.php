@@ -44,10 +44,6 @@ class File extends \yii\db\ActiveRecord
     const TYPE_IMAGE = 1;
     const TYPE_VIDEO = 2;
 
-    const VIDEO_STATUS_QUEUE = 0;
-    const VIDEO_STATUS_CONVERTING = 1;
-    const VIDEO_STATUS_READY = 2;
-
     const DIRECTORY_SEPARATOR = "/";
 
 

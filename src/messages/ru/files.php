@@ -25,4 +25,10 @@ return [
     'The file is saved' => 'Файл сохранен',
     'The file is renamed' => 'Файл переименован',
     'Copy link to clipboard' => 'Копировать ссылку',
+    'queued' => 'в очереди',
+    'converting' => 'конвертируется',
+    'ready' => 'готово',
+    'file' => 'файл',
+    'image' => 'изображение',
+    'video' => 'видео',
 ];

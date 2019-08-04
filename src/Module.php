@@ -32,7 +32,7 @@ class Module extends \yii\base\Module
 
     public $hostStatic = '';
 
-    public $ffmpeg = 'ffmpeg';
+    public $ffmpeg = '/usr/bin/ffmpeg';
 
     public $token_salt = 'randomString412DDs@#KJH';
 
