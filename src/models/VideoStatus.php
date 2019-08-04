@@ -12,7 +12,7 @@ class VideoStatus extends BaseEnum
     const CONVERTING = 1;
     const READY = 2;
 
-    public static $messageCategory = 'app.f12.files';
+    public static $messageCategory = 'files';
 
     public static $list = [
         self::QUEUE => 'queued',

@@ -18,5 +18,5 @@ class FileType extends BaseEnum
         self::VIDEO => 'video',
     ];
 
-    public static $messageCategory = 'app.f12.files';
+    public static $messageCategory = 'files';
 }
