@@ -81,12 +81,27 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
         },
         onSubmit:
             function (filename, extension, data) {
-                var fileBlock = "<div class='btn-group files-btn-group' id='" + generateId(filename) + "'><div class='floor12-file-object'><div class='floor12-file-object-uploading'>" + filename + "</div></div></div>";
+                var btnGroup = document.createElement('div');
+                var fileObject = document.createElement('div');
+                var uploading = document.createElement('div');
+                var bar = document.createElement('div');
+                btnGroup.setAttribute('id', generateId(filename));
+                btnGroup.className = 'btn-group files-btn-group';
+                fileObject.className = 'floor12-file-object';
+                uploading.className = 'floor12-file-object-uploading';
+                bar.className = 'floor12-file-object-bar';
+
+                this.setProgressBar(bar);
+
+                fileObject.append(uploading);
+                fileObject.append(bar);
+                btnGroup.append(fileObject);
 
                 if (mode == 'single') {
                     $(filesList).html('');
                 }
-                $(filesList).append(fileBlock);
+                $(filesList).append(btnGroup);
+
 
             },
         onComplete: function (filename, response) {
