@@ -80,22 +80,20 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
             _fileFormToken: yii2FileFormToken
         },
         onSubmit:
-
             function (filename, extension, data) {
-                var fileBlock = $('<div>').addClass('floor12-file-object').append($('<div>').addClass('floor12-file-object-uploading')).attr('id', generateId(filename));
+                var fileBlock = "<div class='btn-group files-btn-group' id='" + generateId(filename) + "'><div class='floor12-file-object'><div class='floor12-file-object-uploading'>" + filename + "</div></div></div>";
 
                 if (mode == 'single') {
-                    $(filesList).html('')
-                    fileBlock.appendTo(filesList);
-                } else
-                    fileBlock.appendTo(filesList);
+                    $(filesList).html('');
+                }
+                $(filesList).append(fileBlock);
+
             },
         onComplete: function (filename, response) {
             if (!response) {
                 console.log(filename + 'upload failed');
                 return false;
             }
-
             info(FileUploadedText, 1);
             idName = "#" + generateId(filename);
             $(idName).replaceWith($(response));
@@ -104,15 +102,12 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
                 toggleSingleUploadButton(block);
         },
         onError: function (filename, errorType, status, statusText, response, uploadBtn, fileSize) {
-            console.log(1);
             data = {
                 responseText: response,
                 status: status,
                 statusText: statusText,
             };
-
             processError(data);
-
             idName = "#" + generateId(filename);
             $(idName).remove();
         }
@@ -129,7 +124,7 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
 }
 
 function generateId(filename) {
-    return filename.replace(/[^a-zA-Z]/g, "");
+    return 'id-' + filename.replace(/[^0-9a-zA-Z]/g, "");
 }
 
 function showUploadButton(event) {
