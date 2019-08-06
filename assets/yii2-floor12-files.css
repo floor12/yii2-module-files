@@ -67,6 +67,7 @@ div.floor12-file-object div.file-icon {
 
 div.floor12-file-object-image {
     background-size: cover;
+    background-position: center;
     border: 1px #e1e1e1 solid;
 }
 
