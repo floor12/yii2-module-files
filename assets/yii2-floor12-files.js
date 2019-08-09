@@ -42,8 +42,21 @@ function clipboard(text) {
     };
     document.execCommand("Copy");
     document.oncopy = undefined;
-    info(text, 1);
+    f12notification.info(text, 1);
 }
+
+function updateProgressCircle(val, btnGroup) {
+    result = 169.646 * (1 - val / 100);
+    btnGroup.querySelector('svg #progress-circle').setAttribute('stroke-dashoffset', result);
+    btnGroup.querySelector('.floor12-file-percents').innerHTML = val + '%';
+    // setAttribute('stroke-dashoffset', result);
+};
+
+var observer = new MutationObserver(function (mutations) {
+    percent = mutations[0].target.style.width.replace('%', '');
+    btnGroup = mutations[0].target.parentElement.parentElement;
+    updateProgressCircle(percent, btnGroup);
+});
 
 function Yii2FilesUploaderSet(id, className, attribute, scenario) {
 
@@ -81,21 +94,33 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
         },
         onSubmit:
             function (filename, extension, data) {
+                var svg = '\t<svg width="60" height="60" viewBox="0 0 60 60">\n' +
+                    '\t\t<circle cx="30" cy="30" r="27" fill="none" stroke="#ccc" stroke-width="5" />\n' +
+                    '\t\t<circle id="progress-circle" cx="30" cy="30" r="27" fill="none" stroke="#666" stroke-width="5" stroke-dasharray="169.646" stroke-dashoffset="169.646" />\n' +
+                    '\t</svg>';
+
+                var id = generateId(filename);
                 var btnGroup = document.createElement('div');
                 var fileObject = document.createElement('div');
-                var uploading = document.createElement('div');
                 var bar = document.createElement('div');
-                btnGroup.setAttribute('id', generateId(filename));
+                var percents = document.createElement('div');
+                btnGroup.setAttribute('id', id);
                 btnGroup.className = 'btn-group files-btn-group';
                 fileObject.className = 'floor12-file-object';
-                uploading.className = 'floor12-file-object-uploading';
-                bar.className = 'floor12-file-object-bar';
+                percents.className = 'floor12-file-percents';
 
                 this.setProgressBar(bar);
 
-                fileObject.append(uploading);
+                fileObject.innerHTML = svg;
+
+                observer.observe(bar, {
+                    attributes: true
+                });
+
                 fileObject.append(bar);
+                fileObject.append(percents);
                 btnGroup.append(fileObject);
+
 
                 if (mode == 'single') {
                     $(filesList).html('');
@@ -109,7 +134,7 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
                 console.log(filename + 'upload failed');
                 return false;
             }
-            info(FileUploadedText, 1);
+            f12notification.info(FileUploadedText, 1);
             idName = "#" + generateId(filename);
             $(idName).replaceWith($(response));
 
@@ -168,7 +193,7 @@ function removeFile(id) {
 
     $(id).parents('div.files-btn-group').fadeOut(200, function () {
         $(this).remove();
-        info(FileRemovedText, 1);
+        f12notification.info(FileRemovedText, 1);
     });
     return false;
 }
@@ -178,7 +203,7 @@ function removeAllFiles(event) {
     $(event.target).parents('div.floor12-files-widget-list').find('div.files-btn-group').fadeOut(200, function () {
         $(this).remove();
     });
-    info(FilesRemovedText, 1);
+    f12notification.info(FilesRemovedText, 1);
     return false;
 }
 
@@ -270,7 +295,7 @@ function cropImage() {
                 $(id).css('background-image', 'url(' + response + ')');
             }
             stopCrop();
-            info(FileSavedText, 1);
+            f12notification.info(FileSavedText, 1);
         },
         error: function (response) {
             processError(response);
@@ -303,7 +328,7 @@ function saveFileTitle() {
             method: 'POST',
             data: {id: currentRenamingFileId, title: val, _fileFormToken: yii2FileFormToken},
             success: function () {
-                info(FileRenamedText, 1);
+                f12notification.info(FileRenamedText, 1);
             },
             error: function (response) {
                 processError(response);

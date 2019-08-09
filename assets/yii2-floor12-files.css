@@ -56,6 +56,25 @@ div.floor12-file-object {
     font-weight: 600;
     white-space: nowrap;
     padding: 0 4px;
+    position: relative;
+}
+
+div.floor12-file-object .floor12-file-percents {
+    position: absolute;
+    width: 90%;
+    text-align: center;
+    top: 22px;
+    font-size: 120%;
+    color: #666;
+    font-weight: bold;
+}
+
+div.floor12-file-object svg {
+    transform: rotate(-90deg);
+}
+
+div.floor12-file-object svg circle {
+    transition: all 0.2s ease;
 }
 
 div.floor12-file-object div.file-icon {
@@ -165,3 +184,6 @@ div.floor12-single-file-object-no-image {
     background: linear-gradient(45deg, rgb(151, 151, 151) 0%, rgb(184, 184, 184) 92%);
     border: none;
 }
+
+/*progress*/
+
