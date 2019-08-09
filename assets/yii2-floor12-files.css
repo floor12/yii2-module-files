@@ -74,7 +74,7 @@ div.floor12-file-object svg {
 }
 
 div.floor12-file-object svg circle {
-    transition: all 0.2s ease;
+    transition: stroke-dashoffset 0.5s linear;
 }
 
 div.floor12-file-object div.file-icon {
