@@ -30,7 +30,7 @@ $doc_contents = [
 
     <div data-title="<?= $model->title ?>" id="yii2-file-object-<?= $model->id ?>"
          class="dropdown-toggle btn-group floor12-file-object <?= ($model->type == \floor12\files\models\File::TYPE_IMAGE) ? "floor12-file-object-image" : NULL ?>"
-         style="background-image: url(<?= $model->getPreviewWebPath(160) ?>)"
+         style="<?= ($model->type == \floor12\files\models\File::TYPE_IMAGE) ? "background-image: url(" . $model->getPreviewWebPath(160) . ")" : NULL ?>"
          data-toggle="dropdown"
          aria-haspopup="true"
          aria-expanded="false" title="<?= $model->title ?>">
