@@ -117,9 +117,9 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
                     attributes: true
                 });
 
-                fileObject.append(bar);
-                fileObject.append(percents);
-                btnGroup.append(fileObject);
+                fileObject.appendChild(bar);
+                fileObject.appendChild(percents);
+                btnGroup.appendChild(fileObject);
 
 
                 if (mode == 'single') {
