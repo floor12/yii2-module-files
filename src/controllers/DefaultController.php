@@ -231,7 +231,7 @@ class DefaultController extends Controller
 
             $response = \Yii::$app->response;
             $response->format = Response::FORMAT_RAW;
-            $response->getHeaders()->set('Content-Type', $webp ? "image/webp" : $model->content_type . '; charset=utf-8');
+            $response->getHeaders()->set('Content-Type', ($webp && $model->content_type != 'image/svg+xml') ? "image/webp" : $model->content_type . '; charset=utf-8');
 
             Yii::$app->response->headers->set('Last-Modified', date("c", $model->created));
             Yii::$app->response->headers->set('Cache-Control', 'public, max-age=' . (60 * 60 * 24 * 15));
