@@ -91,7 +91,6 @@ div.floor12-file-object-image {
 }
 
 div.floor12-file-object-uploading {
-    background-image: url(spinner.svg);
     background-position: center;
     background-repeat: no-repeat;
     font-size: 130%;
