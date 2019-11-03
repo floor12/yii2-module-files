@@ -10,6 +10,7 @@ namespace floor12\files\logic;
 
 use floor12\files\models\File;
 use floor12\files\components\SimpleImage;
+use floor12\files\models\FileType;
 use yii\base\ErrorException;
 
 class FileResize
@@ -26,12 +27,13 @@ class FileResize
      * @param int $maxWidth максимальная ширина
      * @param int $maxHeight максимальная высота
      * @param int $compression качество jpeg
+     * @throws ErrorException
      */
     public function __construct(File $file, int $maxWidth, int $maxHeight, $compression = 60)
     {
         $this->_file = $file;
 
-        if ($this->_file->type != File::TYPE_IMAGE)
+        if ($this->_file->type != FileType::IMAGE)
             throw new ErrorException('This file is not an image.');
 
         if (!file_exists($this->_file->rootPath))

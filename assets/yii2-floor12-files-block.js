@@ -3,7 +3,7 @@ function filesDownloadAll(title, event, yiiDownloadAllLink) {
     hashes = "";
     $.each(obj.find('.floor12-file-object'), function (key, val) {
         hashes += "&hash[]=" + $(val).data('hash');
-    })
+    });
     console.log(hashes);
 
     window.open(yiiDownloadAllLink + "?title=" + title + hashes);

@@ -8,10 +8,12 @@
 
 namespace floor12\files\tests;
 
-use yii\console\Application;
 use floor12\files\tests\data\m180627_121715_files;
+use PHPUnit_Framework_TestCase;
+use Yii;
+use yii\console\Application;
 
-abstract class TestCase extends \PHPUnit_Framework_TestCase
+abstract class TestCase extends PHPUnit_Framework_TestCase
 {
 
     public $sqlite = 'tests/sqlite.db';
@@ -37,16 +39,16 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
             'class' => 'floor12\files\Module',
             'storage' => '@app/storage',
         ];
-        \Yii::$app->setModule('files', $files);
+        Yii::$app->setModule('files', $files);
 
 
         $db = [
             'class' => 'yii\db\Connection',
             'dsn' => "sqlite:$this->sqlite",
         ];
-        \Yii::$app->set('db', $db);
+        Yii::$app->set('db', $db);
 
-        \Yii::createObject(m180627_121715_files::class, [])->safeUp();
+        Yii::createObject(m180627_121715_files::class, [])->safeUp();
 
     }
 
@@ -55,7 +57,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
      */
     protected function clearDb()
     {
-        \Yii::createObject(m180627_121715_files::class, [])->safeDown();
+        Yii::createObject(m180627_121715_files::class, [])->safeDown();
     }
 
     /**
@@ -86,6 +88,6 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
      */
     protected function destroyApplication()
     {
-        \Yii::$app = null;
+        Yii::$app = null;
     }
 }

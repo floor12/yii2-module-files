@@ -20,8 +20,12 @@
   ],
   "require": {
     "php": ">=7.0.0",
+    "ext-gd": "*",
+    "ext-zip": "*",
+    "ext-exif": "*",
     "yiisoft/yii2": "~2.0.13",
     "yiisoft/yii2-jui": "*",
+    "yii2mod/yii2-enum": "^1.7",
     "floor12/yii2-notification": "*",
     "bower-asset/cropper": "*",
     "bower-asset/lightbox2": "*",

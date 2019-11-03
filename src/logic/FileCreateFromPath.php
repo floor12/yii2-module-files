@@ -10,7 +10,7 @@ namespace floor12\files\logic;
 
 
 use floor12\files\components\SimpleImage;
-use floor12\files\models\File;
+use floor12\files\models\FileType;
 use yii\base\ErrorException;
 use yii\db\ActiveRecordInterface;
 
@@ -40,7 +40,6 @@ class FileCreateFromPath
 
         if (!is_writable($storagePath))
             throw new ErrorException("File storage is not writable.");
-
         $this->filePath = $filePath;
         $this->fileName = $fileName;
         $this->fieldName = $fieldName;
@@ -50,11 +49,11 @@ class FileCreateFromPath
     }
 
     /** Основная  работка
-     * @return int
+     * @return bool
+     * @throws ErrorException
      */
     public function execute()
     {
-
         // копируем файл в хранилище
         $tmp_extansion = explode('?', pathinfo($this->filePath, PATHINFO_EXTENSION));
         $extansion = $tmp_extansion[0];
@@ -74,12 +73,12 @@ class FileCreateFromPath
         $this->model->type = $this->detectType();
         $this->model->size = filesize($new_path);
         $this->model->created = time();
-        //$this->model->user_id = (isset(\Yii::$app->user) && \Yii::$app->user->id) ? \Yii::$app->user->id : 0;
-        if ($this->model->type == File::TYPE_VIDEO)
+        if ($this->model->type == FileType::VIDEO)
             $this->model->video_status = 0;
+
         if ($this->model->save()) {
 
-            if ($this->model->type == File::TYPE_IMAGE) {
+            if ($this->model->type == FileType::IMAGE) {
                 $exif = '';
                 @$exif = exif_read_data($new_path);
                 if (isset($exif['Orientation'])) {
@@ -105,8 +104,9 @@ class FileCreateFromPath
 
             }
             $this->model->updatePreview();
-            return $this->model;
+            return true;
         }
+        return false;
     }
 
     /**
@@ -116,9 +116,9 @@ class FileCreateFromPath
     {
         $contentTypeArray = explode('/', $this->model->content_type);
         if ($contentTypeArray[0] == 'image')
-            return File::TYPE_IMAGE;
+            return FileType::IMAGE;
         if ($contentTypeArray[0] == 'video')
-            return File::TYPE_VIDEO;
-        return File::TYPE_FILE;
+            return FileType::VIDEO;
+        return FileType::FILE;
     }
 }

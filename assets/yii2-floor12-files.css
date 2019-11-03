@@ -22,9 +22,8 @@ div.floor12-files-widget-block button.btn-upload {
 
 div.floor12-files-widget-single-block button.btn-upload {
     transition: all 0.3s;
-    background-color: #c0c0c0;
     color: #ffffff;
-    background: linear-gradient(45deg, rgb(151, 151, 151) 0%, rgb(184, 184, 184) 92%);
+    background: #c0c0c0 linear-gradient(45deg, rgb(151, 151, 151) 0%, rgb(184, 184, 184) 92%);
     border: none;
 }
 
@@ -49,7 +48,6 @@ div.floor12-file-object {
     text-align: center;
     font-size: 60%;
     cursor: pointer;
-    text-align: center;
     /* transition: all 0.2s; */
     text-overflow: ellipsis;
     overflow: hidden;
@@ -80,7 +78,7 @@ div.floor12-file-object svg circle {
 div.floor12-file-object div.file-icon {
     font-size: 360%;
     display: block;
-    margin: 0px 0 0px;
+    margin: 0;
     color: #787878;
 }
 
@@ -130,8 +128,7 @@ div.floor12-file-object:hover {
     box-shadow: 1px 1px 16px #00000063;
 }
 
-div.floor12-file-object:hover
-a.btn-file-object-delete {
+div.floor12-file-object:hover a.btn-file-object-delete {
     opacity: 1;
 }
 
@@ -165,7 +162,7 @@ div#cropperModal {
     width: 100%;
     max-width: 420px;
     border-radius: 3px;
-    box-shadow: 0px 1px 4px #00000024;
+    box-shadow: 0 1px 4px #00000024;
     display: none;
     z-index: 99999;
 }

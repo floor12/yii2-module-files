@@ -10,6 +10,7 @@ namespace floor12\files\components;
 
 
 use floor12\files\models\File;
+use Yii;
 use yii\base\Behavior;
 use yii\base\ErrorException;
 use yii\db\ActiveRecord;
@@ -55,7 +56,7 @@ class FileBehaviour extends Behavior
 
             foreach ($this->_values as $field => $ids) {
 
-                \Yii::$app->db->createCommand()->update(
+                Yii::$app->db->createCommand()->update(
                     "{{%file}}",
                     ['object_id' => 0],
                     [

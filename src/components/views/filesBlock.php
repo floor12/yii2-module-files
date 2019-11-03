@@ -5,15 +5,18 @@
  * Date: 06.01.2018
  * Time: 12:09
  *
- * @var $this \yii\web\View
+ * @var $this View
  * @var $title string
  * @var $zipTitle string
  * @var $downloadAll bool
- * @var $files \floor12\files\models\File[]
+ * @var $files File[]
  */
 
 use floor12\files\assets\IconHelper;
+use floor12\files\models\File;
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\web\View;
 
 ?>
 
@@ -27,5 +30,5 @@ use yii\helpers\Html;
     <?php if ($downloadAll && sizeof($files) > 1) echo Html::a(IconHelper::DOWNLOAD . " " .
         Yii::t('files', 'Download all'),
         null,
-        ['class' => 'btn btn-default btn-xs', 'onclick' => "filesDownloadAll('{$zipTitle}', event,'" . \yii\helpers\Url::toRoute(['/files/default/zip']) . "')"]) ?>
+        ['class' => 'btn btn-default btn-xs', 'onclick' => "filesDownloadAll('{$zipTitle}', event,'" . Url::toRoute(['/files/default/zip']) . "')"]) ?>
 </div>

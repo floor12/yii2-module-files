@@ -9,14 +9,19 @@
 namespace floor12\files\logic;
 
 use floor12\files\models\File;
+use floor12\files\models\FileType;
+use Yii;
 use yii\base\ErrorException;
 use yii\web\BadRequestHttpException;
 use yii\web\IdentityInterface;
 use yii\web\UploadedFile;
 
+/**
+ * Class FileCreateFromInstance
+ * @package floor12\files\logic
+ */
 class FileCreateFromInstance
 {
-
     private $_model;
     private $_owner;
     private $_attribute;
@@ -61,18 +66,18 @@ class FileCreateFromInstance
         $this->_model->field = $this->_attribute;
         $this->_model->class = $data['modelClass'];
 
-        $this->_model->filename = new PathGenerator(\Yii::$app->getModule('files')->storageFullPath) . '.' . $this->_instance->extension;
+        $this->_model->filename = new PathGenerator(Yii::$app->getModule('files')->storageFullPath) . '.' . $this->_instance->extension;
         $this->_model->title = $this->_instance->name;
         $this->_model->content_type = $this->_instance->type;
         $this->_model->size = $this->_instance->size;
         $this->_model->type = $this->detectType();
         if ($identity)
             $this->_model->user_id = $identity->id;
-        if ($this->_model->type == File::TYPE_VIDEO)
+        if ($this->_model->type == FileType::VIDEO)
             $this->_model->video_status = 0;
 
         //Генерируем полный новый адрес сохранения файла
-        $this->_fullPath = \Yii::$app->getModule('files')->storageFullPath . DIRECTORY_SEPARATOR . $this->_model->filename;
+        $this->_fullPath = Yii::$app->getModule('files')->storageFullPath . DIRECTORY_SEPARATOR . $this->_model->filename;
     }
 
     /**
@@ -82,7 +87,7 @@ class FileCreateFromInstance
     public function execute()
     {
 
-        $path = \Yii::$app->getModule('files')->storageFullPath . $this->_model->filename;
+        $path = Yii::$app->getModule('files')->storageFullPath . $this->_model->filename;
 
         if ($this->_model->save()) {
             if (!$this->_onlyUploaded)
@@ -102,9 +107,9 @@ class FileCreateFromInstance
     {
         $contentTypeArray = explode('/', $this->_model->content_type);
         if ($contentTypeArray[0] == 'image')
-            return File::TYPE_IMAGE;
+            return FileType::IMAGE;
         if ($contentTypeArray[0] == 'video')
-            return File::TYPE_VIDEO;
-        return File::TYPE_FILE;
+            return FileType::VIDEO;
+        return FileType::FILE;
     }
 }

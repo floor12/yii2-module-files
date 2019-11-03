@@ -9,7 +9,6 @@
 namespace floor12\files;
 
 use Yii;
-use yii\base\ErrorException;
 
 /**
  * Class Module
@@ -26,9 +25,15 @@ class Module extends \yii\base\Module
      */
     public $controllerNamespace = 'floor12\files\controllers';
 
-    /** Путь к файловому хранилищу* @var string
+    /** Путь к файловому хранилищу
+     * @var string
      */
     public $storage = '@vendor/../storage';
+
+    /** Путь к  хранилищу кешей
+     * @var string
+     */
+    public $cache = '@vendor/../storage_cache';
 
     public $hostStatic = '';
 

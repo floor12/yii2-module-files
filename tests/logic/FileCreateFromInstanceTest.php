@@ -9,8 +9,8 @@
 namespace floor12\files\tests\logic;
 
 
+use ArgumentCountError;
 use floor12\files\logic\FileCreateFromInstance;
-use floor12\files\models\File;
 use floor12\files\tests\data\TestModel;
 use floor12\files\tests\TestCase;
 use yii\base\ErrorException;
@@ -40,7 +40,7 @@ class FileCreateFromInstanceTest extends TestCase
     }
 
     /** Вызываем без параметров
-     * @expectedException \ArgumentCountError
+     * @expectedException ArgumentCountError
      */
 
     public function testNoParams()

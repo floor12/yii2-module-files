@@ -9,12 +9,12 @@
 namespace floor12\files\tests\logic;
 
 
+use ArgumentCountError;
 use floor12\files\logic\FileRename;
 use floor12\files\models\File;
+use floor12\files\models\FileType;
 use floor12\files\tests\TestCase;
-use yii\base\ErrorException;
-use yii\base\InvalidConfigException;
-use yii\web\BadRequestHttpException;
+use Yii;
 
 class FileRenameTest extends TestCase
 {
@@ -32,7 +32,7 @@ class FileRenameTest extends TestCase
     }
 
     /** Пробуем не передать данные
-     * @expectedException \ArgumentCountError
+     * @expectedException ArgumentCountError
      */
     public function testNoParams()
     {
@@ -85,7 +85,7 @@ class FileRenameTest extends TestCase
         $model->size = 50000;
         $model->user_id = 1;
         $model->content_type = 'image/jpeg';
-        $model->type = File::TYPE_IMAGE;
+        $model->type = FileType::IMAGE;
         $model->save();
         $this->assertFalse($model->isNewRecord);
 
@@ -93,7 +93,7 @@ class FileRenameTest extends TestCase
             'id' => 1,
             'title' => $newName,
         ];
-        $ret = \Yii::createObject(FileRename::class, [$data])->execute();
+        $ret = Yii::createObject(FileRename::class, [$data])->execute();
         $this->assertEquals($ret, $newName);
 
         $model->refresh();

@@ -34,7 +34,7 @@ class ClassnameEncoderTest extends TestCase
         $this->assertEquals($encoded, $testname);
     }
 
-    /*
+    /**
      * Смотрим чтобы не было исключений и ошибок
      */
     public function testEncodeEmptyClassName()

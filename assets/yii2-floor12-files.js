@@ -31,7 +31,7 @@ $(document).on('change', '.yii2-files-upload-field', function () {
             $(response).appendTo(id).find('div.floor12-files-widget-list');
         }
     });
-})
+});
 
 
 function clipboard(text) {
@@ -50,8 +50,7 @@ function updateProgressCircle(val, btnGroup) {
     btnGroup.querySelector('svg #progress-circle').setAttribute('stroke-dashoffset', result);
     btnGroup.querySelector('.floor12-file-percents').innerHTML = val + '%';
     // setAttribute('stroke-dashoffset', result);
-};
-
+}
 var observer = new MutationObserver(function (mutations) {
     percent = mutations[0].target.style.width.replace('%', '');
     btnGroup = mutations[0].target.parentElement.parentElement;
@@ -278,7 +277,7 @@ function cropImage() {
         left: cropLeft,
         rotated: rotated,
         _fileFormToken: yii2FileFormToken
-    }
+    };
 
     removeFileOnCropCancel = false;
 
@@ -289,7 +288,7 @@ function cropImage() {
         success: function (response) {
             id = '#yii2-file-object-' + currentCroppingImageId;
             if ($(id).find('img').length)
-                $(id).find('img').attr('src', response)
+                $(id).find('img').attr('src', response);
             else {
                 $(id).css('background-image', 'none');
                 $(id).css('background-image', 'url(' + response + ')');
@@ -304,7 +303,7 @@ function cropImage() {
 }
 
 function showRenameFileForm(id, event) {
-    var blockId = '#yii2-file-object-' + id
+    var blockId = '#yii2-file-object-' + id;
     var title = $(blockId).attr('title');
     currentRenamingFileId = id;
     $('#yii2-file-title-editor').css('top', event.clientY).css('left', event.clientX - 70).fadeIn(100);
@@ -320,8 +319,8 @@ function saveFileTitle() {
     $('#yii2-file-title-editor').fadeOut(100);
     val = $('#yii2-file-title-editor input').val();
     blockId = '#yii2-file-object-' + currentRenamingFileId;
-    $(blockId).attr('title', val)
-    $(blockId).attr('data-title', val)
+    $(blockId).attr('title', val);
+    $(blockId).attr('data-title', val);
 
     $.ajax({
             url: yii2RenameRoute,
@@ -341,7 +340,7 @@ function saveFileTitle() {
 $(document).ready(function () {
     setInterval(function () {
         sortableFiles()
-    }, 2000)
+    }, 2000);
 
     sortableFiles();
 

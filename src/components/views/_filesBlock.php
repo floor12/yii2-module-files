@@ -5,12 +5,15 @@
  * Date: 01.01.2018
  * Time: 12:14
  *
- * @var $this \yii\web\View
- * @var $model \floor12\files\models\File
+ * @var $this View
+ * @var $model File
  *
  */
 
 use floor12\files\assets\IconHelper;
+use floor12\files\models\File;
+use floor12\files\models\FileType;
+use yii\web\View;
 
 $doc_contents = [
     'application/msword',
@@ -25,7 +28,7 @@ $doc_contents = [
 ?>
 <div class="btn-group files-btn-group">
 
-    <?php if ($model->type == \floor12\files\models\File::TYPE_IMAGE): ?>
+    <?php if ($model->type == FileType::IMAGE): ?>
 
         <a data-title="<?= $model->title ?>"
            href="<?= $model->href ?>"
@@ -67,9 +70,9 @@ $doc_contents = [
                     <?= Yii::t('files', 'Download') ?>
                 </a>
             </li>
-            <?php if (\Yii::$app->getModule('files')->allowOfficePreview && in_array($model->content_type, $doc_contents)): ?>
+            <?php if (Yii::$app->getModule('files')->allowOfficePreview && in_array($model->content_type, $doc_contents)): ?>
                 <li>
-                    <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= \Yii::$app->request->hostInfo . $model->href ?>"
+                    <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= Yii::$app->request->hostInfo . $model->href ?>"
                        target="_blank" data-pjax="0">
                         <?= IconHelper::VIEW ?>
                         <?= Yii::t('files', 'View') ?>

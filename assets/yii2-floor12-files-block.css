@@ -10,7 +10,6 @@
     text-align: center;
     font-size: 60%;
     cursor: pointer;
-    text-align: center;
     text-overflow: ellipsis;
     overflow: hidden;
     font-weight: 600;
@@ -23,7 +22,7 @@
 div.floor12-file-object div.icon {
     font-size: 360%;
     display: block;
-    margin: 0px 0 0px;
+    margin: 0;
     color: #787878;
 }
 

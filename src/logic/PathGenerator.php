@@ -10,7 +10,6 @@ namespace floor12\files\logic;
 
 
 use yii\base\ErrorException;
-use yii\db\ActiveRecord;
 
 class PathGenerator
 {

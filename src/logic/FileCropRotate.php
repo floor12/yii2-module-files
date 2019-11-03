@@ -10,6 +10,9 @@ namespace floor12\files\logic;
 
 
 use floor12\files\models\File;
+use floor12\files\models\FileType;
+use Yii;
+use yii\base\ErrorException;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 
@@ -30,7 +33,7 @@ class FileCropRotate
         if (!$this->_file)
             throw new NotFoundHttpException('File not found');
 
-        if ($this->_file->type != File::TYPE_IMAGE)
+        if ($this->_file->type != FileType::IMAGE)
             throw new BadRequestHttpException('Requested file is not an image.');
 
         if (!file_exists($this->_file->rootPath))
@@ -59,8 +62,8 @@ class FileCropRotate
         imagecopy($dest, $src, 0, 0, $this->_left, $this->_top, $this->_width, $this->_height);
         $dest = imagerotate($dest, -$this->_rotated, 0);
 
-        $newName = new PathGenerator(\Yii::$app->getModule('files')->storageFullPath) . '.jpeg';
-        $newPath = \Yii::$app->getModule('files')->storageFullPath . '/' . $newName;
+        $newName = new PathGenerator(Yii::$app->getModule('files')->storageFullPath) . '.jpeg';
+        $newPath = Yii::$app->getModule('files')->storageFullPath . '/' . $newName;
 
         $oldPath = $this->_file->rootPath;
 
@@ -86,7 +89,8 @@ class FileCropRotate
 
     /**
      * Method to read files from any mime types
-     * @return bool
+     * @return resource
+     * @throws BadRequestHttpException
      */
 
     private function imageCreateFromAny()

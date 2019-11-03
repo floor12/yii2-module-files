@@ -8,11 +8,12 @@
 
 namespace floor12\files\components;
 
-use \Yii;
+use floor12\files\assets\FilesBlockAsset;
+use floor12\notification\NotificationAsset;
+use Yii;
 use yii\helpers\Url;
 use yii\jui\InputWidget;
-use floor12\notification\NotificationAsset;
-use floor12\files\assets\FilesBlockAsset;
+use yii\web\View;
 
 
 class FilesBlock extends InputWidget
@@ -23,39 +24,37 @@ class FilesBlock extends InputWidget
     public $downloadAll = false;
     public $passFirst = false;
 
-
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
-        $this->registerTranslations();
+        Yii::$app->getModule('files')->registerTranslations();
         parent::init();
     }
 
-    public function registerTranslations()
-    {
-        $i18n = Yii::$app->i18n;
-        $i18n->translations['files'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
-            'sourceLanguage' => 'en-US',
-            'basePath' => '@vendor/floor12/yii2-module-files/src/messages',
-        ];
-    }
 
+    /**
+     * @return string|null
+     */
     public function run()
     {
         NotificationAsset::register($this->getView());
         FilesBlockAsset::register($this->getView());
 
-        $this->getView()->registerJs("yiiDownloadAllLink = '" . Url::toRoute('files/default/zip') . "'", \yii\web\View::POS_BEGIN, 'yiiDownloadAllLink');
+        $this->getView()->registerJs("yiiDownloadAllLink = '" . Url::toRoute('files/default/zip') . "'", View::POS_BEGIN, 'yiiDownloadAllLink');
 
         if ($this->passFirst && sizeof($this->files) > 0)
             $this->files = array_slice($this->files, 1);
 
-        if ($this->files)
-            return $this->render('filesBlock', [
-                'files' => $this->files,
-                'zipTitle' => $this->zipTitle,
-                'title' => $this->title,
-                'downloadAll' => $this->downloadAll,
-            ]);
+        if (empty($this->files))
+            return null;
+
+        return $this->render('filesBlock', [
+            'files' => $this->files,
+            'zipTitle' => $this->zipTitle,
+            'title' => $this->title,
+            'downloadAll' => $this->downloadAll,
+        ]);
     }
 }

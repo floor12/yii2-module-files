@@ -58,7 +58,7 @@ class ConsoleController extends Controller
         $file->video_status = VideoStatus::READY;
         $file->save();
 
-
+        return $this->stdout("File converted: {$file->rootPath}" . PHP_EOL, Console::FG_GREEN);
     }
 
 

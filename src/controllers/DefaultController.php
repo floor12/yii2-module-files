@@ -15,6 +15,7 @@ use floor12\files\logic\FileCropRotate;
 use floor12\files\logic\FileRename;
 use floor12\files\logic\ImagePreviewer;
 use floor12\files\models\File;
+use floor12\files\models\FileType;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
@@ -22,6 +23,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
+use ZipArchive;
 
 class DefaultController extends Controller
 {
@@ -36,7 +38,7 @@ class DefaultController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'zip' => ['GET', 'HEAD'],
                     'cropper' => ['GET', 'HEAD'],
@@ -70,7 +72,7 @@ class DefaultController extends Controller
      */
     private function checkFormToken()
     {
-        if (in_array($this->action->id, $this->actionsToCheck) && FileInputWidget::generateToken() != \Yii::$app->request->post('_fileFormToken'))
+        if (in_array($this->action->id, $this->actionsToCheck) && FileInputWidget::generateToken() != Yii::$app->request->post('_fileFormToken'))
             throw new BadRequestHttpException('File-form token is wrong or missing.');
     }
 
@@ -78,11 +80,11 @@ class DefaultController extends Controller
     {
         $files = File::find()->where(["IN", "hash", $hash])->all();
 
-        $zip = new  \ZipArchive;
-        $filename = \Yii::getAlias("@webroot/assets/files}.zip");
+        $zip = new  ZipArchive;
+        $filename = Yii::getAlias("@webroot/assets/files}.zip");
         if (file_exists($filename))
             @unlink($filename);
-        if (sizeof($files) && $zip->open($filename, \ZipArchive::CREATE)) {
+        if (sizeof($files) && $zip->open($filename, ZipArchive::CREATE)) {
 
             foreach ($files as $file)
                 $zip->addFile($file->rootPath, $file->title);
@@ -119,33 +121,38 @@ class DefaultController extends Controller
 
     /** Кропаем и поворачиваем картинку, возращая ее новый адрес.
      * @return string
+     * @throws \yii\base\InvalidConfigException
      */
     public
     function actionCrop()
     {
-        return \Yii::createObject(FileCropRotate::class, [\Yii::$app->request->post()])->execute();
+        return Yii::createObject(FileCropRotate::class, [Yii::$app->request->post()])->execute();
     }
 
     /** Переименовываем файл
      * @return string
+     * @throws BadRequestHttpException
+     * @throws \yii\base\InvalidConfigException
      */
     public
     function actionRename()
     {
-        return \Yii::createObject(FileRename::class, [\Yii::$app->request->post()])->execute();
+        return Yii::createObject(FileRename::class, [Yii::$app->request->post()])->execute();
     }
 
 
     /** Создаем новый файл
      * @return string
+     * @throws BadRequestHttpException
+     * @throws \yii\base\InvalidConfigException
      */
     public
     function actionUpload()
     {
-        $model = \Yii::createObject(FileCreateFromInstance::class, [
+        $model = Yii::createObject(FileCreateFromInstance::class, [
             UploadedFile::getInstanceByName('file'),
-            \Yii::$app->request->post(),
-            \Yii::$app->user->identity,
+            Yii::$app->request->post(),
+            Yii::$app->user->identity,
         ])->execute();
 
 
@@ -153,9 +160,9 @@ class DefaultController extends Controller
             throw new BadRequestHttpException('Ошибки валидации модели');
         }
 
-        $ratio = \Yii::$app->request->post('ratio') ?? null;
+        $ratio = Yii::$app->request->post('ratio') ?? null;
 
-        $view = \Yii::$app->request->post('mode') == 'single' ? "_single" : "_file";
+        $view = Yii::$app->request->post('mode') == 'single' ? "_single" : "_file";
 
         if ($ratio)
             $this->getView()->registerJs("initCropper({$model->id}, '{$model->href}', {$ratio}, true);");
@@ -184,19 +191,19 @@ class DefaultController extends Controller
         Yii::$app->response->headers->set('Last-Modified', date("c", $model->created));
         Yii::$app->response->headers->set('Cache-Control', 'public, max-age=' . (60 * 60 * 24 * 15));
 
-        if ($model->type == File::TYPE_IMAGE && $model->watermark) {
+        if ($model->type == FileType::IMAGE && $model->watermark) {
             $image = new SimpleImage();
             $image->load($model->rootPath);
-            $image->watermark(\Yii::getAlias("@frontend/web/design/logo-big.png"));
+            $image->watermark(Yii::getAlias("@frontend/web/design/logo-big.png"));
             $tmpName = Yii::getAlias("@runtime/" . md5(time() . $model->id));
             $image->save($tmpName, IMAGETYPE_JPEG);
             $stream = fopen($tmpName, 'rb');
             unlink($tmpName);
-            \Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => "image/jpeg", 'filesize' => $model->size]);
+            Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => "image/jpeg", 'filesize' => $model->size]);
 
         } else {
             $stream = fopen($model->rootPath, 'rb');
-            \Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => $model->content_type, 'filesize' => $model->size]);
+            Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => $model->content_type, 'filesize' => $model->size]);
         }
 
     }
@@ -212,7 +219,7 @@ class DefaultController extends Controller
         if (!$model)
             throw new NotFoundHttpException("Запрашиваемый файл не найден");
 
-        if ($model->type != File::TYPE_IMAGE)
+        if ($model->type != FileType::IMAGE)
             throw new NotFoundHttpException("Запрашиваемый файл не является изображением");
 
         if (!file_exists($model->rootPath))
@@ -229,7 +236,7 @@ class DefaultController extends Controller
             if (!file_exists($filename))
                 throw new NotFoundHttpException('Запрашиваемый файл не найден на диске.');
 
-            $response = \Yii::$app->response;
+            $response = Yii::$app->response;
             $response->format = Response::FORMAT_RAW;
             $response->getHeaders()->set('Content-Type', ($webp && $model->content_type != 'image/svg+xml') ? "image/webp" : $model->content_type . '; charset=utf-8');
 
@@ -241,19 +248,19 @@ class DefaultController extends Controller
             $response->sendFile($filename, $model->title, ['inline' => true]);
 
         } else {
-            if ($model->type == File::TYPE_IMAGE && $model->watermark) {
+            if ($model->type == FileType::IMAGE && $model->watermark) {
                 $image = new SimpleImage();
                 $image->load($model->rootPath);
-                $image->watermark(\Yii::getAlias("@frontend/web/design/logo-big.png"));
+                $image->watermark(Yii::getAlias("@frontend/web/design/logo-big.png"));
                 $tmpName = Yii::getAlias("@runtime/" . md5(time() . $model->id));
                 $image->save($tmpName, IMAGETYPE_JPEG);
                 $stream = fopen($tmpName, 'rb');
                 unlink($tmpName);
-                \Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => "image/jpeg", 'filesize' => $model->size]);
+                Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => "image/jpeg", 'filesize' => $model->size]);
 
             } else {
                 $stream = fopen($model->rootPath, 'rb');
-                \Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => $model->content_type, 'filesize' => $model->size]);
+                Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => $model->content_type, 'filesize' => $model->size]);
             }
         }
 
@@ -271,7 +278,7 @@ class DefaultController extends Controller
         if (!$model)
             throw new NotFoundHttpException("Запрашиваемый файл не найден в базе.");
 
-        $response = \Yii::$app->response;
+        $response = Yii::$app->response;
         $response->format = Response::FORMAT_RAW;
         $response->getHeaders()->set('Content-Type', 'image/jpeg; charset=utf-8');
 

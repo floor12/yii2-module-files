@@ -5,6 +5,7 @@ namespace floor12\files\logic;
 
 use floor12\files\components\SimpleImage;
 use floor12\files\models\File;
+use floor12\files\models\FileType;
 use Yii;
 use yii\base\ErrorException;
 
@@ -30,7 +31,7 @@ class ImagePreviewer
         $this->width = $width;
         $this->webp = $webp;
 
-        if ($this->model->type != File::TYPE_IMAGE)
+        if ($this->model->type != FileType::IMAGE)
             throw new ErrorException('File is not an image.');
     }
 

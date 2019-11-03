@@ -9,6 +9,8 @@
 namespace floor12\files\tests\logic;
 
 
+use ArgumentCountError;
+use ErrorException;
 use floor12\files\logic\ClassnameEncoder;
 use floor12\files\logic\PathGenerator;
 use floor12\files\tests\TestCase;
@@ -24,7 +26,7 @@ class PathGeneratorTest extends TestCase
     }
 
     /** Пробуем вызвать генератор имени без указания адреса хранилища
-     * @expectedException \ArgumentCountError
+     * @expectedException ArgumentCountError
      */
     public function testNoStoragePath()
     {
@@ -32,7 +34,7 @@ class PathGeneratorTest extends TestCase
     }
 
     /** Пробуем вызвать генератор имени без указания адреса хранилища
-     * @expectedException \ErrorException
+     * @expectedException ErrorException
      * @expectedExceptionMessage Storage path not set for path generator.
      */
     public function testEmptyStoragePath()
@@ -41,7 +43,7 @@ class PathGeneratorTest extends TestCase
     }
 
     /** Пробуем вызвать генератор имени без указания адреса хранилища
-     * @expectedException \ErrorException
+     * @expectedException ErrorException
      * @expectedExceptionMessage Storage not found.
      */
     public function testWrongStoragePath()

@@ -13,6 +13,7 @@ use floor12\files\assets\IconHelper;
 use floor12\files\components\SimpleImage;
 use Yii;
 use yii\base\ErrorException;
+use yii\db\ActiveRecord;
 use yii\helpers\Url;
 
 
@@ -38,12 +39,8 @@ use yii\helpers\Url;
  * @property string $rootPreviewPath
  * @property string|null $watermark
  */
-class File extends \yii\db\ActiveRecord
+class File extends ActiveRecord
 {
-    const TYPE_FILE = 0;
-    const TYPE_IMAGE = 1;
-    const TYPE_VIDEO = 2;
-
     const DIRECTORY_SEPARATOR = "/";
 
 
@@ -65,7 +62,7 @@ class File extends \yii\db\ActiveRecord
     }
 
     /**
-     * Если хеша нет, устанавливаем.
+     * Create hash if its empty
      * @param bool $insert
      * @return bool
      */
@@ -78,7 +75,7 @@ class File extends \yii\db\ActiveRecord
     }
 
     /**
-     * Меняем или усанавливаем хеш. По нему идет доступ к файлу.
+     * Change object hash
      */
     public function changeHash()
     {
@@ -114,7 +111,7 @@ class File extends \yii\db\ActiveRecord
         if (preg_match('/pdf/', $this->content_type))
             $icon = IconHelper::FILE_PDF;
 
-        if ($this->type == self::TYPE_VIDEO)
+        if ($this->type == FileType::VIDEO)
             $icon = IconHelper::FILE_VIDEO;
 
         return $icon;
@@ -231,7 +228,7 @@ class File extends \yii\db\ActiveRecord
     public function updatePreview()
     {
 
-        if ($this->type == self::TYPE_IMAGE && !$this->isSvg())
+        if ($this->type == FileType::IMAGE && !$this->isSvg())
             if (file_exists($this->rootPath)) {
                 $image = new SimpleImage();
                 $image->load($this->rootPath);
@@ -358,12 +355,19 @@ class File extends \yii\db\ActiveRecord
         return $im;
     }
 
+    /**
+     * Set object_id to 0 to break link with object
+     * @return void
+     */
     public function setZeroObject()
     {
         $this->object_id = 0;
         $this->save(false);
     }
 
+    /**
+     * @return mixed|null
+     */
     public function getWatermark()
     {
         $owner = new $this->class;
@@ -375,27 +379,29 @@ class File extends \yii\db\ActiveRecord
         }
     }
 
-
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->href;
     }
 
-    /** Возвращает модифицированный урл картинки
-     * @param $width
-     * @param $height
+    /**
+     * Return webp path to preview
+     * @param int $width
+     * @param int $height
+     * @param bool $webp
      * @return string
+     * @throws \ErrorException
      */
     public function getPreviewWebPath($width = 0, $height = 0, $webp = false)
     {
         if (!file_exists($this->getRootPath()))
-            return;
+            return null;
 
-        if ($this->type != self::TYPE_IMAGE)
+        if ($this->type != FileType::IMAGE)
             throw new \ErrorException('Requiested file is not an image and its implsible to resize it.');
-
-//        if (!file_exists($this->makeNameWithSize($this->rootPath, $width, $height)))
-//            $this->makePreview($width, $height);
 
         if (Yii::$app->getModule('files')->hostStatic)
             return Yii::$app->getModule('files')->hostStatic . $this->makeNameWithSize($this->filename, $width, $height, $webp = false);
@@ -404,6 +410,7 @@ class File extends \yii\db\ActiveRecord
     }
 
     /**
+     * Creates file paths to file versions
      * @param $name
      * @param int $width
      * @param int $height
@@ -420,8 +427,10 @@ class File extends \yii\db\ActiveRecord
     }
 
     /**
+     * Creates basic image preview
      * @param $width
      * @param $height
+     * @throws \ErrorException
      */
     public function makePreview($width, $height)
     {
@@ -437,8 +446,7 @@ class File extends \yii\db\ActiveRecord
                 $img->resizeToWidth($width);
             } elseif ($height) {
                 $ratio = $height / $img->getHeight();
-
-                $img->resizeToHeight($width, $height);
+                $img->resizeToHeight($height);
             }
 
             $img->save($filename, $img->image_type);
@@ -446,14 +454,17 @@ class File extends \yii\db\ActiveRecord
         }
     }
 
-    /** Возвращает модифицированне имя файла хранения кеш картинки после ресайза
-     * @param $width
-     * @param $height
+    /**
+     * Returns full path to custom preview version
+     * @param int $width
+     * @param int $height
+     * @param bool $webp
      * @return string
+     * @throws \ErrorException
      */
     public function getPreviewRootPath($width = 0, $height = 0, $webp = false)
     {
-        if ($this->type != self::TYPE_IMAGE)
+        if ($this->type != FileType::IMAGE)
             throw new \ErrorException('Requiested file is not an image and its implsible to resize it.');
         return $this->makeNameWithSize($this->rootPath, $width, $height, $webp);
     }

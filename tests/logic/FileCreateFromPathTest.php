@@ -11,19 +11,19 @@ namespace floor12\files\tests\logic;
 
 use floor12\files\logic\FileCreateFromPath;
 use floor12\files\models\File;
+use floor12\files\models\FileType;
 use floor12\files\tests\TestCase;
 use yii\base\ErrorException;
 
 class FileCreateFromPathTest extends TestCase
 {
 
-    private $testFilePath = "tests/data/testImage.jpg";
-    private $testFileName = "testFileName.jpg";
-    private $testOwnerClassName = "floor12\files\tests\Person";
-    private $testOwnerFieldName = "files";
-    private $storagePath = "tests/storage";
+    private $testFilePath = 'tests/data/testImage.jpg';
+    private $testFileName = 'testFileName.jpg';
+    private $testOwnerClassName = 'floor12\files\tests\Person';
+    private $testOwnerFieldName = 'files';
+    private $storagePath = 'tests/storage';
     private $model;
-
 
 
     /** Вызываем несуществуюий файл
@@ -95,33 +95,33 @@ class FileCreateFromPathTest extends TestCase
     }
 
 
-    /**Нормальный сценарий который пока протестировать нормально не удается.
+    /**
+     * Нормальный сценарий который пока протестировать нормально не удается.
      */
 
     public function testCreate()
     {
         $this->setApp();
 
+        $file = new File();
+
         $logicObject = new FileCreateFromPath(
-            new File(),
+            $file,
             $this->testFilePath,
             $this->testOwnerClassName,
             $this->testOwnerFieldName,
             $this->storagePath,
             $this->testFileName
         );
-
         $this->assertTrue(is_object($logicObject));
-        /**
-         * @var $file File
-         */
-        $file = $logicObject->execute();
+        $this->assertTrue($logicObject->execute());
+
 
         // Проверяем, что файл сохранился нормально.
         $this->assertFalse($file->isNewRecord);
         $this->assertTrue(is_integer($file->id));
         $this->assertEquals($this->testOwnerClassName, $file->class);
-        $this->assertEquals(File::TYPE_IMAGE, $file->type);
+        $this->assertEquals(FileType::IMAGE, $file->type);
         $this->assertEquals("image/jpeg", $file->content_type);
         $this->assertTrue(file_exists($file->rootPath), $file->rootPath);
 

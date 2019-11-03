@@ -5,15 +5,17 @@
  * Date: 01.01.2018
  * Time: 12:14
  *
- * @var $this \yii\web\View
- * @var $model \floor12\files\models\File
+ * @var $this View
+ * @var $model File
  * @var $ratio float
  *
  */
 
 use floor12\files\assets\IconHelper;
 use floor12\files\models\File;
+use floor12\files\models\FileType;
 use yii\helpers\Html;
+use yii\web\View;
 
 $doc_contents = [
     'application/msword',
@@ -29,17 +31,17 @@ $doc_contents = [
 <div class="btn-group files-btn-group">
 
     <div data-title="<?= $model->title ?>" id="yii2-file-object-<?= $model->id ?>"
-         class="dropdown-toggle btn-group floor12-file-object <?= ($model->type == \floor12\files\models\File::TYPE_IMAGE) ? "floor12-file-object-image" : NULL ?>"
-         style="<?= ($model->type == \floor12\files\models\File::TYPE_IMAGE) ? "background-image: url(" . $model->getPreviewWebPath(160) . ")" : NULL ?>"
+         class="dropdown-toggle btn-group floor12-file-object <?= ($model->type == FileType::IMAGE) ? "floor12-file-object-image" : NULL ?>"
+         style="<?= ($model->type == FileType::IMAGE) ? "background-image: url(" . $model->getPreviewWebPath(160) . ")" : NULL ?>"
          data-toggle="dropdown"
          aria-haspopup="true"
          aria-expanded="false" title="<?= $model->title ?>">
 
 
-        <?= Html::hiddenInput((new \ReflectionClass($model->class))->getShortName() . "[{$model->field}_ids][]", $model->id) ?>
-        <?= Html::hiddenInput((new \ReflectionClass($model->class))->getShortName() . "[{$model->field}]", 1) ?>
+        <?= Html::hiddenInput((new ReflectionClass($model->class))->getShortName() . "[{$model->field}_ids][]", $model->id) ?>
+        <?= Html::hiddenInput((new ReflectionClass($model->class))->getShortName() . "[{$model->field}]", 1) ?>
 
-        <?php if ($model->type != \floor12\files\models\File::TYPE_IMAGE): ?>
+        <?php if ($model->type != FileType::IMAGE): ?>
             <div class="file-icon"><?= $model->icon ?></div>
             <?= $model->title ?>
         <?php endif; ?>
@@ -62,7 +64,7 @@ $doc_contents = [
         </li>
         <?php if (in_array($model->content_type, $doc_contents)): ?>
             <li>
-                <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= \Yii::$app->request->hostInfo . $model->href ?>}"
+                <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= Yii::$app->request->hostInfo . $model->href ?>}"
                    target="_blank" data-pjax="0">
                     <?= IconHelper::VIEW ?>
                     <?= Yii::t('files', 'View') ?>
@@ -75,7 +77,7 @@ $doc_contents = [
                 <?= Yii::t('files', 'Rename') ?>
             </a>
         </li>
-        <?php if ($model->type == File::TYPE_IMAGE && !$model->isSvg()): ?>
+        <?php if ($model->type == FileType::IMAGE && !$model->isSvg()): ?>
             <li>
                 <a onclick="initCropper(<?= $model->id ?>,'<?= $model->href ?>',<?= $ratio ?>)">
                     <?= IconHelper::CROP ?>
