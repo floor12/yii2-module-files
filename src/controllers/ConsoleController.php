@@ -41,14 +41,13 @@ class ConsoleController extends Controller
     {
         $module = Yii::$app->getModule('files');
         $commands = [];
-        $commands[] = "cd {$module->storageFullPath} && find  . -regex \".+/.{32}_.*\" -exec rm -rf {} \;";
-        $commands[] = "cd {$module->cacheFullPath} && find  . -regex \".+/.{32}_.*\" -exec rm -rf {} \;";
-        $commands[] = "cd {$module->storageFullPath} && find  . -regex \".+/.{32}\..{3,4}\.jpg\" -exec rm -rf {} \;";
-        $commands[] = "cd {$module->cacheFullPath} && find  . -regex \".+/.{32}\..{3,4}\.jpg\" -exec rm -rf {} \;";
+        $commands[] = "find {$module->storageFullPath}  -regextype egrep -regex \".+/.{32}_.*\"  -exec rm -rf {} \;";
+        $commands[] = "find {$module->cacheFullPath}  -regextype egrep -regex \".+/.{32}_.*\" -exec rm -rf {} \;";
+        $commands[] = "find {$module->storageFullPath}  -regextype egrep -regex \".+/.{32}\..{3,4}\.jpg\" -exec rm -rf {} \;";
+        $commands[] = "find {$module->cacheFullPath}  -regextype egrep -regex \".+/.{32}\..{3,4}\.jpg\" -exec rm -rf {} \;";
 
         array_map(function ($command) {
-            (exec($command, $test));
-            var_dump($test);
+            exec($command);
         }, $commands);
 
     }
