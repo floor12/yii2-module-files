@@ -39,7 +39,7 @@ Add this to **modules** section
             'files' => [
                 'class' => 'floor12\files\Module',
                 'storage' => '@vendor/../storage',
-                'token_salt' => '!FgGGsdfsef23@Ejhfskj34',
+                'token_salt' => '!FgGGsdfsef2ad3@Ejhfskj34',
             ],
         ],
     ...
@@ -91,9 +91,8 @@ public function rules()
 {
     return [
         ['avatar', 'required],
-        ['avatar', ReformatValidator::class]            // Automatic covert image between PNG и JPG
-        ['avatar', 'file', 'extensions' => ['jpg', 'png', 'jpeg', 'gif'], 'maxFiles' => 1, 'ratio'=>1], 
-        ['docs', 'file', 'extensions' => ['docx','xlsx], 'maxFiles' => 10],
+        ['avatar', 'file', 'extensions' => ['jpg', 'png', 'jpeg', 'gif'], 'maxFiles' => 1], 
+        ['docs', 'file', 'extensions' => ['docx','xlsx'], 'maxFiles' => 10],
     ...    
 ```
 
