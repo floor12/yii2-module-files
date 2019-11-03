@@ -45,7 +45,7 @@ class ImagePreviewer
         $this->fileName = Yii::$app->getModule('files')->storageFullPath . $this->model->makeNameWithSize($this->model->filename, $this->width, 0);
         $this->fileNameWebp = Yii::$app->getModule('files')->storageFullPath . $this->model->makeNameWithSize($this->model->filename, $this->width, 0, true);
 
-        if (!file_exists($this->fileName))
+        if (!file_exists($this->fileName) || filesize($this->fileName) == 0)
             $this->createPreview();
 
         if ($this->webp && !file_exists($this->fileNameWebp))
@@ -83,6 +83,6 @@ class ImagePreviewer
     {
         $img = new SimpleImage();
         $img->load($this->fileName);
-        $img->save($this->fileNameWebp,IMAGETYPE_WEBP,70);
+        $img->save($this->fileNameWebp, IMAGETYPE_WEBP, 70);
     }
 }
