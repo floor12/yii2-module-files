@@ -10,7 +10,7 @@
  
 This module allows to add files attributes to your ActiveRecord Models.
 
-This module includes widgets for ActiveForm to upload and, crop and edit files, and widget to show files in frontend. 
+This module includes widgets for ActiveForm to upload, crop and edit files, and also widget to show files in frontend. 
 
 Installation
 ------------
@@ -96,21 +96,25 @@ public function rules()
     ...    
 ```
 
-If `maxFiles` is equal to one, then access to the `floor12\files\models\File` object can be obtained directly from $model-> avatar. For example:
+In case when `'maxFiles' => 1`, model attribute will contain a single `floor12\files\models\File` object.
+For example:
 ```php
 echo Html::img($model->avatar->href)            // the web path to file
 echo Html::img($model->avatar->hrefPreview)     // the  web path to file preview, if the file is image
 echo Html::img($model->avatar)                  // __toString of File returns the web path
 ```
 
-In case `maxFiles` > 1, for multiple file upload, the attribute will contain an array of objects `floor12\files\models\File`:
+If `maxFiles` has 2 or more (multiple file upload), model attribute will contain an array of `floor12\files\models\File` objects.
+-> avatar. 
 
 ```php
 foreach ($model->docs as $doc}
     Html::a($doc->title, $doc->href);
 ```
-
-In addition, there is a widget for displaying all files, which makes it possible to view images in the [Lightbox2](https://lokeshdhakar.com/projects/lightbox2/)  gallery and preview the Office files. It is also possible to download all the files attached to current model attribute archived in ZIP format.
+### Widget to list all files
+In addition, there is a widget for displaying all files, which makes it possible to view images 
+in the [Lightbox2](https://lokeshdhakar.com/projects/lightbox2/) gallery and preview files in Office Online. 
+It is also possible to download all the files attached to current attribute archived in ZIP format.
 
  ```php
 echo \floor12\files\components\FilesBlock::widget([
@@ -131,5 +135,4 @@ Use special widget to upload and reorder (both with drug-and-drop), crop and ren
     <?= $form->field($model, 'docs')->widget(FileInputWidget::class, []) ?>
 ```
 The widget itself will take the desired form, in the case of adding 1 or more files.
-If you specify the required `ratio` for images, it will automatically open the window with the image crapper.
 

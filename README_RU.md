@@ -90,12 +90,12 @@ public function rules()
 {
     return [
         ['avatar', 'required],
-        ['avatar', 'file', 'extensions' => ['jpg', 'png', 'jpeg', 'gif'], 'maxFiles' => 1, 'ratio'=>1], 
-        ['docs', 'file', 'extensions' => ['docx','xlsx'], 'maxFiles' => 10],
+        ['avatar', 'file', 'extensions' => ['jpg', 'png', 'jpeg', 'gif'], 'maxFiles' => 1], 
+        ['docs', 'file', 'extensions' => ['docx', 'xlsx'], 'maxFiles' => 10],
     ...    
 ```
 
-Если `maxFiles` будет равен единице, то доступ к объекту `floor12\files\models\File` можно получить напрямую `$model->avatar`. Например:
+Если `maxFiles` будет равен единице, то поле модели будет содежрать экземпляр класса `floor12\files\models\File`. Например:
 ```php
 echo Html::img($model->avatar->href)            // путь к файлу
 echo Html::img($model->avatar->hrefPreview)     // путь к миниатюре, если это изображение
@@ -104,11 +104,13 @@ echo Html::img($model->avatar)                  // объект приводит
 
 В случае, если `maxFiles` > 1 и файлов можно загрузить несколько, то поле будет содержать массив объектов `floor12\files\models\File`:
 
-
 ```php
 foreach ($model->docs as $doc}
     Html::a($doc->title, $doc->href);
 ```
+
+### Виджет для списка файлов
+
 Помимо этого, есть отдельный виджет для вывода всех файлов, который дает возможность просматривать 
 изображения в галереи [Lightbox2](https://lokeshdhakar.com/projects/lightbox2/) и осуществлять предпросмотр файлов Office. Так же имеется возможно скачать все приложенные к модели файлы архивом.
  ```php
@@ -120,7 +122,7 @@ echo \floor12\files\components\FilesBlock::widget([
 ]) 
 ```
 
-### Работа c виджетом формы
+### Виджет для ActiveForm
 
 Во время редактирования модели, необходимо использовать виджет `floor12\files\components\FileInputWidget`:
 
@@ -130,5 +132,4 @@ echo \floor12\files\components\FilesBlock::widget([
     <?= $form->field($model, 'docs')->widget(FileInputWidget::class, []) ?>
 ```
 При этом, виджет сам примет нужный вид, в случае добавления одного или нескольких файлов. 
-Если указан обязательный `ratio` для изображений, автоматически откроет окно с кропером изображений.
 
