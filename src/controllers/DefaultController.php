@@ -38,13 +38,13 @@ class DefaultController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'zip' => ['GET'],
-                    'cropper' => ['GET'],
-                    'crop' => ['POST'],
-                    'rename' => ['POST'],
-                    'upload' => ['POST'],
-                    'get' => ['GET'],
-                    'preview' => ['GET'],
+                    'zip' => ['GET', 'HEAD'],
+                    'cropper' => ['GET', 'HEAD'],
+                    'crop' => ['POST', 'HEAD'],
+                    'rename' => ['POST', 'HEAD'],
+                    'upload' => ['POST', 'HEAD'],
+                    'get' => ['GET', 'HEAD'],
+                    'preview' => ['GET', 'HEAD'],
                 ],
             ],
         ];
