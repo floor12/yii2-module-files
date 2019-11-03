@@ -77,19 +77,22 @@ class DefaultController extends Controller
             throw new BadRequestHttpException('File-form token is wrong or missing.');
     }
 
-    public function actionZip(array $hash, $title = 'files')
+    /**
+     * @param array $hashes
+     * @param string $title
+     */
+    public function actionZip(array $hashes, $title = 'files')
     {
-        $files = File::find()->where(["IN", "hash", $hash])->all();
+        $files = File::find()->where(["IN", "hash", $hashes])->all();
 
         $zip = new  ZipArchive;
-        $filename = Yii::getAlias("@webroot/assets/files}.zip");
+        $filename = Yii::getAlias("@webroot/assets/files.zip");
         if (file_exists($filename))
             @unlink($filename);
         if (sizeof($files) && $zip->open($filename, ZipArchive::CREATE)) {
 
             foreach ($files as $file)
                 $zip->addFile($file->rootPath, $file->title);
-
 
             $zip->close();
             header("Pragma: public");
@@ -114,8 +117,7 @@ class DefaultController extends Controller
     /** Возвращаем HTML шаблон для внедрения в основной макет
      * @return string
      */
-    public
-    function actionCropper()
+    public function actionCropper()
     {
         return $this->renderPartial('_cropper');
     }
@@ -124,8 +126,7 @@ class DefaultController extends Controller
      * @return string
      * @throws \yii\base\InvalidConfigException
      */
-    public
-    function actionCrop()
+    public function actionCrop()
     {
         return Yii::createObject(FileCropRotate::class, [Yii::$app->request->post()])->execute();
     }
@@ -135,8 +136,7 @@ class DefaultController extends Controller
      * @throws BadRequestHttpException
      * @throws \yii\base\InvalidConfigException
      */
-    public
-    function actionRename()
+    public function actionRename()
     {
         return Yii::createObject(FileRename::class, [Yii::$app->request->post()])->execute();
     }
@@ -147,8 +147,7 @@ class DefaultController extends Controller
      * @throws BadRequestHttpException
      * @throws \yii\base\InvalidConfigException
      */
-    public
-    function actionUpload()
+    public function actionUpload()
     {
         $model = Yii::createObject(FileCreateFromInstance::class, [
             UploadedFile::getInstanceByName('file'),
@@ -175,7 +174,7 @@ class DefaultController extends Controller
     }
 
 
-    /*
+    /**
      * Выдача файлов через контроллер.
      */
 
@@ -209,9 +208,9 @@ class DefaultController extends Controller
 
     }
 
-    /*
-   * Выдача картинок с опциональным кропом
-   */
+    /**
+     * Выдача картинок с опциональным кропом
+     */
 
     public function actionImage($hash, $width = null, $height = null, $webp = null)
     {

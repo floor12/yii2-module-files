@@ -43,8 +43,10 @@ class ImagePreviewer
         if ($this->model->isSvg())
             return $this->model->getRootPath();
 
-        $this->fileName = Yii::$app->getModule('files')->storageFullPath . $this->model->makeNameWithSize($this->model->filename, $this->width, 0);
-        $this->fileNameWebp = Yii::$app->getModule('files')->storageFullPath . $this->model->makeNameWithSize($this->model->filename, $this->width, 0, true);
+        $this->fileName = Yii::$app->getModule('files')->cacheFullPath . $this->model->makeNameWithSize($this->model->filename, $this->width, 0);
+        $this->fileNameWebp = Yii::$app->getModule('files')->cacheFullPath . $this->model->makeNameWithSize($this->model->filename, $this->width, 0, true);
+
+        $this->prepareFolders();
 
         if (!file_exists($this->fileName) || filesize($this->fileName) == 0)
             $this->createPreview();
@@ -56,6 +58,24 @@ class ImagePreviewer
             return $this->fileNameWebp;
 
         return $this->fileName;
+    }
+
+    /**
+     * @return void
+     */
+    protected function prepareFolders()
+    {
+        if (!file_exists(Yii::$app->getModule('files')->cacheFullPath))
+            mkdir(Yii::$app->getModule('files')->cacheFullPath);
+
+        preg_match('/(.+\/\d{2})\/\d{2}\//', $this->fileName, $matches);
+
+        if (!file_exists($matches[1]))
+            @mkdir($matches[1]);
+        if (!file_exists($matches[0]))
+            @mkdir($matches[0]);
+        if (!file_exists($matches[0]))
+            throw new ErrorException("Unable to create cache folder: {$matches[0]}");
     }
 
     /**
