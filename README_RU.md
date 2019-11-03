@@ -74,7 +74,7 @@ $ ./yii migrate --migrationPath=@vendor/floor12/yii2-module-files/src/migrations
 
 Как и для других атрибутов модели, указываем ей `attributeLabels()`:
 
-```
+```php
  public function attributeLabels()
     {
         return [

@@ -75,7 +75,7 @@ and specify the attributes parameter, what fields with files need to be created:
 
 As for the other attributes of the model, specify the `attributeLabels()`:
 
-```
+```php 
  public function attributeLabels()
     {
         return [
