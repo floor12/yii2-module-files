@@ -18,6 +18,13 @@ use yii\helpers\Console;
 
 class ConsoleController extends Controller
 {
+
+    /**
+     * Run `./yii files/console/clean` to remove all unlinked files more then 6 hours
+     *
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     function actionClean()
     {
         $time = strtotime('- 6 hours');
@@ -27,7 +34,29 @@ class ConsoleController extends Controller
         }
     }
 
+    /**
+     * Run `./yii files/console/clean-cache` to remove all generated images and previews
+     */
+    function actionCleanCache()
+    {
+        $module = Yii::$app->getModule('files');
+        $commands = [];
+        $commands[] = "cd {$module->storageFullPath} && find  . -regex \".+/.{32}_.*\" -exec rm -rf {} \;";
+        $commands[] = "cd {$module->cacheFullPath} && find  . -regex \".+/.{32}_.*\" -exec rm -rf {} \;";
+        $commands[] = "cd {$module->storageFullPath} && find  . -regex \".+/.{32}\..{3,4}\.jpg\" -exec rm -rf {} \;";
+        $commands[] = "cd {$module->cacheFullPath} && find  . -regex \".+/.{32}\..{3,4}\.jpg\" -exec rm -rf {} \;";
 
+        array_map(function ($command) {
+            (exec($command, $test));
+            var_dump($test);
+        }, $commands);
+
+    }
+
+    /**
+     * Run `./yii files/console/convert` to proccess one video file from queue with ffmpeg
+     * @return bool|int
+     */
     function actionConvert()
     {
         $ffmpeg = Yii::$app->getModule('files')->ffmpeg;
@@ -59,20 +88,6 @@ class ConsoleController extends Controller
         $file->save();
 
         return $this->stdout("File converted: {$file->rootPath}" . PHP_EOL, Console::FG_GREEN);
-    }
-
-
-    function actionHash()
-    {
-        $files = File::find()->all();
-        if ($files)
-            foreach ($files as $file) {
-                if (!$file->hash) {
-                    $file->hash = md5(rand(100000, 100000000) . time());
-                    $file->save();
-                    echo "{$file->hash}\n";
-                }
-            }
     }
 
 

@@ -222,31 +222,6 @@ class File extends ActiveRecord
     }
 
     /**
-     * Updating preview
-     */
-
-    public function updatePreview()
-    {
-
-        if ($this->type == FileType::IMAGE && !$this->isSvg())
-            if (file_exists($this->rootPath)) {
-                $image = new SimpleImage();
-                $image->load($this->rootPath);
-
-                if ($image->getWidth() > 1920 || $image->getHeight() > 1080) {
-                    $image->resizeToWidth(1920);
-                    if ($this->content_type == 'image/png')
-                        $image->save($this->rootPath, IMAGETYPE_PNG);
-                    else
-                        $image->save($this->rootPath);
-                }
-
-                $image->resizeToWidth(350);
-                $image->save($this->rootPreviewPath);
-            }
-    }
-
-    /**
      * @return bool
      */
     public function isSvg()

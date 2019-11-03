@@ -9,6 +9,7 @@
 namespace floor12\files;
 
 use Yii;
+use yii\db\Connection;
 
 /**
  * Class Module
@@ -34,19 +35,37 @@ class Module extends \yii\base\Module
      * @var string
      */
     public $cache = '@vendor/../storage_cache';
-
+    /**
+     * @var string
+     */
     public $hostStatic = '';
-
+    /**
+     * @var string
+     */
     public $ffmpeg = '/usr/bin/ffmpeg';
-
+    /**
+     * @var string
+     */
     public $token_salt = 'randomString412DDs@#KJH';
-
+    /**
+     * @var string
+     */
     public $storageFullPath;
-
+    /**
+     * @var string
+     */
+    public $cacheFullPath;
+    /**
+     * @var bool
+     */
     public $allowOfficePreview = true;
-
+    /**
+     * @var array
+     */
     public $params = ['db' => 'db'];
-
+    /**
+     * @var Connection
+     */
     public $db;
 
     /**
@@ -55,12 +74,14 @@ class Module extends \yii\base\Module
     public function init()
     {
         $this->registerTranslations();
-
         $this->db = Yii::$app->{$this->params['db']};
-
         $this->storageFullPath = Yii::getAlias($this->storage);
+        $this->cacheFullPath = Yii::getAlias($this->cache);
     }
 
+    /**
+     * @return void
+     */
     public function registerTranslations()
     {
         $i18n = Yii::$app->i18n;

@@ -77,7 +77,6 @@ class FileCropRotate
         $this->_file->size = filesize($newPath);
         $this->_file->changeHash();
         if ($this->_file->save()) {
-            $this->_file->updatePreview();
             @unlink($oldPath);
             return $this->_file->href;
         } else

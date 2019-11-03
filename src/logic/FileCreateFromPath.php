@@ -103,7 +103,6 @@ class FileCreateFromPath
                 }
 
             }
-            $this->model->updatePreview();
             return true;
         }
         return false;

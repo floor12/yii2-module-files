@@ -86,7 +86,6 @@ class FileCreateFromInstance
 
     public function execute()
     {
-
         $path = Yii::$app->getModule('files')->storageFullPath . $this->_model->filename;
 
         if ($this->_model->save()) {
@@ -94,7 +93,6 @@ class FileCreateFromInstance
                 copy($this->_instance->tempName, $this->_fullPath);
             else
                 $this->_instance->saveAs($this->_fullPath, false);
-            $this->_model->updatePreview();
         }
 
         return $this->_model;

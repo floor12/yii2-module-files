@@ -51,6 +51,7 @@ function updateProgressCircle(val, btnGroup) {
     btnGroup.querySelector('.floor12-file-percents').innerHTML = val + '%';
     // setAttribute('stroke-dashoffset', result);
 }
+
 var observer = new MutationObserver(function (mutations) {
     percent = mutations[0].target.style.width.replace('%', '');
     btnGroup = mutations[0].target.parentElement.parentElement;
@@ -65,6 +66,7 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
     var uploadButton = block.find('button.btn-upload')[0];
     var filesList = block.find('.floor12-files-widget-list')[0];
     var ratio = 0;
+    var csrf = block.parents('form').find('input[name=_csrf]').val();
 
     if (block.data('ratio'))
         ratio = block.data('ratio');
@@ -89,6 +91,7 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
             scenario: scenario,
             mode: mode,
             ratio: ratio,
+            _csrf: csrf,
             _fileFormToken: yii2FileFormToken
         },
         onSubmit:

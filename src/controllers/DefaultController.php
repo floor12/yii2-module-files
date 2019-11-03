@@ -27,13 +27,19 @@ use ZipArchive;
 
 class DefaultController extends Controller
 {
-
+    /**
+     * @var array
+     */
     private $actionsToCheck = [
         'crop',
         'rename',
         'upload',
     ];
 
+    /**
+     * @inheritDoc
+     * @return array
+     */
     public function behaviors()
     {
         return [
@@ -59,11 +65,6 @@ class DefaultController extends Controller
     public function beforeAction($action)
     {
         $this->checkFormToken();
-
-        if ($action->id == 'upload') {
-            $this->enableCsrfValidation = false;
-        }
-
         return parent::beforeAction($action);
     }
 
