@@ -8,15 +8,15 @@
 
 namespace floor12\files\components;
 
-use floor12\files\assets\FilesBlockAsset;
+use floor12\files\assets\FileListAsset;
 use floor12\notification\NotificationAsset;
 use Yii;
+use yii\base\Widget;
 use yii\helpers\Url;
-use yii\jui\InputWidget;
 use yii\web\View;
 
 
-class FilesBlock extends InputWidget
+class FileListWidget extends Widget
 {
     public $files;
     public $title;
@@ -40,7 +40,7 @@ class FilesBlock extends InputWidget
     public function run()
     {
         NotificationAsset::register($this->getView());
-        FilesBlockAsset::register($this->getView());
+        FileListAsset::register($this->getView());
 
         $this->getView()->registerJs("yiiDownloadAllLink = '" . Url::toRoute('files/default/zip') . "'", View::POS_BEGIN, 'yiiDownloadAllLink');
 
@@ -50,7 +50,7 @@ class FilesBlock extends InputWidget
         if (empty($this->files))
             return null;
 
-        return $this->render('filesBlock', [
+        return $this->render('fileListWidget', [
             'files' => $this->files,
             'zipTitle' => $this->zipTitle,
             'title' => $this->title,

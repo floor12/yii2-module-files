@@ -117,7 +117,7 @@ in the [Lightbox2](https://lokeshdhakar.com/projects/lightbox2/) gallery and pre
 It is also possible to download all the files attached to current attribute archived in ZIP format.
 
  ```php
-echo \floor12\files\components\FilesBlock::widget([
+echo \floor12\files\components\FilesListWidget::widget([
     'files' => $model->docs, 
     'title' => 'Attachments:',            // by default Label from model will used 
     'downloadAll' => true, 

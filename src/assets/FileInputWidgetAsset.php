@@ -14,10 +14,6 @@ use yii\web\AssetBundle;
 
 class FileInputWidgetAsset extends AssetBundle
 {
-    public $publishOptions = [
-        'forceCopy' => true,
-    ];
-
     public $sourcePath = '@vendor/floor12/yii2-module-files/assets/';
 
     public $css = [

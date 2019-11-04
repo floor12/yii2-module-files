@@ -25,7 +25,7 @@ use yii\web\View;
         <label><?= $title ?></label><br>
     <?php endif; ?>
     <?php foreach ($files as $file) {
-        echo $this->render('_filesBlock', ['model' => $file]);
+        echo $this->render('_fileListWidget', ['model' => $file]);
     } ?>
     <?php if ($downloadAll && sizeof($files) > 1) echo Html::a(IconHelper::DOWNLOAD . " " .
         Yii::t('files', 'Download all'),

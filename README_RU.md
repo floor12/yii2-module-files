@@ -114,7 +114,7 @@ foreach ($model->docs as $doc}
 Помимо этого, есть отдельный виджет для вывода всех файлов, который дает возможность просматривать 
 изображения в галереи [Lightbox2](https://lokeshdhakar.com/projects/lightbox2/) и осуществлять предпросмотр файлов Office. Так же имеется возможно скачать все приложенные к модели файлы архивом.
  ```php
-echo \floor12\files\components\FilesBlock::widget([
+echo \floor12\files\components\FilesListWidget::widget([
     'files' => $model->docs, 
     'title' => 'Приложенные документы:',            // по-умолчанию будет использован Label из модели 
     'downloadAll' => true, 

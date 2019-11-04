@@ -12,12 +12,8 @@ namespace floor12\files\assets;
 use yii\web\AssetBundle;
 
 
-class FilesBlockAsset extends AssetBundle
+class FileListAsset extends AssetBundle
 {
-    public $publishOptions = [
-        'forceCopy' => true,
-    ];
-
     public $sourcePath = '@vendor/floor12/yii2-module-files/assets/';
 
     public $css = [
