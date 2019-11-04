@@ -10,7 +10,6 @@ namespace floor12\files\models;
 
 
 use floor12\files\assets\IconHelper;
-use floor12\files\components\SimpleImage;
 use Yii;
 use yii\base\ErrorException;
 use yii\db\ActiveRecord;
@@ -33,10 +32,8 @@ use yii\helpers\Url;
  * @property integer $size
  * @property string $hash
  * @property string $href
- * @property string $hrefPreview
  * @property string $icon
  * @property string $rootPath
- * @property string $rootPreviewPath
  * @property string|null $watermark
  */
 class File extends ActiveRecord
@@ -252,18 +249,6 @@ class File extends ActiveRecord
         return Yii::$app->getModule('files')->storageFullPath . DIRECTORY_SEPARATOR . $this->filename;
     }
 
-    /**
-     * Return web path of preview
-     * @return string
-     */
-
-    public function getHrefPreview()
-    {
-        if ($this->isSvg())
-            return $this->getHref();
-
-        return Url::to(['/files/default/preview', 'hash' => $this->hash]);
-    }
 
     /**
      * Return web path
@@ -401,33 +386,6 @@ class File extends ActiveRecord
         return $rootPath;
     }
 
-    /**
-     * Creates basic image preview
-     * @param $width
-     * @param $height
-     * @throws \ErrorException
-     */
-    public function makePreview($width, $height)
-    {
-        $filename = $this->getPreviewRootPath($width, $height);
-
-        if (!file_exists($filename)) {
-
-            $img = new SimpleImage();
-            $img->load($this->rootPath);
-            if ($width) {
-                $ratio = $width / $img->getWidth();
-
-                $img->resizeToWidth($width);
-            } elseif ($height) {
-                $ratio = $height / $img->getHeight();
-                $img->resizeToHeight($height);
-            }
-
-            $img->save($filename, $img->image_type);
-
-        }
-    }
 
     /**
      * Returns full path to custom preview version
