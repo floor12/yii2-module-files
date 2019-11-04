@@ -11,7 +11,6 @@ namespace floor12\files\tests\logic;
 
 use ArgumentCountError;
 use ErrorException;
-use floor12\files\logic\ClassnameEncoder;
 use floor12\files\logic\PathGenerator;
 use floor12\files\tests\TestCase;
 
@@ -20,12 +19,15 @@ class PathGeneratorTest extends TestCase
 
     private $storagePath = "tests/storage";
 
+    /**
+     * Storage cleaning
+     */
     private function clearStorage()
     {
         exec('rm -rf tests/storage/*');
     }
 
-    /** Пробуем вызвать генератор имени без указания адреса хранилища
+    /**
      * @expectedException ArgumentCountError
      */
     public function testNoStoragePath()
@@ -33,7 +35,9 @@ class PathGeneratorTest extends TestCase
         new PathGenerator();
     }
 
-    /** Пробуем вызвать генератор имени без указания адреса хранилища
+    /**
+     * Empty storage path check
+     *
      * @expectedException ErrorException
      * @expectedExceptionMessage Storage path not set for path generator.
      */
@@ -42,17 +46,19 @@ class PathGeneratorTest extends TestCase
         new PathGenerator("");
     }
 
-    /** Пробуем вызвать генератор имени без указания адреса хранилища
-     * @expectedException ErrorException
-     * @expectedExceptionMessage Storage not found.
+    /**
+     * Create storage path if it not exists
      */
-    public function testWrongStoragePath()
+    public function testCreateStoragePath()
     {
-        new PathGenerator("badpath");
+        $path = 'tests/st1';
+        new PathGenerator($path);
+        $this->assertTrue(file_exists($path));
+        exec("rm -f $path");
     }
 
     /**
-     * Генерируем адрес и пробуем, создался ли он в хранилище
+     * Create file path and check it exists
      */
     public function testGeneratePath()
     {
