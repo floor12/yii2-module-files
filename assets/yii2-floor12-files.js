@@ -66,7 +66,8 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
     var uploadButton = block.find('button.btn-upload')[0];
     var filesList = block.find('.floor12-files-widget-list')[0];
     var ratio = 0;
-    var csrf = block.parents('form').find('input[name=_csrf]').val();
+
+    var csrf = block.parents('form').find('input[name=' + yii2CsrfParam + ']').val();
 
     if (block.data('ratio'))
         ratio = block.data('ratio');
@@ -76,6 +77,15 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
         toggleSingleUploadButton(block);
     }
 
+    var data = {
+        modelClass: className,
+        attribute: attribute,
+        scenario: scenario,
+        mode: mode,
+        ratio: ratio,
+        _fileFormToken: yii2FileFormToken
+    }
+    data[yii2CsrfParam] = csrf
 
     var uploader = new ss.SimpleUpload({
         button: uploadButton,
@@ -85,15 +95,7 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
         dragClass: 'floor12-files-widget-block-drug-over',
         multiple: true,
         multipleSelect: true,
-        data: {
-            modelClass: className,
-            attribute: attribute,
-            scenario: scenario,
-            mode: mode,
-            ratio: ratio,
-            _csrf: csrf,
-            _fileFormToken: yii2FileFormToken
-        },
+        data: data,
         onSubmit:
             function (filename, extension, data) {
                 var svg = '\t<svg width="60" height="60" viewBox="0 0 60 60">\n' +

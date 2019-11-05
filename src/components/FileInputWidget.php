@@ -84,6 +84,7 @@ class FileInputWidget extends InputWidget
 
         $this->getView()->registerJs("Yii2FilesUploaderSet('files-widget-block_{$this->block_id}','{$className}','{$this->attribute}','{$this->model->scenario}')", View::POS_READY, $this->block_id);
         $this->getView()->registerJs("yii2UploadRoute = '{$uploadRoute}'", View::POS_BEGIN, 'yii2UploadRoute');
+        $this->getView()->registerJs("yii2CsrfParam = '" . Yii::$app->request->csrfParam . "'", View::POS_BEGIN, 'yii2CsrfFieldName');
         $this->getView()->registerJs("yii2DeleteRoute = '{$deleteRoute}'", View::POS_BEGIN, 'yii2DeleteRoute');
         $this->getView()->registerJs("yii2CropperRoute = '{$cropperRoute}'", View::POS_BEGIN, 'yii2DeleteRoute');
         $this->getView()->registerJs("yii2CropRoute = '{$cropRoute}'", View::POS_BEGIN, 'yii2CropRoute');
