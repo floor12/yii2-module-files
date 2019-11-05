@@ -53,7 +53,7 @@ As a result of this processing, it is written to disk and a new entry is created
  When a file is deleted from the widget, it is not deleted from the disk and the `file` table, just `obejct_id` equals to 0.
  You can use the console command` files / console / clean` to periodically clean up this kind of orphan files.
 
- ##Установка и настройка
+ ## Install and setup
  
 To add this module to your app, just run:
 
@@ -90,9 +90,9 @@ Parameters to set:
 - `token_salt` - a unique salt to generate InputWidget tokens.
  
  
- ## Usage
- ### Work with ActiveRecord Model
- To add one or more files fields to the ActiveRecord model, you need to connect `floor12\files\components\FileBehaviour` to it
+## Usage
+### Work with ActiveRecord Model
+To add one or more files fields to the ActiveRecord model, you need to connect `floor12\files\components\FileBehaviour` to it
  and pass list the field names that will store the files in the model. For example, for the User model, 2 file fields are defined here
  : `avatar` and` documents`:
  ```php 
