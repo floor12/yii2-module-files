@@ -1,3 +1,5 @@
+# yii2-module-files
+
 [![Build Status](https://travis-ci.org/floor12/yii2-module-files.svg?branch=master)](https://travis-ci.org/floor12/yii2-module-files)
 [![Latest Stable Version](https://poser.pugx.org/floor12/yii2-module-files/v/stable)](https://packagist.org/packages/floor12/yii2-module-files)
 [![Latest Unstable Version](https://poser.pugx.org/floor12/yii2-module-files/v/unstable)](https://packagist.org/packages/floor12/yii2-module-files)
@@ -5,8 +7,8 @@
 [![License](https://poser.pugx.org/floor12/yii2-module-files/license)](https://packagist.org/packages/floor12/yii2-module-files)
 
 ## Информация о модуле
-![Input widget](https://floor12.net/files/default/get?hash=7ad1b9dee10bb7cb5bd73d1c874724e1)
 
+![FileInputWidget](https://floor12.net/files/default/get?hash=7ad1b9dee10bb7cb5bd73d1c874724e1)
 
 Это модуль разработан для того, чтобы решить проблему создание полей с файлами в ActiveRecord моделях фреймворка Yii2.
 Основными компонентами модуля являются:
@@ -26,6 +28,11 @@
 - при необходимости добавления изображений к модели не через веб-интерфейс сайта, а при помощь консольных парсеров и других похожих случаев - такая возможность имеется. Для этого в системе предусмотрено два класса: `FileCreateFromInstance.php` и `FileCreateFromPath.php`.
 - при работе с видео файлами - перекодировка их в h264 при помощи утилиты ffmpeg;
 
+### Интернационализация
+На данный этап модуль поддерживает следующие языки:
+- Английский
+- Русский
+
 ### Принцип работы
 Информация о файлах хранится в таблице `file` и содержит связи с моделью через три поля:
 - `class` - полное имя класса связанной модели
@@ -42,7 +49,7 @@
 ```bash
 $ composer require floor12/yii2-module-files
 ```
-или добавляем в секцию "requred" файла composer.json
+или добавляем в секцию "required" файла composer.json
 ```json
 "floor12/yii2-module-files": "dev-master"
 ```
@@ -59,7 +66,7 @@ $ ./yii migrate --migrationPath=@vendor/floor12/yii2-module-files/src/migrations
                 'class' => 'floor12\files\Module',
                 'storage' => '@app/storage',
                 'cache' => '@app/storage_cache',
-                'token_salt' => 'some_token_salt',
+                'token_salt' => 'some_random_salt',
             ],
         ],
     ...
@@ -121,7 +128,7 @@ public function rules()
 ```
 ### Обращение к файлам
 
-Если `maxFiles`  в `FIleValidator` будет равен единице, то поле модели будет хранить экземпляр класса `floor12\files\models\File`. Например:
+Если `maxFiles`  в `FileValidator` будет равен единице, то поле модели будет хранить экземпляр класса `floor12\files\models\File`. Например:
 ```php
 // Поле href хранит в себе ссылку на исходник файла или картинки
 echo Html::img($model->avatar->href)     
@@ -138,16 +145,17 @@ echo Html::img($model->avatar)
 Пример использования:
 ```php
 //Запрашиваем миниатюру аватара пользователя шириной 200 пикселей
-echo Html::img($model->avatar->getPreviewWebPath(200))     
+echo Html::img($model->avatar->getPreviewWebPath(200));     
 
 //Запрашиваем миниатюру аватара пользователя шириной 200 пикселей и в формате WEBP
-echo Html::img($model->avatar->getPreviewWebPath(200, 0, true))     
+echo Html::img($model->avatar->getPreviewWebPath(200, 0, true));     
 
 //Запрашиваем миниатюру аватара пользователя шириной высотой 300 и в формате WEBP
-echo Html::img($model->avatar->getPreviewWebPath(0, 300, true))                
+echo Html::img($model->avatar->getPreviewWebPath(0, 300, true));               
 ```
 
-В случае, если `maxFiles` > 1 и файлов можно загрузить несколько, то поле с файлами будет содержать  не экземпляр объекта  `floor12\files\models\File`, а массив объектов:
+В случае, если `maxFiles > 1`  и файлов можно загрузить несколько, то поле с файлами будет содержать  не экземпляр объекта  `floor12
+\files\models\File`, а массив объектов:
 
 ```php
 foreach ($model->docs as $doc}
@@ -191,15 +199,16 @@ echo \floor12\files\components\FileListWidget::widget([
 - `zipTitle` - задать название файла для zip-архива,
 - `passFirst` - пропустить при выводе первый файл (часто бывает необходимо вывести галерею без первой картинки, например, в новости, так как первая картинка "ушла" на обложку самой новости - как пример).
 
-![Input widget](https://floor12.net/files/default/get?hash=6482fa93391f5fdcbbf8eb8d242da684)
+![FileInputWidget](https://floor12.net/files/default/get?hash=6482fa93391f5fdcbbf8eb8d242da684)
 
 ### Виджет для ActiveForm
 
 Во время редактирования модели, необходимо использовать виджет `floor12\files\components\FileInputWidget`:
 
 ```php
-    <?= $form->field($model, 'avatar')->widget(FileInputWidget::class) ?>
-    
-    <?= $form->field($model, 'docs')->widget(FileInputWidget::class) ?>
+    <?= $form->field($model, 'avatar')->widget(floor12\files\components\FileInputWidget::class) ?>
 ```
-При этом, виджет сам примет нужный вид, в случае добавления одного или нескольких файлов. 
+При этом, в зависимости того. установлен ли параметр `maxFiles` в `FileValidator`  равный единицы или более, `FileInputWidget` примет необходимый вид, для загрузки одного файла или сразу нескольких. При необходимости можно передать в виджет текст и для кнопки и класс для кнопки загрузки через параметры `uploadButtonText` и `uploadButtonClass`.
+
+## Участие в разработке
+Буду рад любой помощи в разработке, поддержке и баг-репортах на этот модуль. 
