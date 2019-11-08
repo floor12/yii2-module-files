@@ -38,6 +38,10 @@ class SimpleImage
             imagepng($this->image, $filename);
         } elseif ($image_type == IMAGETYPE_WEBP) {
             $dst = imagecreatetruecolor(imagesx($this->image), imagesy($this->image));
+            imagealphablending($dst, false);
+            imagesavealpha($dst, true);
+            $transparent = imagecolorallocatealpha($dst, 255, 255, 255, 127);
+            imagefilledrectangle($dst, 0, 0, imagesx($this->image), imagesy($this->image), $transparent);
             imagecopy($dst, $this->image, 0, 0, 0, 0, imagesx($this->image), imagesy($this->image));
             imagewebp($dst, $filename);
         }
