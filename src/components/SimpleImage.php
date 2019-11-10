@@ -9,6 +9,8 @@
 namespace floor12\files\components;
 
 
+use yii\base\ErrorException;
+
 class SimpleImage
 {
 
@@ -71,12 +73,21 @@ class SimpleImage
 
     function getHeight()
     {
-        return imagesy($this->image);
+        try {
+            return imagesy($this->image);
+        } catch (ErrorException $exception) {
+            throw new ErrorException('Unable to get height of image. Probably the image is corrupted.');
+        }
+
     }
 
     function getWidth()
     {
-        return imagesx($this->image);
+        try {
+            return imagesx($this->image);
+        } catch (ErrorException $exception) {
+            throw new ErrorException('Unable to get width of image. Probably the image is corrupted.');
+        }
     }
 
     function resize($width, $height)
