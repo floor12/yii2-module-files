@@ -6,6 +6,8 @@
   "keywords": [
     "floor12",
     "yii2 module",
+    "files",
+    "upload",
     "yii",
     "yii2",
     "yii 2"
@@ -14,7 +16,7 @@
   "authors": [
     {
       "name": "floor12",
-      "email": "primelifecoder@gmail.com",
+      "email": "floor12@floor12.net",
       "role": "Developer"
     }
   ],
