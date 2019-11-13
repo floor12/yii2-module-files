@@ -38,14 +38,12 @@
   },
   "autoload": {
     "psr-4": {
-      "floor12\\files\\": [
-        "src/"
-      ]
+      "floor12\\files\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "floor12\\files\\tests\\": "tests/"
+      "floor12\\files\\tests\\": "tests"
     }
   },
   "repositories": [
