@@ -198,8 +198,8 @@ class DefaultController extends Controller
             $tmpName = Yii::getAlias("@runtime/" . md5(time() . $model->id));
             $image->save($tmpName, IMAGETYPE_JPEG);
             $stream = fopen($tmpName, 'rb');
-            unlink($tmpName);
             Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => "image/jpeg", 'filesize' => $model->size]);
+            @unlink($tmpName);
 
         } else {
             $stream = fopen($model->rootPath, 'rb');
