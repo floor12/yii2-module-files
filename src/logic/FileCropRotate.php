@@ -56,13 +56,15 @@ class FileCropRotate
     {
 
         $src = $this->imageCreateFromAny();
+        
+        $src = imagerotate($src, -$this->_rotated, 0);
+
         $dest = imagecreatetruecolor($this->_width, $this->_height);
 
-
         imagecopy($dest, $src, 0, 0, $this->_left, $this->_top, $this->_width, $this->_height);
-        $dest = imagerotate($dest, -$this->_rotated, 0);
 
         $newName = new PathGenerator(Yii::$app->getModule('files')->storageFullPath) . '.jpeg';
+
         $newPath = Yii::$app->getModule('files')->storageFullPath . '/' . $newName;
 
         $oldPath = $this->_file->rootPath;
@@ -70,6 +72,7 @@ class FileCropRotate
         imagejpeg($dest, $newPath, 80);
 
         imagedestroy($dest);
+
         imagedestroy($src);
 
         $this->_file->filename = $newName;
