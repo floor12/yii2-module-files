@@ -243,7 +243,6 @@ function initCropper(id, url, ratio, remove) {
 
     console.log(cropperHideCancel);
     if (cropperHideCancel == 'true') {
-        alert(1);
         $('#cropper-btn-cancel').hide();
     }
 
