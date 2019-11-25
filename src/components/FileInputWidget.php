@@ -25,21 +25,13 @@ class FileInputWidget extends InputWidget
     const VIEW_MULTI = 'multiFileInputWidget';
 
     public $uploadButtonText;
+    public $cropperHideCancel = 'false';
     public $uploadButtonClass = "btn btn-default btn-sm btn-upload";
 
     private $block_id;
     private $mode = self::MODE_SINGLE;
     private $layout = self::VIEW_SINGLE;
     private $ratio;
-
-    /** Генератор токена защиты форм
-     * @return string
-     */
-    public static function generateToken()
-    {
-        return md5(Yii::$app->getModule('files')->token_salt . Yii::$app->request->userAgent . Yii::$app->name);
-    }
-
 
     public function init()
     {
@@ -95,6 +87,7 @@ class FileInputWidget extends InputWidget
         $this->getView()->registerJs("FileRemovedText = '" . Yii::t('files', 'The file is removed') . "'", View::POS_BEGIN, 'FileRemovedText');
         $this->getView()->registerJs("FilesRemovedText = '" . Yii::t('files', 'The files are removed') . "'", View::POS_BEGIN, 'FilesRemovedText');
         $this->getView()->registerJs("FileRenamedText = '" . Yii::t('files', 'The file is renamed') . "'", View::POS_BEGIN, 'FileRenamedText');
+        $this->getView()->registerJs("cropperHideCancel = '{$this->cropperHideCancel}'", View::POS_BEGIN, 'cropperHideCancel');
 
         FileInputWidgetAsset::register($this->getView());
 
@@ -107,5 +100,13 @@ class FileInputWidget extends InputWidget
             'model' => $this->model,
             'ratio' => $this->ratio,
         ]);
+    }
+
+    /** Генератор токена защиты форм
+     * @return string
+     */
+    public static function generateToken()
+    {
+        return md5(Yii::$app->getModule('files')->token_salt . Yii::$app->request->userAgent . Yii::$app->name);
     }
 }

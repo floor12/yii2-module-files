@@ -25,6 +25,8 @@ div.floor12-files-widget-single-block button.btn-upload {
     color: #ffffff;
     background: #c0c0c0 linear-gradient(45deg, rgb(151, 151, 151) 0%, rgb(184, 184, 184) 92%);
     border: none;
+    padding: 10px;
+    border-radius: 2px;
 }
 
 div.floor12-files-widget-block button.btn-upload div.icon {

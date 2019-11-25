@@ -225,7 +225,7 @@ function initCropperLayout() {
 }
 
 function initCropper(id, url, ratio, remove) {
-    $('#cropperModal').modal();
+    $('#cropperModal').modal({keyboard: false, backdrop: 'static'});
 
     currentCroppingImageId = id;
 
@@ -239,6 +239,14 @@ function initCropper(id, url, ratio, remove) {
 
     autoCrop = false;
     aspectRatio = NaN;
+    $('#cropper-btn-cancel').show();
+
+    console.log(cropperHideCancel);
+    if (cropperHideCancel == 'true') {
+        alert(1);
+        $('#cropper-btn-cancel').hide();
+    }
+
 
     if (ratio) {
         autoCrop = true;

@@ -45,7 +45,7 @@ use floor12\files\assets\IconHelper;
             </div>
             <div class="modal-footer">
                 <div class="row">
-                    <div class="col-md-6 text-left">
+                    <div class="col-xs-6 text-left">
                         <div class="btn-group" role="group">
                             <button type="button" onclick="cropper.cropper('rotate', -90);"
                                     class="btn btn-default"><?= IconHelper::ROTATE_LEFT ?></button>
@@ -71,8 +71,8 @@ use floor12\files\assets\IconHelper;
                             </button>
                         </div>
                     </div>
-                    <div class="col-md-6 text-right">
-                        <button type="button" class="btn btn-default"
+                    <div class="col-xs-6 text-right">
+                        <button type="button" id="cropper-btn-cancel" class="btn btn-default"
                                 onclick="stopCrop()"><?= Yii::t('files', 'Cancel') ?></button>
                         <button type="button" class="btn btn-primary"
                                 onclick="cropImage()"><?= Yii::t('files', 'Save') ?></button>
