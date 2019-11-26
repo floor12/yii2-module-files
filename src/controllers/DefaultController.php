@@ -81,9 +81,9 @@ class DefaultController extends Controller
      * @param array $hashes
      * @param string $title
      */
-    public function actionZip(array $hashes, $title = 'files')
+    public function actionZip(array $hash, $title = 'files')
     {
-        $files = File::find()->where(["IN", "hash", $hashes])->all();
+        $files = File::find()->where(["IN", "hash", $hash])->all();
 
         $zip = new  ZipArchive;
         $filename = Yii::getAlias("@webroot/assets/files.zip");
