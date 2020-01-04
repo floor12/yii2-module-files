@@ -59,7 +59,6 @@ class FileCreateFromInstance
 
         }
 
-
         // Создаем модель нового файла и заполняем первоначальными данными
         $this->_model = new File();
         $this->_model->created = time();
@@ -81,6 +80,19 @@ class FileCreateFromInstance
     }
 
     /**
+     * @return string
+     */
+    public function detectType()
+    {
+        $contentTypeArray = explode('/', $this->_model->content_type);
+        if ($contentTypeArray[0] == 'image')
+            return FileType::IMAGE;
+        if ($contentTypeArray[0] == 'video')
+            return FileType::VIDEO;
+        return FileType::FILE;
+    }
+
+    /**
      * @return File
      */
 
@@ -95,19 +107,23 @@ class FileCreateFromInstance
                 $this->_instance->saveAs($this->_fullPath, false);
         }
 
+        if ($this->_model->type == FileType::IMAGE) {
+            $this->resizeAfterUpload();
+        }
+
         return $this->_model;
     }
 
-    /**
-     * @return string
-     */
-    public function detectType()
+
+    protected function resizeAfterUpload()
     {
-        $contentTypeArray = explode('/', $this->_model->content_type);
-        if ($contentTypeArray[0] == 'image')
-            return FileType::IMAGE;
-        if ($contentTypeArray[0] == 'video')
-            return FileType::VIDEO;
-        return FileType::FILE;
+        $maxWidth = $this->_owner->behaviors['files']->attributes[$this->_attribute]['maxWidth'] ?? 0;
+        $maxHeight = $this->_owner->behaviors['files']->attributes[$this->_attribute]['maxHeight'] ?? 0;
+
+        if ($maxWidth && $maxHeight) {
+            $resizer = new FileResize($this->_model, $maxWidth, $maxHeight);
+            $resizer->execute();
+        }
+
     }
 }
