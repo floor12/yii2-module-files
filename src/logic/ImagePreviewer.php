@@ -43,10 +43,12 @@ class ImagePreviewer
         if ($this->model->isSvg())
             return $this->model->getRootPath();
 
-        $this->fileName = Yii::$app->getModule('files')->cacheFullPath . $this->model->makeNameWithSize($this->model->filename, $this->width, 0);
-        $this->fileNameWebp = Yii::$app->getModule('files')->cacheFullPath . $this->model->makeNameWithSize($this->model->filename, $this->width, 0, true);
+        $this->fileName = Yii::$app->getModule('files')->cacheFullPath . DIRECTORY_SEPARATOR . $this->model->makeNameWithSize($this->model->filename,
+                $this->width, 0);
+        $this->fileNameWebp = Yii::$app->getModule('files')->cacheFullPath . DIRECTORY_SEPARATOR . $this->model->makeNameWithSize($this->model->filename,
+                $this->width, 0, true);
 
-        $this->prepareFolders();
+        $this->prepareFolder();
 
         if (!file_exists($this->fileName) || filesize($this->fileName) == 0)
             $this->createPreview();
@@ -58,24 +60,6 @@ class ImagePreviewer
             return $this->fileNameWebp;
 
         return $this->fileName;
-    }
-
-    /**
-     * @return void
-     */
-    protected function prepareFolders()
-    {
-        if (!file_exists(Yii::$app->getModule('files')->cacheFullPath))
-            mkdir(Yii::$app->getModule('files')->cacheFullPath);
-
-        preg_match('/(.+\/\d{2})\/\d{2}\//', $this->fileName, $matches);
-
-        if (!file_exists($matches[1]))
-            @mkdir($matches[1]);
-        if (!file_exists($matches[0]))
-            @mkdir($matches[0]);
-        if (!file_exists($matches[0]))
-            throw new ErrorException("Unable to create cache folder: {$matches[0]}");
     }
 
     /**
@@ -105,5 +89,28 @@ class ImagePreviewer
         $img = new SimpleImage();
         $img->load($this->fileName);
         $img->save($this->fileNameWebp, IMAGETYPE_WEBP, 70);
+    }
+
+    /**
+     * Generate all folders for storing image thumbnails cache.
+     */
+    protected function prepareFolder()
+    {
+        if (!file_exists(Yii::$app->getModule('files')->cacheFullPath))
+            mkdir(Yii::$app->getModule('files')->cacheFullPath);
+        $folders = [];
+        $lastFolder = '/';
+        $explodes = explode('/', $this->fileName);
+        array_pop($explodes);
+        if (empty($explodes))
+            return;
+        foreach ($explodes as $folder) {
+            if (empty($folder))
+                continue;
+            $lastFolder = $lastFolder . $folder . '/';
+            if (!file_exists($lastFolder))
+                mkdir($lastFolder);
+            $folders[] = $lastFolder;
+        }
     }
 }
