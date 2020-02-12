@@ -67,6 +67,8 @@ class FileBehaviour extends Behavior
                 )->execute();
 
                 if ($ids) foreach ($ids as $id) {
+                    if (empty($id))
+                        continue;
                     $file = File::findOne($id);
                     if ($file) {
                         $file->object_id = $this->owner->id;
