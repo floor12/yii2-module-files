@@ -20,6 +20,9 @@ use floor12\files\assets\IconHelper;
 use yii\db\ActiveRecord;
 use yii\helpers\Html;
 use yii\web\View;
+use \yii\bootstrap\BootstrapPluginAsset;
+
+BootstrapPluginAsset::register($this);
 
 if (YII_ENV == 'test')
     echo Html::fileInput('files', null, [
