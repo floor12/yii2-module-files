@@ -11,7 +11,6 @@ namespace floor12\files\models;
 
 use floor12\files\assets\IconHelper;
 use Yii;
-use yii\base\ErrorException;
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
 
@@ -330,13 +329,12 @@ class File extends ActiveRecord
      */
     public function getWatermark()
     {
-        $owner = new $this->class;
-
-        try {
-            return $owner->behaviors['files']->attributes[$this->field]['watermark'];
-        } catch (ErrorException $exception) {
-            return null;
-        }
+        if (
+            isset($this->behaviors['files']) &&
+            isset($this->behaviors['files']->attributes[$this->field]) &&
+            isset($this->behaviors['files']->attributes[$this->field]['watermark'])
+        )
+            $this->behaviors['files']->attributes[$this->field]['watermark'];
     }
 
     /**
