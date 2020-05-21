@@ -17,9 +17,12 @@
  */
 
 use floor12\files\assets\IconHelper;
+use yii\bootstrap\BootstrapPluginAsset;
 use yii\db\ActiveRecord;
 use yii\helpers\Html;
 use yii\web\View;
+
+BootstrapPluginAsset::register($this);
 
 if (YII_ENV == 'test') // This code is only for testing
     echo Html::fileInput('files', null, [

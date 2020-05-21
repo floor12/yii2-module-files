@@ -27,6 +27,8 @@ class SimpleImage
             $this->image = imagecreatefromgif($filename);
         } elseif ($this->image_type == IMAGETYPE_PNG) {
             $this->image = imagecreatefrompng($filename);
+        } elseif ($this->image_type == IMAGETYPE_WEBP) {
+            $this->image = imagecreatefromwebp($filename);
         }
     }
 

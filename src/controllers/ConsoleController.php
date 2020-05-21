@@ -28,7 +28,7 @@ class ConsoleController extends Controller
     function actionClean()
     {
         $time = strtotime('- 6 hours');
-        $files = File::find()->where("`object_id`=0 AND `created`<'{$time}'")->all();
+        $files = File::find()->where(['object_id' => '0'])->andWhere(['<', 'created', $time])->all();
         if ($files) foreach ($files as $file) {
             $file->delete();
         }

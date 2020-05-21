@@ -43,6 +43,8 @@ class FileBehaviour extends Behavior
         ];
     }
 
+    protected $cachedFiles = [];
+
 
     /**
      * Метод сохранения в базу связей с файлами. Вызывается после сохранения основной модели AR.
@@ -209,29 +211,34 @@ class FileBehaviour extends Behavior
                     ->all();
             }
         } else {
-            if (
-                isset($this->attributes[$att_name]['validator']) &&
-                isset($this->attributes[$att_name]['validator']['yii\validators\FileValidator']) &&
-                $this->attributes[$att_name]['validator']['yii\validators\FileValidator']->maxFiles > 1
-            )
-                return File::find()
-                    ->where(
-                        [
-                            'object_id' => $this->owner->id,
-                            'field' => $att_name,
-                            'class' => $this->owner->className()
-                        ])
-                    ->orderBy('ordering ASC')
-                    ->all();
-            else return File::find()
-                ->where(
-                    [
-                        'object_id' => $this->owner->id,
-                        'field' => $att_name,
-                        'class' => $this->owner->className()
-                    ])
-                ->orderBy('ordering ASC')
-                ->one();
+            if (!isset($this->cachedFiles[$att_name])) {
+                if (
+                    isset($this->attributes[$att_name]['validator']) &&
+                    isset($this->attributes[$att_name]['validator']['yii\validators\FileValidator']) &&
+                    $this->attributes[$att_name]['validator']['yii\validators\FileValidator']->maxFiles > 1
+                )
+                    $this->cachedFiles[$att_name] = File::find()
+                        ->where(
+                            [
+                                'object_id' => $this->owner->id,
+                                'field' => $att_name,
+                                'class' => $this->owner->className()
+                            ])
+                        ->orderBy('ordering ASC')
+                        ->all();
+                else {
+                    $this->cachedFiles[$att_name] = File::find()
+                        ->where(
+                            [
+                                'object_id' => $this->owner->id,
+                                'field' => $att_name,
+                                'class' => $this->owner->className()
+                            ])
+                        ->orderBy('ordering ASC')
+                        ->one();
+                }
+            }
+            return $this->cachedFiles[$att_name];
         }
     }
 

@@ -78,7 +78,10 @@ class ImagePreviewer
             $img->resizeToWidth($this->width);
         }
 
-        $img->save($this->fileName, $img->image_type);
+        $saveType = $img->image_type;
+        if ($saveType == IMG_WEBP || $saveType == IMG_QUADRATIC)
+            $saveType = IMG_JPEG;
+        $img->save($this->fileName, $saveType);
     }
 
     /**
