@@ -115,7 +115,7 @@ ul.dropdown-menu-file-object-multi {
 }
 
 ul.dropdown-menu-file-object-single {
-    margin-top: -20px;
+    top: 0;
 }
 
 ul.dropdown-menu-file-object > li > a {
