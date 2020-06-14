@@ -54,7 +54,7 @@ class File extends ActiveRecord
 
     public static function tableName()
     {
-        return 'file';
+        return '{{%file}}';
     }
 
     /**
@@ -218,14 +218,6 @@ class File extends ActiveRecord
     }
 
     /**
-     * @return bool
-     */
-    public function isSvg()
-    {
-        return $this->content_type == 'image/svg+xml';
-    }
-
-    /**
      * Return root path of preview
      * @return string
      */
@@ -236,6 +228,14 @@ class File extends ActiveRecord
             return $this->getRootPath();
 
         return Yii::$app->getModule('files')->storageFullPath . DIRECTORY_SEPARATOR . $this->filename . '.jpg';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSvg()
+    {
+        return $this->content_type == 'image/svg+xml';
     }
 
     /**
