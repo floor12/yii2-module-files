@@ -189,6 +189,7 @@ function sortableFiles() {
         opacity: 0.5,
         revert: 1,
         items: "div.files-btn-group",
+        connectWith: ".floor12-files-widget-list-multi"
     });
 }
 

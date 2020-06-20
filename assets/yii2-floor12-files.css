@@ -183,5 +183,8 @@ div.floor12-single-file-object-no-image {
     border: none;
 }
 
+div.floor12-files-widget-list-multi {
+    min-height: 68px;
+}
 /*progress*/
 

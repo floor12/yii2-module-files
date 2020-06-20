@@ -38,7 +38,7 @@ $doc_contents = [
          aria-expanded="false" title="<?= $model->title ?>">
 
 
-        <?= Html::hiddenInput((new ReflectionClass($model->class))->getShortName() . "[{$model->field}_ids][]", $model->id) ?>
+        <?= Html::hiddenInput((new ReflectionClass($model->class))->getShortName() . "[{$model->field}_ids][]", $model->id, ['class' => 'f12-file-input']) ?>
         <?= Html::hiddenInput((new ReflectionClass($model->class))->getShortName() . "[{$model->field}]", 1) ?>
 
         <?php if ($model->type != FileType::IMAGE): ?>
