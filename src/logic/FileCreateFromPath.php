@@ -90,18 +90,14 @@ class FileCreateFromPath
                         case 3: // 180 rotate left
                             $rotatingImage->rotateDegrees(180);
                             break;
-
-
                         case 6: // 90 rotate right
                             $rotatingImage->rotateDegrees(270);
                             break;
-
                         case 8:    // 90 rotate left
                             $rotatingImage->rotateDegrees(90);
                     }
                     $rotatingImage->save($new_path);
                 }
-
             }
             return true;
         }

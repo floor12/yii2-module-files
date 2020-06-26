@@ -8,6 +8,7 @@
 
 namespace floor12\files\logic;
 
+use floor12\files\components\SimpleImage;
 use floor12\files\models\File;
 use floor12\files\models\FileType;
 use Yii;
@@ -108,12 +109,35 @@ class FileCreateFromInstance
         }
 
         if ($this->_model->type == FileType::IMAGE) {
+            $this->rotateAfterUpload();
             $this->resizeAfterUpload();
         }
 
         return $this->_model;
     }
 
+
+    protected function rotateAfterUpload()
+    {
+        $exif = '';
+        @$exif = exif_read_data($this->_fullPath);
+        if (isset($exif['Orientation'])) {
+            $ort = $exif['Orientation'];
+            $rotatingImage = new SimpleImage();
+            $rotatingImage->load($this->_fullPath);
+            switch ($ort) {
+                case 3: // 180 rotate left
+                    $rotatingImage->rotateDegrees(180);
+                    break;
+                case 6: // 90 rotate right
+                    $rotatingImage->rotateDegrees(270);
+                    break;
+                case 8:    // 90 rotate left
+                    $rotatingImage->rotateDegrees(90);
+            }
+            $rotatingImage->save($this->_fullPath);
+        }
+    }
 
     protected function resizeAfterUpload()
     {
