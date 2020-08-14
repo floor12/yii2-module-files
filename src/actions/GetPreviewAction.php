@@ -36,7 +36,7 @@ class GetPreviewAction extends Action
         $this->width = $width;
 
         if ($width) {
-            $this->sendPreview($width);
+            $this->sendPreview($width, $webp);
         } else {
             $this->sendAsIs();
         }
