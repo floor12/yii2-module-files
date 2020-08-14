@@ -353,12 +353,12 @@ class File extends ActiveRecord
      * @return string
      * @throws \ErrorException
      */
-    public function getPreviewWebPath($width = 0, $height = 0, $webp = false)
+    public function getPreviewWebPath(int $width = 0, bool $webp = false)
     {
         if (!file_exists($this->getRootPath()))
             return null;
 
-        if ($this->type != FileType::IMAGE)
+        if (!$this->isVideo() && !$this->isImage())
             throw new \ErrorException('Requiested file is not an image and its implsible to resize it.');
 
         if (Yii::$app->getModule('files')->hostStatic)
@@ -368,36 +368,55 @@ class File extends ActiveRecord
     }
 
     /**
+     * @return bool
+     */
+    public function isVideo(): bool
+    {
+        return $this->type == FileType::VIDEO;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isImage(): bool
+    {
+        return $this->type == FileType::IMAGE;
+    }
+
+    /**
      * Creates file paths to file versions
      * @param $name
      * @param int $width
-     * @param int $height
      * @param bool $webp
      * @return string
      */
-    public function makeNameWithSize($name, $width = 0, $height = 0, $webp = false)
+    public function makeNameWithSize($name, $width = 0, $webp = false)
     {
         $extension = pathinfo($this->rootPath, PATHINFO_EXTENSION);
-        $rootPath = str_replace(".{$extension}", '', $name) . "_w" . $width . "h" . $height . ".{$extension}";
-        if ($webp)
-            $rootPath = str_replace($extension, 'webp', $rootPath);
-        return $rootPath;
+        $rootPath = str_replace(".{$extension}", '', $name) . "_w" . $width . ".{$extension}";
+        return str_replace($extension, $webp ? 'webp' : 'jpeg', $rootPath);
     }
-
 
     /**
      * Returns full path to custom preview version
      * @param int $width
-     * @param int $height
      * @param bool $webp
      * @return string
      * @throws \ErrorException
      */
-    public function getPreviewRootPath($width = 0, $height = 0, $webp = false)
+    public function getPreviewRootPath($width = 0, $webp = false)
     {
-        if ($this->type != FileType::IMAGE)
+        if (!$this->isVideo() && !$this->isImage())
             throw new \ErrorException('Requiested file is not an image and its implsible to resize it.');
-        return $this->makeNameWithSize($this->rootPath, $width, $height, $webp);
+        return $this->makeNameWithSize($this->rootPath, $width, $webp);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFile(): bool
+    {
+        return $this->type == FileType::FILE;
     }
 
 }

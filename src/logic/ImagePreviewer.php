@@ -5,7 +5,6 @@ namespace floor12\files\logic;
 
 use floor12\files\components\SimpleImage;
 use floor12\files\models\File;
-use floor12\files\models\FileType;
 use Yii;
 use yii\base\ErrorException;
 
@@ -31,8 +30,8 @@ class ImagePreviewer
         $this->width = $width;
         $this->webp = $webp;
 
-        if ($this->model->type != FileType::IMAGE)
-            throw new ErrorException('File is not an image.');
+        if (!$this->model->isImage() && !$this->model->isVideo())
+            throw new ErrorException('File is not an image or video.');
     }
 
     /**
@@ -43,15 +42,27 @@ class ImagePreviewer
         if ($this->model->isSvg())
             return $this->model->getRootPath();
 
-        $this->fileName = Yii::$app->getModule('files')->cacheFullPath . DIRECTORY_SEPARATOR . $this->model->makeNameWithSize($this->model->filename,
-                $this->width, 0);
-        $this->fileNameWebp = Yii::$app->getModule('files')->cacheFullPath . DIRECTORY_SEPARATOR . $this->model->makeNameWithSize($this->model->filename,
-                $this->width, 0, true);
+        $cachePath = Yii::$app->getModule('files')->cacheFullPath;
+        $jpegName = $this->model->makeNameWithSize($this->model->filename, $this->width);
+        $webpName = $this->model->makeNameWithSize($this->model->filename, $this->width, true);
+
+        $this->fileName = $cachePath . DIRECTORY_SEPARATOR . $jpegName;
+        $this->fileNameWebp = $cachePath . DIRECTORY_SEPARATOR . $webpName;
 
         $this->prepareFolder();
 
-        if (!file_exists($this->fileName) || filesize($this->fileName) == 0)
-            $this->createPreview();
+        $sourceImagePath = $this->model->rootPath;
+        if ($this->model->isVideo()) {
+            $sourceImagePath = $this->fileName . '.jpeg';
+            if (!is_file($sourceImagePath))
+                Yii::createObject(VideoFrameExtractor::class, [
+                    $this->model->rootPath,
+                    $sourceImagePath
+                ])->extract();
+        }
+
+        if (!is_file($this->fileName) || filesize($this->fileName) == 0)
+            $this->createPreview($sourceImagePath);
 
         if ($this->webp && !file_exists($this->fileNameWebp))
             $this->createPreviewWebp();
@@ -60,38 +71,6 @@ class ImagePreviewer
             return $this->fileNameWebp;
 
         return $this->fileName;
-    }
-
-    /**
-     * Creat JPG preview
-     */
-    protected function createPreview()
-    {
-        $img = new SimpleImage();
-        $img->load($this->model->rootPath);
-
-        $imgWidth = $img->getWidth();
-        $imgHeight = $img->getHeight();
-
-        if ($this->width && $this->width < $imgWidth) {
-            $ratio = $this->width / $imgWidth;
-            $img->resizeToWidth($this->width);
-        }
-
-        $saveType = $img->image_type;
-        if ($saveType == IMG_WEBP || $saveType == IMG_QUADRATIC)
-            $saveType = IMG_JPEG;
-        $img->save($this->fileName, $saveType);
-    }
-
-    /**
-     *  Create webp from default preview
-     */
-    protected function createPreviewWebp()
-    {
-        $img = new SimpleImage();
-        $img->load($this->fileName);
-        $img->save($this->fileNameWebp, IMAGETYPE_WEBP, 70);
     }
 
     /**
@@ -115,5 +94,37 @@ class ImagePreviewer
                 mkdir($lastFolder);
             $folders[] = $lastFolder;
         }
+    }
+
+    /**
+     * Creat JPG preview
+     */
+    protected function createPreview($sourceImagePath)
+    {
+        $img = new SimpleImage();
+        $img->load($sourceImagePath);
+
+        $imgWidth = $img->getWidth();
+        $imgHeight = $img->getHeight();
+
+        if ($this->width && $this->width < $imgWidth) {
+            $ratio = $this->width / $imgWidth;
+            $img->resizeToWidth($this->width);
+        }
+
+        $saveType = $img->image_type;
+        if ($saveType == IMG_WEBP || $saveType == IMG_QUADRATIC)
+            $saveType = IMG_JPEG;
+        $img->save($this->fileName, $saveType);
+    }
+
+    /**
+     *  Create webp from default preview
+     */
+    protected function createPreviewWebp()
+    {
+        $img = new SimpleImage();
+        $img->load($this->fileName);
+        $img->save($this->fileNameWebp, IMAGETYPE_WEBP, 70);
     }
 }

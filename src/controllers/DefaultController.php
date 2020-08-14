@@ -8,14 +8,13 @@
 
 namespace floor12\files\controllers;
 
+use floor12\files\actions\GetFileAction;
+use floor12\files\actions\GetPreviewAction;
 use floor12\files\components\FileInputWidget;
-use floor12\files\components\SimpleImage;
 use floor12\files\logic\FileCreateFromInstance;
 use floor12\files\logic\FileCropRotate;
 use floor12\files\logic\FileRename;
-use floor12\files\logic\ImagePreviewer;
 use floor12\files\models\File;
-use floor12\files\models\FileType;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
@@ -173,105 +172,21 @@ class DefaultController extends Controller
         ]);
     }
 
-
     /**
-     * Выдача файлов через контроллер.
+     * @return array|string[]
      */
-
-    public function actionGet($hash)
+    public function actions()
     {
-        $model = File::findOne(['hash' => $hash]);
-
-        if (!$model)
-            throw new NotFoundHttpException("Запрашиваемый файл не найден");
-
-        if (!file_exists($model->rootPath))
-            throw new NotFoundHttpException('Запрашиваемый файл не найден на диске.');
-
-        Yii::$app->response->headers->set('Last-Modified', date("c", $model->created));
-        Yii::$app->response->headers->set('Cache-Control', 'public, max-age=' . (60 * 60 * 24 * 15));
-
-        if ($model->type == FileType::IMAGE && $model->watermark) {
-            $image = new SimpleImage();
-            $image->load($model->rootPath);
-            $image->watermark(Yii::getAlias("@frontend/web/design/logo-big.png"));
-            $tmpName = Yii::getAlias("@runtime/" . md5(time() . $model->id));
-            $image->save($tmpName, IMAGETYPE_JPEG);
-            $stream = fopen($tmpName, 'rb');
-            Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => "image/jpeg", 'filesize' => $model->size]);
-            @unlink($tmpName);
-
-        } else {
-            $stream = fopen($model->rootPath, 'rb');
-            Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => $model->content_type, 'filesize' => $model->size]);
-        }
-
-    }
-
-    /**
-     * Выдача картинок с опциональным кропом
-     */
-
-    public function actionImage($hash, $width = null, $height = null, $webp = null)
-    {
-        $model = File::findOne(['hash' => $hash]);
-
-        if (!$model)
-            throw new NotFoundHttpException("Запрашиваемый файл не найден");
-
-        if ($model->type != FileType::IMAGE)
-            throw new NotFoundHttpException("Запрашиваемый файл не является изображением");
-
-        if (!file_exists($model->rootPath))
-            throw new NotFoundHttpException('Запрашиваемый файл не найден на диске.');
-
-        Yii::$app->response->headers->set('Last-Modified', date("c", $model->created));
-        Yii::$app->response->headers->set('Cache-Control', 'public, max-age=' . (60 * 60 * 24 * 15));
-
-
-        if ($width || $height) {
-
-            $filename = Yii::createObject(ImagePreviewer::class, [$model, $width, $webp])->getUrl();
-
-            if (!file_exists($filename))
-                throw new NotFoundHttpException('Запрашиваемый файл не найден на диске.');
-
-            $response = Yii::$app->response;
-            $response->format = Response::FORMAT_RAW;
-            $response->getHeaders()->set('Content-Type', ($webp && $model->content_type != 'image/svg+xml') ? "image/webp" : $model->content_type . '; charset=utf-8');
-
-            Yii::$app->response->headers->set('Last-Modified', date("c", $model->created));
-            Yii::$app->response->headers->set('Cache-Control', 'public, max-age=' . (60 * 60 * 24 * 15));
-            Yii::$app->response->headers->set('ETag', md5($model->created . $filename));
-
-
-            $response->sendFile($filename, $model->title, ['inline' => true]);
-
-        } else {
-            if ($model->type == FileType::IMAGE && $model->watermark) {
-                $image = new SimpleImage();
-                $image->load($model->rootPath);
-                $image->watermark(Yii::getAlias("@frontend/web/design/logo-big.png"));
-                $tmpName = Yii::getAlias("@runtime/" . md5(time() . $model->id));
-                $image->save($tmpName, IMAGETYPE_JPEG);
-                $stream = fopen($tmpName, 'rb');
-                unlink($tmpName);
-                Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => "image/jpeg", 'filesize' => $model->size]);
-
-            } else {
-                $stream = fopen($model->rootPath, 'rb');
-                Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => $model->content_type, 'filesize' => $model->size]);
-            }
-        }
-
+        return [
+            'get' => GetFileAction::class,
+            'image' => GetPreviewAction::class
+        ];
     }
 
     /*
      * Выдача файлов через контроллер.
      */
-
-    public
-    function actionPreview($hash)
+    public function actionPreview($hash)
     {
         $model = File::findOne(['hash' => $hash]);
 
