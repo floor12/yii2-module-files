@@ -13,65 +13,63 @@ use ArgumentCountError;
 use floor12\files\logic\FileCreateFromInstance;
 use floor12\files\tests\data\TestModel;
 use floor12\files\tests\TestCase;
-use yii\base\ErrorException;
+use yii\web\BadRequestHttpException;
 use yii\web\UploadedFile;
 
 class FileCreateFromInstanceTest extends TestCase
 {
-
-    private $testFilePath = "tests/data/testImage.jpg";
-    private $testFileName = "testFileName.jpg";
-    private $testOwnerClassName = "floor12\files\tests\Person";
-    private $testOwnerFieldName = "files";
-    private $storagePath = "tests/storage";
-    private $model;
-
-
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->setApp();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->clearDb();
         parent::tearDown();
     }
 
     /** Вызываем без параметров
-     * @expectedException ArgumentCountError
+     *
      */
 
     public function testNoParams()
     {
+        $this->expectException(ArgumentCountError::class);
         new FileCreateFromInstance();
     }
 
     /** Вызываем без параметров
-     * @expectedException yii\web\BadRequestHttpException
-     * @expectedExceptionMessage Attribute or class name not set.
+     *
+     *
      */
 
     public function testBadParams()
     {
+        $this->expectExceptionMessage("Attribute or class name not set.");
+        $this->expectException(\yii\web\BadRequestHttpException::class);
         $instance = new UploadedFile();
         $data = [];
         new FileCreateFromInstance($instance, $data);
     }
 
     /** Вызываем без параметров
-     * @expectedException ErrorException;
-     * @expectedExceptionMessage Attribute or class name not set.
+     *
+     *
      */
 
     public function testWrongOwnerClassname()
     {
+        $this->expectExceptionMessage("Attribute or class name not set.");
+        $this->expectException(BadRequestHttpException::class);
+
         $instance = new UploadedFile();
         $data = [
             'modelClass' => "notExistClassName",
             'attribute' => 'images',
         ];
+        $logic = new FileCreateFromInstance($instance, [], null, false);
     }
 
     /** Вызываем с нормальными параметрами
@@ -91,7 +89,7 @@ class FileCreateFromInstanceTest extends TestCase
         $this->assertTrue(file_exists($instance->tempName));
 
         $data = [
-            'modelClass' => TestModel::className(),
+            'modelClass' => TestModel::class,
             'attribute' => 'images',
         ];
         $logic = new FileCreateFromInstance($instance, $data, null, false);
@@ -101,7 +99,7 @@ class FileCreateFromInstanceTest extends TestCase
         $this->assertTrue(is_object($model));
         $this->assertFalse($model->isNewRecord);
         $this->assertTrue(file_exists($model->rootPath), $model->rootPath);
-        $this->assertTrue(file_exists($model->rootPath), $model->rootPreviewPath);
+        $this->assertTrue(file_exists($model->rootPath), $model->getPreviewWebPath());
 
 
     }

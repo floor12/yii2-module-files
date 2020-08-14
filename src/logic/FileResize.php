@@ -48,6 +48,7 @@ class FileResize
 
     /** Непосредственная обработка
      * @return bool
+     * @throws ErrorException
      */
     public function execute(): bool
     {

@@ -49,6 +49,7 @@ class FileBehaviour extends Behavior
     /**
      * Метод сохранения в базу связей с файлами. Вызывается после сохранения основной модели AR.
      * @throws ErrorException
+     * @throws \yii\db\Exception
      */
 
     public function filesSave()

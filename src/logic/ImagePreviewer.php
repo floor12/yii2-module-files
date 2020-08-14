@@ -36,6 +36,8 @@ class ImagePreviewer
 
     /**
      * @return string
+     * @throws \ErrorException
+     * @throws \yii\base\InvalidConfigException
      */
     public function getUrl()
     {
@@ -80,7 +82,6 @@ class ImagePreviewer
     {
         if (!file_exists(Yii::$app->getModule('files')->cacheFullPath))
             mkdir(Yii::$app->getModule('files')->cacheFullPath);
-        $folders = [];
         $lastFolder = '/';
         $explodes = explode('/', $this->fileName);
         array_pop($explodes);
@@ -92,12 +93,13 @@ class ImagePreviewer
             $lastFolder = $lastFolder . $folder . '/';
             if (!file_exists($lastFolder))
                 mkdir($lastFolder);
-            $folders[] = $lastFolder;
         }
     }
 
     /**
      * Creat JPG preview
+     * @param $sourceImagePath
+     * @throws ErrorException
      */
     protected function createPreview($sourceImagePath)
     {

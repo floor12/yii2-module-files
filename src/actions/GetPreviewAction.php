@@ -5,11 +5,14 @@ namespace floor12\files\actions;
 use floor12\files\logic\ImagePreviewer;
 use floor12\files\models\File;
 use Yii;
+use yii\base\Action;
+use yii\base\InvalidConfigException;
 use yii\web\NotFoundHttpException;
+use yii\web\RangeNotSatisfiableHttpException;
 use yii\web\Response;
 
 
-class GetPreviewAction extends \yii\base\Action
+class GetPreviewAction extends Action
 {
     const HEADER_CACHE_TIME = 60 * 60 * 24 * 15;
 
@@ -23,8 +26,8 @@ class GetPreviewAction extends \yii\base\Action
      * @param null $width
      * @param null $webp
      * @throws NotFoundHttpException
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\web\RangeNotSatisfiableHttpException
+     * @throws InvalidConfigException
+     * @throws RangeNotSatisfiableHttpException
      */
     public function run($hash, $width = null, $webp = null)
     {
@@ -58,10 +61,11 @@ class GetPreviewAction extends \yii\base\Action
 
     /**
      * @param $width
+     * @throws InvalidConfigException
      * @throws NotFoundHttpException
-     * @throws \yii\base\InvalidConfigException
+     * @throws RangeNotSatisfiableHttpException
      */
-    protected function sendPreview($width)
+    protected function sendPreview($width, $webp)
     {
         $filename = Yii::createObject(ImagePreviewer::class, [$this->model, $width, $webp])->getUrl();
 
@@ -81,19 +85,20 @@ class GetPreviewAction extends \yii\base\Action
     }
 
     /**
-     * @param string $coontentType
+     * @param $response
+     * @param string $contentType
      * @param string $etag
      */
-    private function setHeaders($response, string $coontentType, string $etag): void
+    private function setHeaders($response, string $contentType, string $etag): void
     {
         $response->headers->set('Last-Modified', date("c", $this->model->created));
         $response->headers->set('Cache-Control', 'public, max-age=' . self::HEADER_CACHE_TIME);
-        $response->headers->set('Content-Type', $coontentType . '; charset=utf-8');
+        $response->headers->set('Content-Type', $contentType . '; charset=utf-8');
         $response->headers->set('ETag', $etag);
     }
 
     /**
-     * @throws \yii\web\RangeNotSatisfiableHttpException
+     * @throws RangeNotSatisfiableHttpException
      */
     protected function sendAsIs()
     {

@@ -26,13 +26,13 @@ class FileCreateFromPathTest extends TestCase
     private $model;
 
 
-    /** Вызываем несуществуюий файл
-     * @expectedException ErrorException
-     * @expectedExceptionMessage File not found on disk.
+    /** Вызываем несуществующий файл
      */
 
     public function testFileNotExists()
     {
+        $this->expectExceptionMessage("File not found on disk.");
+        $this->expectException(ErrorException::class);
         new FileCreateFromPath(
             new File(),
             "wrongTestFileName.png",
@@ -44,12 +44,14 @@ class FileCreateFromPathTest extends TestCase
     }
 
     /** Вызываем несуществуюий файл
-     * @expectedException ErrorException
-     * @expectedExceptionMessage Empty params not allowed.
+     *
+     *
      */
 
     public function testEmptyParams()
     {
+        $this->expectExceptionMessage("Empty params not allowed.");
+        $this->expectException(ErrorException::class);
         new FileCreateFromPath(
             new File(),
             "wrongTestFileName.png",
@@ -61,12 +63,14 @@ class FileCreateFromPathTest extends TestCase
     }
 
     /** Пробуем дать несуществующий адрес адрес хранилища
-     * @expectedException ErrorException
-     * @expectedExceptionMessage File storage not found on disk.
+     *
+     *
      */
 
     public function testWrongStorage()
     {
+        $this->expectExceptionMessage("File storage not found on disk.");
+        $this->expectException(ErrorException::class);
         new FileCreateFromPath(
             new File(),
             $this->testFilePath,
@@ -79,12 +83,14 @@ class FileCreateFromPathTest extends TestCase
 
 
     /** Не записываемое хранилище
-     * @expectedException ErrorException
-     * @expectedExceptionMessage File storage not found on disk.
+     *
+     *
      */
 
     public function testNotWritableStorage()
     {
+        $this->expectExceptionMessage("File storage not found on disk.");
+        $this->expectException(ErrorException::class);
         new FileCreateFromPath(
             new File(),
             $this->testFilePath,

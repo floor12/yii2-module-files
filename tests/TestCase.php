@@ -9,25 +9,22 @@
 namespace floor12\files\tests;
 
 use floor12\files\tests\data\m180627_121715_files;
-use PHPUnit_Framework_TestCase;
 use Yii;
 use yii\console\Application;
+use yii\web\UrlManager;
 
-abstract class TestCase extends PHPUnit_Framework_TestCase
+abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
 
     public $sqlite = 'tests/sqlite.db';
 
-
     /**
-     * @inheritdoc
+     * Чистим за собой временную базу данных
      */
-    protected function setUp()
+    protected function clearDb()
     {
-        parent::setUp();
-        $this->mockApplication();
+        Yii::createObject(m180627_121715_files::class, [])->safeDown();
     }
-
 
     /**
      * Настраиваем основные параметры приложения: базу данных и модуль
@@ -48,25 +45,42 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
         ];
         Yii::$app->set('db', $db);
 
+        $urlManager = [
+            'class' => UrlManager::class,
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'baseUrl' => 'http://test.com',
+        ];
+        Yii::$app->set('urlManager', $urlManager);
+
         Yii::createObject(m180627_121715_files::class, [])->safeUp();
 
     }
 
     /**
-     * Чистим за собой временную базу данных
+     * @inheritdoc
      */
-    protected function clearDb()
+    protected function tearDown(): void
     {
-        Yii::createObject(m180627_121715_files::class, [])->safeDown();
+        $this->destroyApplication();
+        parent::tearDown();
+    }
+
+    /**
+     * Убиваем приложение
+     */
+    protected function destroyApplication()
+    {
+        Yii::$app = null;
     }
 
     /**
      * @inheritdoc
      */
-    protected function tearDown()
+    public function setUp(): void
     {
-        $this->destroyApplication();
-        parent::tearDown();
+        parent::setUp();
+        $this->mockApplication();
     }
 
     /**
@@ -80,14 +94,5 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
             'vendorPath' => dirname(__DIR__) . '/vendor',
             'runtimePath' => __DIR__ . '/runtime',
         ]);
-    }
-
-
-    /**
-     * Убиваем приложение
-     */
-    protected function destroyApplication()
-    {
-        Yii::$app = null;
     }
 }

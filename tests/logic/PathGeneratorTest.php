@@ -27,22 +27,22 @@ class PathGeneratorTest extends TestCase
         exec('rm -rf tests/storage/*');
     }
 
-    /**
-     * @expectedException ArgumentCountError
-     */
     public function testNoStoragePath()
     {
+        $this->expectException(ArgumentCountError::class);
         new PathGenerator();
     }
 
     /**
      * Empty storage path check
      *
-     * @expectedException ErrorException
-     * @expectedExceptionMessage Storage path not set for path generator.
+     *
+     *
      */
     public function testEmptyStoragePath()
     {
+        $this->expectException(ErrorException::class);
+        $this->expectExceptionMessage("Storage path not set for path generator.");
         new PathGenerator("");
     }
 

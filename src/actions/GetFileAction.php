@@ -6,9 +6,10 @@ use floor12\files\components\SimpleImage;
 use floor12\files\models\File;
 use floor12\files\models\FileType;
 use Yii;
+use yii\base\Action;
 use yii\web\NotFoundHttpException;
 
-class GetFileAction extends \yii\base\Action
+class GetFileAction extends Action
 {
     public function run($hash)
     {

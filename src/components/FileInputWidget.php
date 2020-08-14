@@ -29,7 +29,6 @@ class FileInputWidget extends InputWidget
     public $uploadButtonClass = "btn btn-default btn-sm btn-upload";
 
     private $block_id;
-    private $mode = self::MODE_SINGLE;
     private $layout = self::VIEW_SINGLE;
     private $ratio;
 
@@ -46,7 +45,7 @@ class FileInputWidget extends InputWidget
             isset($this->model->behaviors['files']->attributes[$this->attribute]['validator']['yii\validators\FileValidator']) &&
             $this->model->behaviors['files']->attributes[$this->attribute]['validator']['yii\validators\FileValidator']->maxFiles > 1
         ) {
-            $this->mode = self::MODE_MULTI;
+            $mode = self::MODE_MULTI;
             $this->layout = self::VIEW_MULTI;
         }
 

@@ -12,8 +12,10 @@ namespace floor12\files\controllers;
 use floor12\files\models\File;
 use floor12\files\models\FileType;
 use floor12\files\models\VideoStatus;
+use Throwable;
 use Yii;
 use yii\console\Controller;
+use yii\db\StaleObjectException;
 use yii\helpers\Console;
 
 class ConsoleController extends Controller
@@ -22,8 +24,8 @@ class ConsoleController extends Controller
     /**
      * Run `./yii files/console/clean` to remove all unlinked files more then 6 hours
      *
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     function actionClean()
     {

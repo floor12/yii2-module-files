@@ -9,6 +9,7 @@
 namespace floor12\files\models;
 
 
+use ErrorException;
 use floor12\files\assets\IconHelper;
 use Yii;
 use yii\db\ActiveRecord;
@@ -285,34 +286,34 @@ class File extends ActiveRecord
      * @return bool
      */
 
-    public function imageCreateFromAny()
-    {
-        $type = exif_imagetype($this->rootPath);
-        $allowedTypes = array(
-            1, // [] gif
-            2, // [] jpg
-            3, // [] png
-            6   // [] bmp
-        );
-        if (!in_array($type, $allowedTypes)) {
-            return false;
-        }
-        switch ($type) {
-            case 1 :
-                $im = imageCreateFromGif($this->rootPath);
-                break;
-            case 2 :
-                $im = imageCreateFromJpeg($this->rootPath);
-                break;
-            case 3 :
-                $im = imageCreateFromPng($this->rootPath);
-                break;
-            case 6 :
-                $im = imageCreateFromBmp($this->rootPath);
-                break;
-        }
-        return $im;
-    }
+//    public function imageCreateFromAny()
+//    {
+//        $type = exif_imagetype($this->rootPath);
+//        $allowedTypes = array(
+//            1, // [] gif
+//            2, // [] jpg
+//            3, // [] png
+//            6   // [] bmp
+//        );
+//        if (!in_array($type, $allowedTypes)) {
+//            return false;
+//        }
+//        switch ($type) {
+//            case 1 :
+//                $im = imageCreateFromGif($this->rootPath);
+//                break;
+//            case 2 :
+//                $im = imageCreateFromJpeg($this->rootPath);
+//                break;
+//            case 3 :
+//                $im = imageCreateFromPng($this->rootPath);
+//                break;
+//            case 6 :
+//                $im = imageCreateFromBmp($this->rootPath);
+//                break;
+//        }
+//        return $im;
+//    }
 
     /**
      * Set object_id to 0 to break link with object
@@ -334,7 +335,7 @@ class File extends ActiveRecord
             isset($this->behaviors['files']->attributes[$this->field]) &&
             isset($this->behaviors['files']->attributes[$this->field]['watermark'])
         )
-            $this->behaviors['files']->attributes[$this->field]['watermark'];
+            return $this->behaviors['files']->attributes[$this->field]['watermark'];
     }
 
     /**
@@ -348,10 +349,9 @@ class File extends ActiveRecord
     /**
      * Return webp path to preview
      * @param int $width
-     * @param int $height
      * @param bool $webp
      * @return string
-     * @throws \ErrorException
+     * @throws ErrorException
      */
     public function getPreviewWebPath(int $width = 0, bool $webp = false)
     {
@@ -359,12 +359,12 @@ class File extends ActiveRecord
             return null;
 
         if (!$this->isVideo() && !$this->isImage())
-            throw new \ErrorException('Requiested file is not an image and its implsible to resize it.');
+            throw new ErrorException('Requiested file is not an image and its implsible to resize it.');
 
         if (Yii::$app->getModule('files')->hostStatic)
-            return Yii::$app->getModule('files')->hostStatic . $this->makeNameWithSize($this->filename, $width, $height, $webp = false);
+            return Yii::$app->getModule('files')->hostStatic . $this->makeNameWithSize($this->filename, $width, $webp = false);
 
-        return Url::toRoute(['/files/default/image', 'hash' => $this->hash, 'width' => $width, 'height' => $height, 'webp' => $webp]);
+        return Url::toRoute(['/files/default/image', 'hash' => $this->hash, 'width' => $width, 'webp' => $webp]);
     }
 
     /**
@@ -402,12 +402,12 @@ class File extends ActiveRecord
      * @param int $width
      * @param bool $webp
      * @return string
-     * @throws \ErrorException
+     * @throws ErrorException
      */
     public function getPreviewRootPath($width = 0, $webp = false)
     {
         if (!$this->isVideo() && !$this->isImage())
-            throw new \ErrorException('Requiested file is not an image and its implsible to resize it.');
+            throw new ErrorException('Requiested file is not an image and its implsible to resize it.');
         return $this->makeNameWithSize($this->rootPath, $width, $webp);
     }
 

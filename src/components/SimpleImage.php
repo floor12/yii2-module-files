@@ -77,7 +77,7 @@ class SimpleImage
     {
         try {
             return imagesy($this->image);
-        } catch (ErrorException $exception) {
+        } catch (\Throwable $exception) {
             throw new ErrorException('Unable to get height of image. Probably the image is corrupted.');
         }
 
@@ -87,7 +87,7 @@ class SimpleImage
     {
         try {
             return imagesx($this->image);
-        } catch (ErrorException $exception) {
+        } catch (\Throwable $exception) {
             throw new ErrorException('Unable to get width of image. Probably the image is corrupted.');
         }
     }

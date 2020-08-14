@@ -21,7 +21,7 @@ class ClassnameEncoderTest extends TestCase
     {
         $testname = 'test\class\Name';
         $encoded = (string)new ClassnameEncoder($testname);
-        $this->assertEquals($encoded, 'test\\\\class\\\\Name');
+        $this->assertEquals('test\\\\class\\\\Name', $encoded);
     }
 
     /**

@@ -21,7 +21,7 @@
     }
   ],
   "require": {
-    "php": ">=7.0.0",
+    "php": ">=7.2",
     "ext-gd": "*",
     "ext-zip": "*",
     "ext-exif": "*",
@@ -31,10 +31,11 @@
     "floor12/yii2-notification": "*",
     "bower-asset/cropper": "*",
     "bower-asset/lightbox2": "*",
-    "bower-asset/simple-ajax-uploader": ">=2.6.7"
+    "bower-asset/simple-ajax-uploader": ">=2.6.7",
+    "ext-fileinfo": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "4.*"
+    "phpunit/phpunit": "8.*.*"
   },
   "autoload": {
     "psr-4": {

@@ -16,6 +16,7 @@ use floor12\files\logic\FileCropRotate;
 use floor12\files\logic\FileRename;
 use floor12\files\models\File;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -77,7 +78,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @param array $hashes
+     * @param array $hash
      * @param string $title
      */
     public function actionZip(array $hash, $title = 'files')
@@ -123,7 +124,8 @@ class DefaultController extends Controller
 
     /** Кропаем и поворачиваем картинку, возращая ее новый адрес.
      * @return string
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
+     * @throws \yii\base\ErrorException
      */
     public function actionCrop()
     {
@@ -133,7 +135,7 @@ class DefaultController extends Controller
     /** Переименовываем файл
      * @return string
      * @throws BadRequestHttpException
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function actionRename()
     {
@@ -144,7 +146,7 @@ class DefaultController extends Controller
     /** Создаем новый файл
      * @return string
      * @throws BadRequestHttpException
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function actionUpload()
     {
@@ -200,10 +202,10 @@ class DefaultController extends Controller
         Yii::$app->response->headers->set('Last-Modified', date("c", $model->created));
         Yii::$app->response->headers->set('Cache-Control', 'public, max-age=' . (60 * 60 * 24 * 15));
 
-        if (!file_exists($model->rootPreviewPath))
+        if (!file_exists($model->getRootPreviewPath()))
             throw new NotFoundHttpException('Preview not found.');
 
-        $response->sendFile($model->rootPreviewPath, 'preview.jpg');
+        $response->sendFile($model->getRootPreviewPath(), 'preview.jpg');
 
     }
 }

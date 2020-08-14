@@ -1,19 +1,24 @@
 <?php
 /**
- * @var $this \yii\web\View
- * @var $model \floor12\files\models\File
+ * @var $this View
+ * @var $model File
  * @var $width integer
  * @var $classPicture string
  * @var $classImg string
+ * @var $alt string
  */
+
+use floor12\files\models\File;
+use yii\web\View;
+
 ?>
 
 <picture<?= $classPicture ? " class=\"{$classPicture}\"" : NULL ?>>
     <source
             type="image/webp"
             srcset="
-                <?= $model->getPreviewWebPath($width, 0, true) ?> 1x,
-                <?= $model->getPreviewWebPath(2 * $width, 0, true) ?> 2x">
+                <?= $model->getPreviewWebPath($width, true) ?> 1x,
+                <?= $model->getPreviewWebPath(2 * $width, true) ?> 2x">
     <source
             type="image/jpeg"
             srcset="
