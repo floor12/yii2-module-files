@@ -228,7 +228,7 @@ class File extends ActiveRecord
         if ($this->isSvg())
             return $this->getRootPath();
 
-        return Yii::$app->getModule('files')->storageFullPath . DIRECTORY_SEPARATOR . $this->filename . '.jpg';
+        return Yii::$app->getModule('files')->storageFullPath . $this->filename . '.jpg';
     }
 
     /**

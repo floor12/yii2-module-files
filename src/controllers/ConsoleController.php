@@ -15,6 +15,7 @@ use floor12\files\models\VideoStatus;
 use Throwable;
 use Yii;
 use yii\console\Controller;
+use yii\db\ActiveRecord;
 use yii\db\StaleObjectException;
 use yii\helpers\Console;
 
@@ -82,13 +83,38 @@ class ConsoleController extends Controller
 
         $file->video_status = VideoStatus::CONVERTING;
         $file->save();
-        exec(Yii::$app->getModule('files')->ffmpeg . " -i {$file->rootPath} -vf scale=1280:-1 -threads 4 {$file->rootPath}.mp4");
-        @unlink($file->rootPath);
-        $file->filename = $file->filename . ".mp4";
-        $file->video_status = VideoStatus::READY;
+        $width = $this->getVideoWidth($file->class, $file->field);
+        $height = $this->getVideoHeight($file->class, $file->field);
+        $newFileName = $file->filename . ".mp4";
+        $newFilePath = $file->rootPath . ".mp4";
+        $command = Yii::$app->getModule('files')->ffmpeg . " -i {$file->rootPath} -vf scale={$width}:{$height} -threads 4 {$newFilePath}";
+        echo $command . PHP_EOL;
+        exec($command,
+            $outout, $result);
+        if ($result == 0) {
+            @unlink($file->rootPath);
+            $file->filename = $newFileName;
+            $file->video_status = VideoStatus::READY;
+        } else {
+            $file->video_status = VideoStatus::QUEUE;
+        }
         $file->save();
 
         return $this->stdout("File converted: {$file->rootPath}" . PHP_EOL, Console::FG_GREEN);
+    }
+
+    protected function getVideoWidth($classname, $field)
+    {
+        /** @var ActiveRecord $ownerClassObject */
+        $ownerClassObject = new $classname;
+        return $ownerClassObject->getBehavior('files')->attributes[$field]['videoWidth'] ?? 1280;
+    }
+
+    protected function getVideoHeight($classname, $field)
+    {
+        /** @var ActiveRecord $ownerClassObject */
+        $ownerClassObject = new $classname;
+        return $ownerClassObject->getBehavior('files')->attributes[$field]['videoHeight'] ?? -1;
     }
 
 
