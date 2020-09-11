@@ -94,6 +94,7 @@ class ConsoleController extends Controller
         if ($result == 0) {
             @unlink($file->rootPath);
             $file->filename = $newFileName;
+            $file->content_type = 'video/mp4';
             $file->video_status = VideoStatus::READY;
         } else {
             $file->video_status = VideoStatus::QUEUE;

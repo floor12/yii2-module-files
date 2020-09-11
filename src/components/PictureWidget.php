@@ -10,7 +10,7 @@ use yii\base\Widget;
 
 class PictureWidget extends Widget
 {
-    /** @var File */
+    /** @var File|null */
     public $model;
     /** @var integer */
     public $width;
@@ -26,7 +26,7 @@ class PictureWidget extends Widget
      */
     public function run(): ?string
     {
-        if (!in_array($this->model->type, [FileType::IMAGE, FileType::VIDEO]))
+        if (empty($this->model) || !in_array($this->model->type, [FileType::IMAGE, FileType::VIDEO]))
             return null;
         return $this->render('pictureWidget', [
             'model' => $this->model,
