@@ -12,7 +12,7 @@ class PictureWidget extends Widget
 {
     /** @var File|null */
     public $model;
-    /** @var integer */
+    /** @var integer|array */
     public $width;
     /** @var string */
     public $alt;
@@ -20,6 +20,8 @@ class PictureWidget extends Widget
     public $classPicture;
     /** @var string */
     public $classImg;
+    /** @var string */
+    public $view = 'pictureWidget';
 
     /**
      * @return string|null
@@ -28,7 +30,11 @@ class PictureWidget extends Widget
     {
         if (empty($this->model) || !in_array($this->model->type, [FileType::IMAGE, FileType::VIDEO]))
             return null;
-        return $this->render('pictureWidget', [
+
+        if (is_array($this->width))
+            $this->view = 'mediaPictureWidget';
+
+        return $this->render($this->view, [
             'model' => $this->model,
             'width' => $this->width,
             'alt' => $this->alt,
