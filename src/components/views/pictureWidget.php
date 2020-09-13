@@ -17,12 +17,12 @@ use yii\web\View;
     <source
             type="image/webp"
             srcset="
-                <?= $model->getPreviewWebPath($width, true) ?> 1x,
+                <?= $model->getPreviewWebPath(1.5 * $width, true) ?> 1x,
                 <?= $model->getPreviewWebPath(2 * $width, true) ?> 2x">
     <source
             type="image/jpeg"
             srcset="
-                <?= $model->getPreviewWebPath($width) ?> 1x,
+                <?= $model->getPreviewWebPath(1.5 * $width) ?> 1x,
                 <?= $model->getPreviewWebPath(2 * $width) ?> 2x">
     <img src="<?= $model->getPreviewWebPath($width) ?>" alt="<?= $alt ?>" <?= $classImg ? "class=\"{$classImg}\"" : NULL ?>>
 </picture>
