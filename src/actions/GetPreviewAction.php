@@ -31,7 +31,6 @@ class GetPreviewAction extends Action
      */
     public function run($hash, $width = null, $webp = null)
     {
-
         $this->loadAndCheckModel($hash);
         $this->width = $width;
 

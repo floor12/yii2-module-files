@@ -257,9 +257,17 @@ class File extends ActiveRecord
 
     public function getHref()
     {
-        if (Yii::$app->getModule('files')->hostStatic)
-            return Yii::$app->getModule('files')->hostStatic . $this->filename;
+        if ($this->isImage() && Yii::$app->getModule('files')->hostStatic)
+            return Yii::$app->getModule('files')->hostStatic . $this->filename . "?hash={$this->hash}";
         return Url::to(['/files/default/get', 'hash' => $this->hash]);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isImage(): bool
+    {
+        return $this->type == FileType::IMAGE;
     }
 
     /**
@@ -270,15 +278,6 @@ class File extends ActiveRecord
     {
         $this->deleteFiles();
         parent::afterDelete();
-    }
-
-    /**
-     * Delete all files
-     */
-    public function deleteFiles()
-    {
-        $extension = pathinfo($this->rootPath, PATHINFO_EXTENSION);
-        array_map('unlink', glob(str_replace(".{$extension}", '*', $this->rootPath)));
     }
 
     /**
@@ -314,6 +313,15 @@ class File extends ActiveRecord
 //        }
 //        return $im;
 //    }
+
+    /**
+     * Delete all files
+     */
+    public function deleteFiles()
+    {
+        $extension = pathinfo($this->rootPath, PATHINFO_EXTENSION);
+        array_map('unlink', glob(str_replace(".{$extension}", '*', $this->rootPath)));
+    }
 
     /**
      * Set object_id to 0 to break link with object
@@ -362,7 +370,10 @@ class File extends ActiveRecord
             throw new ErrorException('Requiested file is not an image and its implsible to resize it.');
 
         if (Yii::$app->getModule('files')->hostStatic)
-            return Yii::$app->getModule('files')->hostStatic . $this->makeNameWithSize($this->filename, $width, $webp = false);
+            return
+                Yii::$app->getModule('files')->hostStatic .
+                $this->makeNameWithSize($this->filename, $width, $webp) .
+                "?hash={$this->hash}&width={$width}&webp=" . intval($webp);
 
         return Url::toRoute(['/files/default/image', 'hash' => $this->hash, 'width' => $width, 'webp' => $webp]);
     }
@@ -373,14 +384,6 @@ class File extends ActiveRecord
     public function isVideo(): bool
     {
         return $this->type == FileType::VIDEO;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isImage(): bool
-    {
-        return $this->type == FileType::IMAGE;
     }
 
     /**
