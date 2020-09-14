@@ -19,7 +19,7 @@ use yii\web\View;
                 type="image/webp"
                 media='(<?= $widthMediaQuery ?>)'
                 srcset="
-                <?= $model->getPreviewWebPath($widthValue, true) ?> 1x,
+                <?= $model->getPreviewWebPath(1.5 * $widthValue, true) ?> 1x,
                 <?= $model->getPreviewWebPath(2 * $widthValue, true) ?> 2x">
     <?php } ?>
     <?php foreach ($width as $widthMediaQuery => $widthValue) { ?>
@@ -27,7 +27,7 @@ use yii\web\View;
                 type="image/jpeg"
                 media='(<?= $widthMediaQuery ?>)'
                 srcset="
-                <?= $model->getPreviewWebPath($widthValue) ?> 1x,
+                <?= $model->getPreviewWebPath(1.5 * $widthValue) ?> 1x,
                 <?= $model->getPreviewWebPath(2 * $widthValue) ?> 2x">
     <?php } ?>
     <img src="<?= $model->getPreviewWebPath(end($width)) ?>" alt="<?= $alt ?>" <?= $classImg ? "class=\"{$classImg}\"" : NULL ?>>
