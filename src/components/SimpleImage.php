@@ -25,8 +25,10 @@ class SimpleImage
             $this->image = imagecreatefromjpeg($filename);
         } elseif ($this->image_type == IMAGETYPE_GIF) {
             $this->image = imagecreatefromgif($filename);
+            imageSaveAlpha($this->image,true);
         } elseif ($this->image_type == IMAGETYPE_PNG) {
             $this->image = imagecreatefrompng($filename);
+            imageSaveAlpha($this->image,true);
         } elseif ($this->image_type == IMAGETYPE_WEBP) {
             $this->image = imagecreatefromwebp($filename);
         }
