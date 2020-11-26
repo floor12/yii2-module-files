@@ -257,8 +257,6 @@ class File extends ActiveRecord
 
     public function getHref()
     {
-        if ($this->isImage() && Yii::$app->getModule('files')->hostStatic)
-            return Yii::$app->getModule('files')->hostStatic . $this->filename . "?hash={$this->hash}";
         return Url::to(['/files/default/get', 'hash' => $this->hash]);
     }
 
