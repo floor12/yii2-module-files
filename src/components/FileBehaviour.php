@@ -204,13 +204,10 @@ class FileBehaviour extends Behavior
     {
         if (isset($this->_values[$att_name])) {
             unset($this->_values[$att_name][0]);
-            if (sizeof($this->_values[$att_name])) {
-                $order = new Expression('FIELD(id,' . implode(',', $this->_values[$att_name]) . ') ASC');
-                return File::find()
-                    ->where(['IN', 'id', $this->_values[$att_name]])
-                    ->orderBy($order)
-                    ->all();
-            }
+            if (sizeof($this->_values[$att_name]))
+                return array_map(function ($fileId) {
+                    return File::findOne($fileId);
+                }, $this->_values[$att_name]);
         } else {
             if (!isset($this->cachedFiles[$att_name])) {
                 if (
