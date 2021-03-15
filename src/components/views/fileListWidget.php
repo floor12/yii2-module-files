@@ -9,6 +9,7 @@
  * @var $title string
  * @var $zipTitle string
  * @var $downloadAll bool
+ * @var $lightboxKey string
  * @var $files File[]
  */
 
@@ -25,7 +26,10 @@ use yii\web\View;
         <label><?= $title ?></label><br>
     <?php endif; ?>
     <?php foreach ($files as $file) {
-        echo $this->render('_fileListWidget', ['model' => $file]);
+        echo $this->render('_fileListWidget', [
+            'model' => $file,
+            'lightboxKey' => $lightboxKey
+        ]);
     } ?>
     <?php if ($downloadAll && sizeof($files) > 1) echo Html::a(IconHelper::DOWNLOAD . " " .
         Yii::t('files', 'Download all'),

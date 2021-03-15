@@ -23,13 +23,19 @@ class FileListWidget extends Widget
     public $zipTitle = 'files';
     public $downloadAll = false;
     public $passFirst = false;
+    public $lightboxKey;
 
     /**
      * @inheritDoc
      */
     public function init()
     {
+        if (empty($this->files))
+            return null;
         Yii::$app->getModule('files')->registerTranslations();
+        if (empty($this->lightboxKey)) {
+            $this->lightboxKey = $this->files[0]->field . '-' . $this->files[0]->object_id;
+        }
         parent::init();
     }
 
@@ -47,14 +53,13 @@ class FileListWidget extends Widget
         if ($this->passFirst && sizeof($this->files) > 0)
             $this->files = array_slice($this->files, 1);
 
-        if (empty($this->files))
-            return null;
 
         return $this->render('fileListWidget', [
             'files' => $this->files,
             'zipTitle' => $this->zipTitle,
             'title' => $this->title,
             'downloadAll' => $this->downloadAll,
+            'lightboxKey' => $this->lightboxKey,
         ]);
     }
 }

@@ -36,7 +36,9 @@ class FileInputWidget extends InputWidget
     {
         $this->registerTranslations();
         $this->block_id = rand(9999999, 999999999);
-        $this->uploadButtonText = Yii::t('files', 'Upload');
+
+        if (!$this->uploadButtonText)
+            $this->uploadButtonText = Yii::t('files', 'Upload');
 
         $this->ratio = $this->model->getBehavior('files')->attributes[$this->attribute]['ratio'] ?? null;
 

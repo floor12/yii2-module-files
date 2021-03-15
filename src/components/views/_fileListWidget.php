@@ -7,7 +7,7 @@
  *
  * @var $this View
  * @var $model File
- *
+ * @var $lightboxKey string
  */
 
 use floor12\files\assets\IconHelper;
@@ -36,7 +36,7 @@ $doc_contents = [
            class="floor12-file-object"
            style="background-image: url(<?= $model->href ?>)" data-toggle="dropdown" aria-haspopup="true"
            aria-expanded="false" title="<?= $model->title ?>"
-           data-lightbox="yii2-files-images-<?= $model->field ?>-<?= $model->object_id ?>"></a>
+           data-lightbox="<?= $lightboxKey ?>"></a>
 
 
     <?php elseif ($model->content_type == 'application/pdf'): ?>
