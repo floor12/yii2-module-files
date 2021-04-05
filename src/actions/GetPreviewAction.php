@@ -34,7 +34,9 @@ class GetPreviewAction extends Action
         $this->loadAndCheckModel($hash);
         $this->width = $width;
 
-        if ($width) {
+        if ($width &&
+            $this->model->content_type !== 'image/svg+xml' &&
+            $this->model->content_type !== 'image/svg') {
             $this->sendPreview($width, $webp);
         } else {
             $this->sendAsIs();
