@@ -8,6 +8,7 @@
  * @var $this View
  * @var $model File
  * @var $lightboxKey string
+ * @var $allowImageSrcDownload bool
  */
 
 use floor12\files\assets\IconHelper;
@@ -26,18 +27,23 @@ $doc_contents = [
 
 
 ?>
-<div class="btn-group files-btn-group">
+<a class="btn-group files-btn-group">
 
     <?php if ($model->type == FileType::IMAGE): ?>
-
-        <a data-title="<?= $model->title ?>"
-           href="<?= $model->href ?>"
-           data-hash="<?= $model->hash ?>"
-           class="floor12-file-object"
-           style="background-image: url(<?= $model->href ?>)" data-toggle="dropdown" aria-haspopup="true"
-           aria-expanded="false" title="<?= $model->title ?>"
-           data-lightbox="<?= $lightboxKey ?>"></a>
-
+        <div class="floor12-file-object-wrapper">
+            <?php if ($allowImageSrcDownload === true) { ?>
+                <a href="<?= $model->href ?>" target="_blank" data-pjax="0" class="files-download-btn">
+                    <?= IconHelper::DOWNLOAD ?>
+                </a>
+            <?php } ?>
+            <a data-title="<?= $model->title ?>"
+               href="<?= $model->href ?>"
+               data-hash="<?= $model->hash ?>"
+               class="floor12-file-object"
+               style="background-image: url(<?= $model->href ?>)" data-toggle="dropdown" aria-haspopup="true"
+               aria-expanded="false" title="<?= $model->title ?>"
+               data-lightbox="<?= $lightboxKey ?>"></a>
+        </div>
 
     <?php elseif ($model->content_type == 'application/pdf'): ?>
         <a href="<?= $model->href ?>" target="_blank" data-pjax="0">
@@ -82,8 +88,5 @@ $doc_contents = [
         </ul>
 
     <?php endif; ?>
-
-
-</div>
 
 

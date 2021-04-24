@@ -23,6 +23,7 @@ class FileListWidget extends Widget
     public $zipTitle = 'files';
     public $downloadAll = false;
     public $passFirst = false;
+    public $allowImageSrcDownload = false;
     public $lightboxKey;
 
     /**
@@ -60,6 +61,7 @@ class FileListWidget extends Widget
             'title' => $this->title,
             'downloadAll' => $this->downloadAll,
             'lightboxKey' => $this->lightboxKey,
+            'allowImageSrcDownload' => $this->allowImageSrcDownload,
         ]);
     }
 }

@@ -10,6 +10,7 @@
  * @var $zipTitle string
  * @var $downloadAll bool
  * @var $lightboxKey string
+ * @var $allowImageSrcDownload bool
  * @var $files File[]
  */
 
@@ -28,7 +29,8 @@ use yii\web\View;
     <?php foreach ($files as $file) {
         echo $this->render('_fileListWidget', [
             'model' => $file,
-            'lightboxKey' => $lightboxKey
+            'lightboxKey' => $lightboxKey,
+            'allowImageSrcDownload' => $allowImageSrcDownload
         ]);
     } ?>
     <?php if ($downloadAll && sizeof($files) > 1) echo Html::a(IconHelper::DOWNLOAD . " " .

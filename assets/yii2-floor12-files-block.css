@@ -29,3 +29,22 @@ div.floor12-file-object div.icon {
 div.files-block {
     padding: 5px 0;
 }
+
+
+div.floor12-file-object-wrapper {
+    position: relative;
+    float: left;
+}
+
+div.files-block a.files-download-btn {
+    position: absolute;
+    background: #d5d5d5c7;
+    color: #555;
+    margin: 0;
+    font-size: 17px;
+    padding: 3px 8px 1px;
+    display: block;
+    border-bottom-left-radius: 5px;
+    top: 0;
+    right: 11px;
+}
