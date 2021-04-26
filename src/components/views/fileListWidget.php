@@ -37,7 +37,7 @@ use yii\web\View;
         } ?>
         <?php if ($downloadAll && sizeof($files) > 1) { ?>
             <li>
-                <a class="f12-files-btn-donwload"
+                <a class="f12-files-btn-download"
                    onclick="filesDownloadAll('<?= $zipTitle ?>',event,'<?= Url::toRoute(['/files/default/zip']) ?>')">
                     <?= IconHelper::DOWNLOAD ?>
                     <?= Yii::t('files', 'Download all') ?>

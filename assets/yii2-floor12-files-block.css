@@ -34,7 +34,9 @@ div.files-block > ul {
         text-overflow: ellipsis;
         font-size: 8px;
         margin: 3px 5px;
-        text-align: center; }
+        text-align: center;
+        overflow-wrap: break-word;
+        max-width: 65px; }
     div.files-block > ul li a.files-download-btn {
       position: absolute;
       top: 0;
@@ -43,9 +45,8 @@ div.files-block > ul {
       background: #ffffffc4;
       z-index: 10;
       border-bottom-left-radius: 3px; }
-    div.files-block > ul li a.f12-files-btn-donwload {
+    div.files-block > ul li a.f12-files-btn-download {
       border: 0;
-      padding: 0;
       background: #e9e9e9;
       padding: 4px 10px;
       border-radius: 2px;
