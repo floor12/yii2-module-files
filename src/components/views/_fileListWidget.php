@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: floor12
@@ -27,66 +28,34 @@ $doc_contents = [
 
 
 ?>
-<a class="btn-group files-btn-group">
+<li>
+    <?php if ($model->type == FileType::IMAGE) { ?>
 
-    <?php if ($model->type == FileType::IMAGE): ?>
-        <div class="floor12-file-object-wrapper">
-            <?php if ($allowImageSrcDownload === true) { ?>
-                <a href="<?= $model->href ?>" target="_blank" data-pjax="0" class="files-download-btn">
-                    <?= IconHelper::DOWNLOAD ?>
-                </a>
-            <?php } ?>
-            <a data-title="<?= $model->title ?>"
-               href="<?= $model->href ?>"
-               data-hash="<?= $model->hash ?>"
-               class="floor12-file-object"
-               style="background-image: url(<?= $model->href ?>)" data-toggle="dropdown" aria-haspopup="true"
-               aria-expanded="false" title="<?= $model->title ?>"
-               data-lightbox="<?= $lightboxKey ?>"></a>
-        </div>
+        <?php if ($allowImageSrcDownload === true) { ?>
+            <a href="<?= $model->href ?>" target="_blank" data-pjax="0" class="files-download-btn">
+                <?= IconHelper::DOWNLOAD ?>
+            </a>
+        <?php } ?>
 
-    <?php elseif ($model->content_type == 'application/pdf'): ?>
-        <a href="<?= $model->href ?>" target="_blank" data-pjax="0">
-            <div data-title="<?= $model->title ?>"
-                 class="floor12-file-object"
-                 data-hash="<?= $model->hash ?>"
-                 title="<?= $model->title ?>">
+        <a data-title="<?= $model->title ?>" href="<?= $model->href ?>" data-hash="<?= $model->hash ?>"
+           class="f12-file-object" style="background-image: url(<?= $model->href ?>)" title=" <?= $model->title ?>"
+           data-lightbox="<?= $lightboxKey ?>"></a>
 
-                <div class="icon"><?= $model->icon ?></div>
-                <?= $model->title ?>
-            </div>
+
+    <?php } else { ?>
+
+        <?php if (Yii::$app->getModule('files')->allowOfficePreview && in_array($model->content_type, $doc_contents)) { ?>
+            <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= Yii::$app->request->hostInfo . $model->href ?>"
+               target="_blank" data-pjax="0" class="files-download-btn">
+                <?= IconHelper::VIEW ?>
+            </a>
+        <?php } ?>
+
+        <a href="<?= $model->href ?>" target="_blank" data-pjax="0" data-title="<?= $model->title ?>"
+           class="f12-file-object" data-hash="<?= $model->hash ?>" title="<?= $model->title ?>">
+            <?= $model->icon ?>
+            <span><?= $model->title ?></span>
         </a>
-    <?php else: ?>
 
-
-        <div data-title="<?= $model->title ?>"
-             class="floor12-file-object"
-             data-hash="<?= $model->hash ?>"
-             data-toggle="dropdown" aria-haspopup="true"
-             aria-expanded="false" title="<?= $model->title ?>">
-
-            <div class="icon"><?= $model->icon ?></div>
-            <?= $model->title ?>
-        </div>
-
-        <ul class="dropdown-menu dropdown-menu-file-object dropdown-menu-file-object-multi">
-            <li>
-                <a href="<?= $model->href ?>" target="_blank" data-pjax="0">
-                    <?= IconHelper::DOWNLOAD ?>
-                    <?= Yii::t('files', 'Download') ?>
-                </a>
-            </li>
-            <?php if (Yii::$app->getModule('files')->allowOfficePreview && in_array($model->content_type, $doc_contents)): ?>
-                <li>
-                    <a href="https://view.officeapps.live.com/op/view.aspx?src=<?= Yii::$app->request->hostInfo . $model->href ?>"
-                       target="_blank" data-pjax="0">
-                        <?= IconHelper::VIEW ?>
-                        <?= Yii::t('files', 'View') ?>
-                    </a>
-                </li>
-            <?php endif; ?>
-        </ul>
-
-    <?php endif; ?>
-
-
+    <?php } ?>
+</li>
