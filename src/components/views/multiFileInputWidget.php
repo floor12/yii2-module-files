@@ -37,7 +37,7 @@ if (YII_ENV == 'test')
     ]) ?>
 
 <div class="floor12-files-widget-block" id="files-widget-block_<?= $block_id ?>" data-ratio="<?= $ratio ?>">
-    <button class="<?= $uploadButtonClass ?>">
+    <button class="<?= $uploadButtonClass ?>" type="button">
         <div class="icon"><?= IconHelper::PLUS ?></div>
         <?= $uploadButtonText ?>
     </button>
