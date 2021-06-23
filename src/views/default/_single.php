@@ -18,7 +18,7 @@ use yii\helpers\Html;
 use yii\web\View;
 
 if (is_array($model))
-    $model = $model[0];
+    $model = $model[array_key_first($model)];
 
 $doc_contents = [
     'application/msword',
