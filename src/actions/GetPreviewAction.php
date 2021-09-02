@@ -18,6 +18,8 @@ class GetPreviewAction extends Action
 
     /** @var int */
     protected $width;
+    /**@var int */
+    protected $quality;
     /** @var File */
     protected $model;
 
@@ -29,15 +31,17 @@ class GetPreviewAction extends Action
      * @throws InvalidConfigException
      * @throws RangeNotSatisfiableHttpException
      */
-    public function run($hash, $width = null, $webp = null)
+    public function run($hash, $width = null, $webp = null, $quality = 75)
     {
         $this->loadAndCheckModel($hash);
         $this->width = $width;
+        $this->quality = $quality;
+
 
         if ($width &&
             $this->model->content_type !== 'image/svg+xml' &&
             $this->model->content_type !== 'image/svg') {
-            $this->sendPreview($width, $webp);
+            $this->sendPreview($width, $webp, $quality);
         } else {
             $this->sendAsIs();
         }
@@ -66,10 +70,9 @@ class GetPreviewAction extends Action
      * @throws NotFoundHttpException
      * @throws RangeNotSatisfiableHttpException
      */
-    protected function sendPreview($width, $webp)
+    protected function sendPreview($width, $webp, $quality)
     {
-        $filename = Yii::createObject(ImagePreviewer::class, [$this->model, $width, $webp])->getUrl();
-
+        $filename = Yii::createObject(ImagePreviewer::class, [$this->model, $width, $webp, $quality])->getUrl();
         if (!file_exists($filename))
             throw new NotFoundHttpException('Запрашиваемый файл не найден на диске.');
 
