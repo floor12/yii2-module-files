@@ -128,14 +128,17 @@ class FileCreateFromInstance
             switch ($ort) {
                 case 3: // 180 rotate left
                     $rotatingImage->rotateDegrees(180);
+                    $rotatingImage->save($this->_fullPath);
                     break;
                 case 6: // 90 rotate right
                     $rotatingImage->rotateDegrees(270);
+                    $rotatingImage->save($this->_fullPath);
                     break;
                 case 8:    // 90 rotate left
                     $rotatingImage->rotateDegrees(90);
+                    $rotatingImage->save($this->_fullPath);
             }
-            $rotatingImage->save($this->_fullPath);
+
         }
     }
 
