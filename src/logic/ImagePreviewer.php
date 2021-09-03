@@ -24,12 +24,11 @@ class ImagePreviewer
      * @param bool $webp
      * @throws ErrorException
      */
-    public function __construct(File $model, int $width, $webp = false, $quality = 75)
+    public function __construct(File $model, int $width, $webp = false)
     {
         $this->model = $model;
         $this->width = $width;
         $this->webp = $webp;
-        $this->quality = $quality;
 
         if (!$this->model->isImage() && !$this->model->isVideo())
             throw new ErrorException('File is not an image or video.');
@@ -46,8 +45,8 @@ class ImagePreviewer
             return $this->model->getRootPath();
 
         $cachePath = Yii::$app->getModule('files')->cacheFullPath;
-        $jpegName = $this->model->makeNameWithSize($this->model->filename, $this->width, false, $this->quality);
-        $webpName = $this->model->makeNameWithSize($this->model->filename, $this->width, true, $this->quality);
+        $jpegName = $this->model->makeNameWithSize($this->model->filename, $this->width);
+        $webpName = $this->model->makeNameWithSize($this->model->filename, $this->width, true);
 
         $this->fileName = $cachePath . DIRECTORY_SEPARATOR . $jpegName;
         $this->fileNameWebp = $cachePath . DIRECTORY_SEPARATOR . $webpName;
@@ -118,7 +117,7 @@ class ImagePreviewer
         $saveType = $img->image_type;
         if ($saveType == IMG_WEBP || $saveType == IMG_QUADRATIC)
             $saveType = IMG_JPEG;
-        $img->save($this->fileName, $saveType, $this->quality);
+        $img->save($this->fileName, $saveType);
     }
 
     /**
@@ -128,6 +127,6 @@ class ImagePreviewer
     {
         $img = new SimpleImage();
         $img->load($this->fileName);
-        $img->save($this->fileNameWebp, IMAGETYPE_WEBP, $this->quality);
+        $img->save($this->fileNameWebp, IMAGETYPE_WEBP, 70);
     }
 }

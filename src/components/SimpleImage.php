@@ -25,10 +25,10 @@ class SimpleImage
             $this->image = imagecreatefromjpeg($filename);
         } elseif ($this->image_type == IMAGETYPE_GIF) {
             $this->image = imagecreatefromgif($filename);
-            imageSaveAlpha($this->image, true);
+            imageSaveAlpha($this->image,true);
         } elseif ($this->image_type == IMAGETYPE_PNG) {
             $this->image = imagecreatefrompng($filename);
-            imageSaveAlpha($this->image, true);
+            imageSaveAlpha($this->image,true);
         } elseif ($this->image_type == IMAGETYPE_WEBP) {
             $this->image = imagecreatefromwebp($filename);
         }
@@ -49,7 +49,7 @@ class SimpleImage
             $transparent = imagecolorallocatealpha($dst, 255, 255, 255, 127);
             imagefilledrectangle($dst, 0, 0, imagesx($this->image), imagesy($this->image), $transparent);
             imagecopy($dst, $this->image, 0, 0, 0, 0, imagesx($this->image), imagesy($this->image));
-            imagewebp($dst, $filename, $compression);
+            imagewebp($dst, $filename);
         }
 
         if ($permissions != null) {

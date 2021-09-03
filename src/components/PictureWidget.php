@@ -22,8 +22,6 @@ class PictureWidget extends Widget
     public $classImg;
     /** @var string */
     public $view = 'pictureWidget';
-    /** @var integer */
-    public $quality = 75;
 
     /**
      * @return string|null
@@ -39,7 +37,6 @@ class PictureWidget extends Widget
         return $this->render($this->view, [
             'model' => $this->model,
             'width' => $this->width,
-            'quality' => $this->quality,
             'alt' => $this->alt,
             'classPicture' => $this->classPicture,
             'classImg' => $this->classImg,

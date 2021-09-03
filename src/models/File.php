@@ -359,7 +359,7 @@ class File extends ActiveRecord
      * @return string
      * @throws ErrorException
      */
-    public function getPreviewWebPath(int $width = 0, bool $webp = false, $quality = 75)
+    public function getPreviewWebPath(int $width = 0, bool $webp = false)
     {
         if (!file_exists($this->getRootPath()))
             return null;
@@ -370,10 +370,10 @@ class File extends ActiveRecord
         if (Yii::$app->getModule('files')->hostStatic)
             return
                 Yii::$app->getModule('files')->hostStatic .
-                $this->makeNameWithSize($this->filename, $width, $webp, $quality) .
-                "?hash={$this->hash}&width={$width}&webp=" . intval($webp) . '&quality=' . $quality;
+                $this->makeNameWithSize($this->filename, $width, $webp) .
+                "?hash={$this->hash}&width={$width}&webp=" . intval($webp);
 
-        return Url::toRoute(['/files/default/image', 'hash' => $this->hash, 'width' => $width, 'webp' => $webp, 'quality' => $quality]);
+        return Url::toRoute(['/files/default/image', 'hash' => $this->hash, 'width' => $width, 'webp' => $webp]);
     }
 
     /**
@@ -391,10 +391,10 @@ class File extends ActiveRecord
      * @param bool $webp
      * @return string
      */
-    public function makeNameWithSize($name, $width = 0, $webp = false, $quality = 75)
+    public function makeNameWithSize($name, $width = 0, $webp = false)
     {
         $extension = pathinfo($this->rootPath, PATHINFO_EXTENSION);
-        $rootPath = str_replace(".{$extension}", '', $name) . "_w{$width}_{$quality}.{$extension}";
+        $rootPath = str_replace(".{$extension}", '', $name) . "_w" . $width . ".{$extension}";
         return str_replace($extension, $webp ? 'webp' : 'jpeg', $rootPath);
     }
 
