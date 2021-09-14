@@ -146,7 +146,7 @@ div.floor12-single-file-ratio {
 }
 
 div#cropperModal {
-    z-index: 9999;
+    z-index: 999999999;
 }
 
 #cropperArea {
@@ -166,7 +166,7 @@ div#cropperModal {
     border-radius: 3px;
     box-shadow: 0 1px 4px #00000024;
     display: none;
-    z-index: 99999;
+    z-index: 999999999;
 }
 
 .input-group-btn .btn {
