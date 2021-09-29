@@ -69,7 +69,7 @@ div.floor12-file-object .floor12-file-percents {
     font-weight: bold;
 }
 
-div.floor12-file-object svg {
+div.floor12-file-object svg.progress-circle {
     transform: rotate(-90deg);
 }
 

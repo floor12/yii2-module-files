@@ -98,7 +98,7 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
         data: data,
         onSubmit:
             function (filename, extension, data) {
-                var svg = '\t<svg width="60" height="60" viewBox="0 0 60 60">\n' +
+                var svg = '\t<svg class="progress-circle" width="60" height="60" viewBox="0 0 60 60">\n' +
                     '\t\t<circle cx="30" cy="30" r="27" fill="none" stroke="#ccc" stroke-width="5" />\n' +
                     '\t\t<circle id="progress-circle" cx="30" cy="30" r="27" fill="none" stroke="#666" stroke-width="5" stroke-dasharray="169.646" stroke-dashoffset="169.646" />\n' +
                     '\t</svg>';
