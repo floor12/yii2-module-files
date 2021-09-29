@@ -84,6 +84,13 @@ div.floor12-file-object div.file-icon {
     color: #787878;
 }
 
+div.floor12-file-object div.file-icon svg {
+    width: 1em;
+    height: 1em;
+    margin: 6px 0 0 0;
+    vertical-align: -.125em;
+}
+
 div.floor12-file-object-image {
     background-size: cover;
     background-position: center;
@@ -186,5 +193,6 @@ div.floor12-single-file-object-no-image {
 div.floor12-files-widget-list-multi {
     min-height: 68px;
 }
+
 /*progress*/
 
