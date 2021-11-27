@@ -58,6 +58,8 @@ var observer = new MutationObserver(function (mutations) {
     updateProgressCircle(percent, btnGroup);
 });
 
+var lastUploader = null;
+
 function Yii2FilesUploaderSet(id, className, attribute, scenario) {
 
     var mode = 'multi';
@@ -164,7 +166,7 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
         //     focusClass: 'ui-state-focus',
         //     disabledClass: 'ui-state-disabled',
     });
-
+    lastUploader = uploader;
 }
 
 function generateId(filename) {

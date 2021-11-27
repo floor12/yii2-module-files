@@ -10,6 +10,7 @@
  * @var $uploadButtonClass string
  * @var $block_id integer
  * @var $attribute string
+ * @var $className string
  * @var $scenario string
  * @var $model ActiveRecord
  * @var $ratio float
@@ -17,10 +18,10 @@
  */
 
 use floor12\files\assets\IconHelper;
+use yii\bootstrap\BootstrapPluginAsset;
 use yii\db\ActiveRecord;
 use yii\helpers\Html;
 use yii\web\View;
-use \yii\bootstrap\BootstrapPluginAsset;
 
 BootstrapPluginAsset::register($this);
 
@@ -36,13 +37,15 @@ if (YII_ENV == 'test')
 
     ]) ?>
 
-<div class="floor12-files-widget-block" id="files-widget-block_<?= $block_id ?>" data-ratio="<?= $ratio ?>">
+<div class="floor12-files-widget-block" id="files-widget-block_<?= $block_id ?>" data-ratio="<?= $ratio ?>"
+     data-classname="<?= $className ?>"
+     data-attribute="<?= $attribute ?>">
     <button class="<?= $uploadButtonClass ?>" type="button">
         <div class="icon"><?= IconHelper::PLUS ?></div>
         <?= $uploadButtonText ?>
     </button>
     <?= Html::hiddenInput((new ReflectionClass($model))->getShortName() . "[{$attribute}_ids][]", null) ?>
-    <div class="floor12-files-widget-list floor12-files-widget-list-multi">
+    <div class="floor12-files-widget-list floor12-files-widget-list-multi" data-field="<?= $attribute ?>">
         <?php if ($model->$attribute) foreach ($model->$attribute as $file) echo $this->render('@vendor/floor12/yii2-module-files/src/views/default/_file', ['model' => $file, 'ratio' => $ratio]) ?>
     </div>
     <div class="clearfix"></div>

@@ -93,6 +93,7 @@ class FileInputWidget extends InputWidget
         FileInputWidgetAsset::register($this->getView());
 
         return $this->render($this->layout, [
+            'className' => $this->model->classname(),
             'uploadButtonText' => $this->uploadButtonText,
             'uploadButtonClass' => $this->uploadButtonClass,
             'block_id' => $this->block_id,

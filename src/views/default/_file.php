@@ -28,11 +28,14 @@ $doc_contents = [
 
 
 ?>
+
 <div class="btn-group files-btn-group">
 
     <div data-title="<?= $model->title ?>" id="yii2-file-object-<?= $model->id ?>"
          class="dropdown-toggle btn-group floor12-file-object <?= ($model->type == FileType::IMAGE) ? "floor12-file-object-image" : NULL ?>"
          style="<?= ($model->type == FileType::IMAGE) ? "background-image: url(" . $model->getPreviewWebPath(160) . ")" : NULL ?>"
+         data-filename="<?= $model->getHref() ?>"
+         data-title="<?= $model->title ?>"
          data-toggle="dropdown"
          aria-haspopup="true"
          aria-expanded="false" title="<?= $model->title ?>">
