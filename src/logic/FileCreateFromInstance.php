@@ -68,13 +68,13 @@ class FileCreateFromInstance
 
         $this->_model->filename = new PathGenerator(Yii::$app->getModule('files')->storageFullPath) . '.' . $this->_instance->extension;
         $this->_model->title = $this->_instance->name;
-        $this->_model->content_type = $this->_instance->type;
+        $this->_model->content_type = \yii\helpers\FileHelper::getMimeType($this->_instance->tempName);
         $this->_model->size = $this->_instance->size;
         $this->_model->type = $this->detectType();
         if ($identity)
             $this->_model->user_id = $identity->getId();
         if ($this->_model->type == FileType::VIDEO)
-            $this->_model->video_status = 0;
+            $this->_model->video_s1tatus = 0;
 
         //Генерируем полный новый адрес сохранения файла
         $this->_fullPath = Yii::$app->getModule('files')->storageFullPath . DIRECTORY_SEPARATOR . $this->_model->filename;
