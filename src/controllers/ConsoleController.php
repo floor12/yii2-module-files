@@ -78,7 +78,7 @@ class ConsoleController extends Controller
 
     private function checkFolderItem($string)
     {
-        $ignoreItems = ['.', '..', '.gitignore'];
+        $ignoreItems = ['.', '..', '.gitignore', 'summerfiles'];
         if (in_array($string, $ignoreItems)) {
             return true;
         }
