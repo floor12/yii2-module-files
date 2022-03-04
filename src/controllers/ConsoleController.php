@@ -37,6 +37,42 @@ class ConsoleController extends Controller
         }
     }
 
+    function actionClear()
+    {
+        $countDeleted = $countOk = 0;
+        $module = Yii::$app->getModule('files');
+        $path1 = $module->storageFullPath;
+        foreach (scandir($path1) as $folder1) {
+            $path2 = $path1 . '/' . $folder1;
+            if (!is_dir($path2)) {
+                continue;
+            }
+            foreach (scandir($path2) as $folder2) {
+                $path3 = $path2 . '/' . $folder2;
+                if (!is_dir($path3)) {
+                    continue;
+                };
+                foreach (scandir($path3) as $filename) {
+                    $path4 = $path3 . '/' . $filename;
+                    $dbFileName = "/{$folder1}/{$folder2}/{$filename}";
+                    if (is_file($path4)) {
+                        $this->stdout($path4 . "...");
+                        if (File::find()->where(['filename' => $dbFileName])->count() === 0) {
+                            $this->stdout('no' . PHP_EOL, Console::FG_RED);
+                            $countDeleted++;
+                        } else {
+                            $this->stdout('ok' . PHP_EOL, Console::FG_GREEN);
+                            $countOk++;
+                        }
+                    }
+                }
+            }
+        }
+        $this->stdout('Deleted: ' . $countDeleted . PHP_EOL, Console::FG_YELLOW);
+        $this->stdout('Ok: ' . $countOk . PHP_EOL, Console::FG_GREEN);
+    }
+
+
     /**
      * Run `./yii files/console/clean-cache` to remove all generated images and previews
      */
