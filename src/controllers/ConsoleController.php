@@ -44,21 +44,25 @@ class ConsoleController extends Controller
         $path1 = $module->storageFullPath;
         foreach (scandir($path1) as $folder1) {
             $path2 = $path1 . '/' . $folder1;
-            if (!is_dir($path2)) {
+            if ($this->checkFolderItem($folder1)) {
                 continue;
             }
             foreach (scandir($path2) as $folder2) {
                 $path3 = $path2 . '/' . $folder2;
-                if (!is_dir($path3)) {
+                if ($this->checkFolderItem($folder2)) {
                     continue;
                 };
                 foreach (scandir($path3) as $filename) {
                     $path4 = $path3 . '/' . $filename;
+                    if ($this->checkFolderItem($filename)) {
+                        continue;
+                    };
                     $dbFileName = "/{$folder1}/{$folder2}/{$filename}";
                     if (is_file($path4)) {
                         $this->stdout($path4 . "...");
                         if (File::find()->where(['filename' => $dbFileName])->count() === 0) {
                             $this->stdout('no' . PHP_EOL, Console::FG_RED);
+                            unlink($path4);
                             $countDeleted++;
                         } else {
                             $this->stdout('ok' . PHP_EOL, Console::FG_GREEN);
@@ -70,6 +74,15 @@ class ConsoleController extends Controller
         }
         $this->stdout('Deleted: ' . $countDeleted . PHP_EOL, Console::FG_YELLOW);
         $this->stdout('Ok: ' . $countOk . PHP_EOL, Console::FG_GREEN);
+    }
+
+    private function checkFolderItem($string)
+    {
+        $ignoreItems = ['.', '..', '.gitignore'];
+        if (in_array($string, $ignoreItems)) {
+            return true;
+        }
+        return false;
     }
 
 
@@ -140,14 +153,16 @@ class ConsoleController extends Controller
         return $this->stdout("File converted: {$file->rootPath}" . PHP_EOL, Console::FG_GREEN);
     }
 
-    protected function getVideoWidth($classname, $field)
+    protected
+    function getVideoWidth($classname, $field)
     {
         /** @var ActiveRecord $ownerClassObject */
         $ownerClassObject = new $classname;
         return $ownerClassObject->getBehavior('files')->attributes[$field]['videoWidth'] ?? 1280;
     }
 
-    protected function getVideoHeight($classname, $field)
+    protected
+    function getVideoHeight($classname, $field)
     {
         /** @var ActiveRecord $ownerClassObject */
         $ownerClassObject = new $classname;
