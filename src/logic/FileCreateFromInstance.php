@@ -74,7 +74,7 @@ class FileCreateFromInstance
         if ($identity)
             $this->_model->user_id = $identity->getId();
         if ($this->_model->type == FileType::VIDEO)
-            $this->_model->video_s1tatus = 0;
+            $this->_model->video_status = 0;
 
         //Генерируем полный новый адрес сохранения файла
         $this->_fullPath = Yii::$app->getModule('files')->storageFullPath . DIRECTORY_SEPARATOR . $this->_model->filename;

@@ -9,7 +9,6 @@
 namespace floor12\files\components;
 
 use floor12\files\assets\FileListAsset;
-use floor12\notification\NotificationAsset;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Url;
@@ -46,7 +45,6 @@ class FileListWidget extends Widget
      */
     public function run()
     {
-        NotificationAsset::register($this->getView());
         FileListAsset::register($this->getView());
 
         $this->getView()->registerJs("yiiDownloadAllLink = '" . Url::toRoute('files/default/zip') . "'", View::POS_BEGIN, 'yiiDownloadAllLink');
