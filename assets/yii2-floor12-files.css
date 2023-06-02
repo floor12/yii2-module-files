@@ -5,7 +5,7 @@ div.floor12-files-widget-block {
     border: 1px solid #e3e3e3;
     border-radius: 4px;
     transition: all 0.3s;
-    margin: -2px 0;
+    margin: -2px -5px;
 }
 
 div.floor12-files-widget-block button.btn-upload {
@@ -168,6 +168,16 @@ div#cropperModal {
 }
 
 #yii2-file-title-editor {
+    position: absolute;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 3px;
+    box-shadow: 0 1px 4px #00000024;
+    display: none;
+    z-index: 999999999;
+}
+
+#yii2-file-alt-editor {
     position: absolute;
     width: 100%;
     max-width: 420px;

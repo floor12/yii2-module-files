@@ -36,6 +36,7 @@ $doc_contents = [
          style="<?= ($model->type == FileType::IMAGE) ? "background-image: url(" . $model->getPreviewWebPath(160) . ")" : NULL ?>"
          data-filename="<?= $model->getHref() ?>"
          data-title="<?= $model->title ?>"
+         data-alt="<?= $model->alt ?>"
          data-toggle="dropdown"
          aria-haspopup="true"
          aria-expanded="false" title="<?= $model->title ?>">
@@ -78,6 +79,12 @@ $doc_contents = [
             <a onclick="showRenameFileForm(<?= $model->id ?>, event); return false;">
                 <?= IconHelper::RENAME ?>
                 <?= Yii::t('files', 'Rename') ?>
+            </a>
+        </li>
+        <li>
+            <a onclick="showAltForm(<?= $model->id ?>, event); return false;">
+                <?= IconHelper::RENAME ?>
+                <?= Yii::t('files', 'Alt') ?>
             </a>
         </li>
         <?php if ($model->type == FileType::IMAGE && !$model->isSvg()): ?>

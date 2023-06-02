@@ -34,6 +34,25 @@ use floor12\files\assets\IconHelper;
     </div>
 </div>
 
+<div id="yii2-file-alt-editor" style="display: none;">
+    <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">ALT:</span>
+        <input type="text" class="form-control" id="yii2-file-title-input"
+               placeholder="<?= Yii::t('files', 'Alt:') ?>"
+               aria-describedby="basic-addon1">
+        <span class="input-group-btn">
+        <button class="btn btn-default" type="button" onclick="saveFileAlt()">
+            <?= IconHelper::SAVE ?>
+            <?= Yii::t('files', 'Save') ?>
+        </button>
+        <button class="btn btn-default" type="button" onclick="hideYii2FileAltEditor()">
+            <?= IconHelper::CLOSE ?>
+            <?= Yii::t('files', 'Cancel') ?>
+        </button>
+      </span>
+    </div>
+</div>
+
 <div class="modal fade" id="cropperModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

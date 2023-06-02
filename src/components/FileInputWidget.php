@@ -72,6 +72,7 @@ class FileInputWidget extends InputWidget
         $cropperRoute = Url::toRoute(['/files/default/cropper']);
         $cropRoute = Url::toRoute(['/files/default/crop']);
         $renameRoute = Url::toRoute(['/files/default/rename']);
+        $altRoute = Url::toRoute(['/files/default/alt']);
 
         $className = new ClassnameEncoder($this->model->classname());
 
@@ -82,6 +83,7 @@ class FileInputWidget extends InputWidget
         $this->getView()->registerJs("yii2CropperRoute = '{$cropperRoute}'", View::POS_BEGIN, 'yii2DeleteRoute');
         $this->getView()->registerJs("yii2CropRoute = '{$cropRoute}'", View::POS_BEGIN, 'yii2CropRoute');
         $this->getView()->registerJs("yii2RenameRoute = '{$renameRoute}'", View::POS_BEGIN, 'yii2RenameRoute');
+        $this->getView()->registerJs("yii2AltRoute = '{$altRoute}'", View::POS_BEGIN, 'yii2AltRoute');
         $this->getView()->registerJs("yii2FileFormToken = '" . self::generateToken() . "'", View::POS_BEGIN, 'yii2FileFormToken');
         $this->getView()->registerJs("FileUploadedText = '" . Yii::t('files', 'The file is uploaded') . "'", View::POS_BEGIN, 'FileUploadedText');
         $this->getView()->registerJs("FileSavedText = '" . Yii::t('files', 'The file is saved') . "'", View::POS_BEGIN, 'FileSavedText');

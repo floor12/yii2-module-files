@@ -31,6 +31,7 @@ use yii\helpers\Url;
  * @property integer $user_id
  * @property integer $size
  * @property string $hash
+ * @property string $alt
  * @property string $href
  * @property string $icon
  * @property string $rootPath
@@ -195,7 +196,7 @@ class File extends ActiveRecord
         return [
             [['class', 'field', 'filename', 'content_type', 'type'], 'required'],
             [['object_id', 'type', 'video_status', 'ordering'], 'integer'],
-            [['class', 'field', 'title', 'filename', 'content_type'], 'string', 'max' => 255],
+            [['class', 'field', 'title', 'filename', 'content_type', 'alt'], 'string', 'max' => 255],
         ];
     }
 
@@ -215,6 +216,7 @@ class File extends ActiveRecord
             'content_type' => Yii::t('app', 'Con tent Type'),
             'type' => Yii::t('app', 'Type'),
             'video_status' => Yii::t('app', 'Video Status'),
+            'alt' => Yii::t('app', 'Alternative title'),
         ];
     }
 

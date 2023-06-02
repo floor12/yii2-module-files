@@ -325,8 +325,22 @@ function showRenameFileForm(id, event) {
     $('#yii2-file-title-editor input').val(title).focus();
 }
 
+function showAltForm(id, event) {
+    var blockId = '#yii2-file-object-' + id;
+    var alt = $(blockId).data('alt');
+    console.log(alt);
+    currentRenamingFileId = id;
+    $('#yii2-file-alt-editor').css('top', event.clientY).css('left', event.clientX - 70).fadeIn(100);
+    $('#yii2-file-alt-editor input').val(alt).focus();
+}
+
 function hideYii2FileTitleEditor() {
     $('#yii2-file-title-editor').fadeOut(100);
+    currentRenamingFileId = null;
+}
+
+function hideYii2FileAltEditor() {
+    $('#yii2-file-alt-editor').fadeOut(100);
     currentRenamingFileId = null;
 }
 
@@ -341,6 +355,27 @@ function saveFileTitle() {
             url: yii2RenameRoute,
             method: 'POST',
             data: {id: currentRenamingFileId, title: val, _fileFormToken: yii2FileFormToken},
+            success: function () {
+                f12notification.info(FileRenamedText, 1);
+            },
+            error: function (response) {
+                processError(response);
+            }
+        }
+    );
+    currentRenamingFileId = null;
+}
+
+function saveFileAlt() {
+    $('#yii2-file-alt-editor').fadeOut(100);
+    val = $('#yii2-file-alt-editor input').val();
+    blockId = '#yii2-file-object-' + currentRenamingFileId;
+    $(blockId).attr('data-alt', val);
+
+    $.ajax({
+            url: yii2AltRoute,
+            method: 'POST',
+            data: {id: currentRenamingFileId, alt: val, _fileFormToken: yii2FileFormToken},
             success: function () {
                 f12notification.info(FileRenamedText, 1);
             },

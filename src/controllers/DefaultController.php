@@ -11,6 +11,7 @@ namespace floor12\files\controllers;
 use floor12\files\actions\GetFileAction;
 use floor12\files\actions\GetPreviewAction;
 use floor12\files\components\FileInputWidget;
+use floor12\files\logic\FileAlt;
 use floor12\files\logic\FileCreateFromInstance;
 use floor12\files\logic\FileCropRotate;
 use floor12\files\logic\FileRename;
@@ -140,6 +141,16 @@ class DefaultController extends Controller
     public function actionRename()
     {
         return Yii::createObject(FileRename::class, [Yii::$app->request->post()])->execute();
+    }
+
+    /** Alt
+     * @return string
+     * @throws BadRequestHttpException
+     * @throws InvalidConfigException
+     */
+    public function actionAlt()
+    {
+        return Yii::createObject(FileAlt::class, [Yii::$app->request->post()])->execute();
     }
 
 
