@@ -370,7 +370,7 @@ function saveFileAlt() {
     $('#yii2-file-alt-editor').fadeOut(100);
     val = $('#yii2-file-alt-editor input').val();
     blockId = '#yii2-file-object-' + currentRenamingFileId;
-    $(blockId).attr('data-alt', val);
+    $(blockId).data('alt', val)
 
     $.ajax({
             url: yii2AltRoute,
