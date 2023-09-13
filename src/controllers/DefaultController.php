@@ -78,40 +78,31 @@ class DefaultController extends Controller
             throw new BadRequestHttpException('File-form token is wrong or missing.');
     }
 
-    /**
+     /**
      * @param array $hash
      * @param string $title
      */
     public function actionZip(array $hash, $title = 'files')
     {
+        $md5 = md5(serialize($hash));
         $files = File::find()->where(["IN", "hash", $hash])->all();
 
         $zip = new  ZipArchive;
-        $filename = Yii::getAlias("@webroot/assets/files.zip");
+        $path = Yii::getAlias("@runtime/zip");
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        $filename = "{$path}/{$md5}.zip";
         if (file_exists($filename))
             @unlink($filename);
         if (sizeof($files) && $zip->open($filename, ZipArchive::CREATE)) {
-
-            foreach ($files as $file)
+            foreach ($files as $file) {
                 $zip->addFile($file->rootPath, $file->title);
-
-            $zip->close();
-            header("Pragma: public");
-            header("Expires: 0");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            header("Cache-Control: public");
-            header("Content-Description: File Transfer");
-            header("Content-type: application/octet-stream");
-            header("Content-Disposition: attachment; filename={$title}.zip");
-            header("Content-Transfer-Encoding: binary");
-            header("Content-Length: " . filesize($filename));
-
-            while (ob_get_level()) {
-                ob_end_clean();
             }
-            readfile($filename);
+            $zip->close();
+            return Yii::$app->response->sendFile($filename, "{$title}.zip");
         } else {
-            echo 'Failed!';
+            throw new NotFoundHttpException("Error while zipping files.");
         }
     }
 
