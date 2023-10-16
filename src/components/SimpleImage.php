@@ -27,7 +27,7 @@ class SimpleImage
             $this->image = imagecreatefromgif($filename);
             imageSaveAlpha($this->image,true);
         } elseif ($this->image_type == IMAGETYPE_PNG) {
-            $this->image = imagecreatefrompng($filename);
+            $this->image = @imagecreatefrompng($filename); // https://stackoverflow.com/questions/22745076/libpng-warning-iccp-known-incorrect-srgb-profile
             imageSaveAlpha($this->image,true);
         } elseif ($this->image_type == IMAGETYPE_WEBP) {
             $this->image = imagecreatefromwebp($filename);
