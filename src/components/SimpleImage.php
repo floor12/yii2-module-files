@@ -74,7 +74,7 @@ class SimpleImage
             $transparent = imagecolorallocatealpha($dst, 255, 255, 255, 127);
             imagefilledrectangle($dst, 0, 0, imagesx($this->image), imagesy($this->image), $transparent);
             imagecopy($dst, $this->image, 0, 0, 0, 0, imagesx($this->image), imagesy($this->image));
-            imagewebp($dst, $filename);
+            imagewebp($dst);
         }
         return ob_get_clean();
     }
