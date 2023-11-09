@@ -10,6 +10,7 @@ namespace floor12\files\components;
 
 
 use yii\base\ErrorException;
+use function PHPUnit\Framework\fileExists;
 
 class SimpleImage
 {
@@ -25,10 +26,10 @@ class SimpleImage
             $this->image = imagecreatefromjpeg($filename);
         } elseif ($this->image_type == IMAGETYPE_GIF) {
             $this->image = imagecreatefromgif($filename);
-            imageSaveAlpha($this->image,true);
+            imageSaveAlpha($this->image, true);
         } elseif ($this->image_type == IMAGETYPE_PNG) {
             $this->image = @imagecreatefrompng($filename); // https://stackoverflow.com/questions/22745076/libpng-warning-iccp-known-incorrect-srgb-profile
-            imageSaveAlpha($this->image,true);
+            imageSaveAlpha($this->image, true);
         } elseif ($this->image_type == IMAGETYPE_WEBP) {
             $this->image = imagecreatefromwebp($filename);
         }
@@ -59,13 +60,23 @@ class SimpleImage
 
     function output($image_type = IMAGETYPE_JPEG)
     {
+        ob_start();
         if ($image_type == IMAGETYPE_JPEG) {
             imagejpeg($this->image);
         } elseif ($image_type == IMAGETYPE_GIF) {
             imagegif($this->image);
         } elseif ($image_type == IMAGETYPE_PNG) {
             imagepng($this->image);
+        } elseif ($image_type == IMAGETYPE_WEBP) {
+            $dst = imagecreatetruecolor(imagesx($this->image), imagesy($this->image));
+            imagealphablending($dst, false);
+            imagesavealpha($dst, true);
+            $transparent = imagecolorallocatealpha($dst, 255, 255, 255, 127);
+            imagefilledrectangle($dst, 0, 0, imagesx($this->image), imagesy($this->image), $transparent);
+            imagecopy($dst, $this->image, 0, 0, 0, 0, imagesx($this->image), imagesy($this->image));
+            imagewebp($dst, $filename);
         }
+        return ob_get_clean();
     }
 
     function resizeToHeight($height)
@@ -137,25 +148,17 @@ class SimpleImage
     {
         $stamp = imagecreatefrompng($path);
 
-        $stamp_new_width = $this->getWidth() / 5;
-        $stamp_new_height = imagesy($stamp) * $stamp_new_width / imagesx($stamp);
+        $transparentStamp = imagecreatetruecolor($this->getWidth(), $this->getHeight());
+        imagealphablending($transparentStamp, false);
+        imagesavealpha($transparentStamp, true);
+        $transparent = imagecolorallocatealpha($transparentStamp, 255, 255, 255, 127);
+        imagecolortransparent($transparentStamp, $transparent);
+        imagefilledrectangle($transparentStamp, 0, 0, $this->getWidth(), $this->getHeight(), $transparent);
+        imagecopyresampled($transparentStamp, $stamp, 0, 0, 0, 0, $this->getWidth(), $this->getHeight(), $this->getWidth(), $this->getHeight());
 
-        $new_stamp = imagecreatetruecolor($stamp_new_width, $stamp_new_height);
-
-        imagealphablending($new_stamp, false);
-        imagesavealpha($new_stamp, true);
-
-        $transparent = imagecolorallocatealpha($new_stamp, 255, 255, 255, 127);
-        imagecolortransparent($new_stamp, $transparent);
-
-        imagefilledrectangle($new_stamp, 0, 0, $stamp_new_width, $stamp_new_height, $transparent);
-
-        imagecopyresampled($new_stamp, $stamp, 0, 0, 0, 0, $stamp_new_width, $stamp_new_height, imagesx($stamp), imagesy($stamp));
-
-        $marge_right = $this->getWidth() / 10;
-        $marge_bottom = $this->getHeight() / 10;
-
-        imagecopyresampled($this->image, $new_stamp, imagesx($this->image) - $stamp_new_width - $marge_right, imagesy($this->image) - $stamp_new_height - $marge_bottom, 0, 0, $stamp_new_width, $stamp_new_height, $stamp_new_width, $stamp_new_height);
-
+        $newImage = imagecreatetruecolor($this->getWidth(), $this->getHeight());
+        imagecopyresampled($newImage, $this->image, 0, 0, 0, 0, $this->getWidth(), $this->getHeight(), $this->getWidth(), $this->getHeight());
+        imagecopyresampled($newImage, $transparentStamp, 0, 0, 0, 0, $this->getWidth(), $this->getHeight(), $this->getWidth(), $this->getHeight());
+        $this->image = $newImage;
     }
 }

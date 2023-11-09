@@ -64,7 +64,7 @@ class ImagePreviewer
         }
 
         if (!is_file($this->fileName) || filesize($this->fileName) == 0)
-            $this->createPreview($sourceImagePath);
+            $this->createPreview($sourceImagePath, $this->model->getWatermark());
 
         if ($this->webp && !file_exists($this->fileNameWebp))
             $this->createPreviewWebp();
@@ -101,10 +101,13 @@ class ImagePreviewer
      * @param $sourceImagePath
      * @throws ErrorException
      */
-    protected function createPreview($sourceImagePath)
+    protected function createPreview($sourceImagePath, $watermarkInPng = null)
     {
         $img = new SimpleImage();
         $img->load($sourceImagePath);
+
+        if ($watermarkInPng)
+            $img->watermark($watermarkInPng);
 
         $imgWidth = $img->getWidth();
         $imgHeight = $img->getHeight();
@@ -115,10 +118,13 @@ class ImagePreviewer
         }
 
         $saveType = $img->image_type;
-        if ($saveType == IMG_WEBP || $saveType == IMG_QUADRATIC)
+        if ($saveType == IMG_WEBP || $saveType == IMG_QUADRATIC) {
             $saveType = IMG_JPEG;
+        }
+
         $img->save($this->fileName, $saveType);
     }
+
 
     /**
      *  Create webp from default preview

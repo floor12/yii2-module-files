@@ -27,13 +27,9 @@ class GetFileAction extends Action
         if ($model->type == FileType::IMAGE && $model->watermark) {
             $image = new SimpleImage();
             $image->load($model->rootPath);
-            $image->watermark(Yii::getAlias("@frontend/web/design/logo-big.png"));
-            $tmpName = Yii::getAlias("@runtime/" . md5(time() . $model->id));
-            $image->save($tmpName, IMAGETYPE_JPEG);
-            $stream = fopen($tmpName, 'rb');
-            Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => "image/jpeg", 'filesize' => $model->size]);
-            @unlink($tmpName);
-
+            $image->watermark($model->watermark);
+            $res = $image->output(IMAGETYPE_JPEG);
+            Yii::$app->response->sendContentAsFile($res, $model->title, ['inline' => true, 'mimeType' => "image/jpeg", 'filesize' => $model->size]);
         } else {
             $stream = fopen($model->rootPath, 'rb');
             Yii::$app->response->sendStreamAsFile($stream, $model->title, ['inline' => true, 'mimeType' => $model->content_type, 'filesize' => $model->size]);

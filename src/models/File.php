@@ -338,12 +338,13 @@ class File extends ActiveRecord
      */
     public function getWatermark()
     {
+        $owner = new $this->class();
         if (
-            isset($this->behaviors['files']) &&
-            isset($this->behaviors['files']->attributes[$this->field]) &&
-            isset($this->behaviors['files']->attributes[$this->field]['watermark'])
+            isset($owner->behaviors['files']) &&
+            isset($owner->behaviors['files']->attributes[$this->field]) &&
+            isset($owner->behaviors['files']->attributes[$this->field]['watermark'])
         )
-            return $this->behaviors['files']->attributes[$this->field]['watermark'];
+            return $owner->behaviors['files']->attributes[$this->field]['watermark'];
     }
 
     /**
