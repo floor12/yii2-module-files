@@ -6,6 +6,8 @@ var currentRenamingFileId;
 var cropper;
 var removeFileOnCropCancel;
 var yii2CropperRoute;
+var yii2UploadRoute;
+var uploaderSettings = {};
 
 $(document).on('change', '.yii2-files-upload-field', function () {
 
@@ -79,16 +81,18 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
         toggleSingleUploadButton(block);
     }
 
-    var data = {
+    uploaderSettings[id] = {
         modelClass: className,
         attribute: attribute,
         scenario: scenario,
         mode: mode,
         ratio: ratio,
+        count: block.find('.floor12-files-widget-list .floor12-file-object').length,
         _fileFormToken: yii2FileFormToken
     }
-    data[yii2CsrfParam] = csrf
 
+    uploaderSettings[id][yii2CsrfParam] = csrf
+    console.log(uploaderSettings[id]);
     var uploader = new ss.SimpleUpload({
         button: uploadButton,
         url: yii2UploadRoute,
@@ -97,57 +101,55 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
         dragClass: 'floor12-files-widget-block-drug-over',
         multiple: true,
         multipleSelect: true,
-        data: data,
-        onSubmit:
-            function (filename, extension, data) {
-                var svg = '\t<svg class="progress-circle" width="60" height="60" viewBox="0 0 60 60">\n' +
-                    '\t\t<circle cx="30" cy="30" r="27" fill="none" stroke="#ccc" stroke-width="5" />\n' +
-                    '\t\t<circle id="progress-circle" cx="30" cy="30" r="27" fill="none" stroke="#666" stroke-width="5" stroke-dasharray="169.646" stroke-dashoffset="169.646" />\n' +
-                    '\t</svg>';
+        data: uploaderSettings[id],
+        onSubmit: function (filename, extension, uploadBtn, size) {
+            uploaderSettings[id].count++;
+            var svg = '\t<svg class="progress-circle" width="60" height="60" viewBox="0 0 60 60">\n' +
+                '\t\t<circle cx="30" cy="30" r="27" fill="none" stroke="#ccc" stroke-width="5" />\n' +
+                '\t\t<circle id="progress-circle" cx="30" cy="30" r="27" fill="none" stroke="#666" stroke-width="5" stroke-dasharray="169.646" stroke-dashoffset="169.646" />\n' +
+                '\t</svg>';
 
-                var id = generateId(filename);
-                var btnGroup = document.createElement('div');
-                var fileObject = document.createElement('div');
-                var bar = document.createElement('div');
-                var percents = document.createElement('div');
-                btnGroup.setAttribute('id', id);
-                btnGroup.className = 'btn-group files-btn-group';
-                fileObject.className = 'floor12-file-object';
-                percents.className = 'floor12-file-percents';
+            var fileId = generateId(filename);
+            var btnGroup = document.createElement('div');
+            var fileObject = document.createElement('div');
+            var bar = document.createElement('div');
+            var percents = document.createElement('div');
+            btnGroup.setAttribute('id', fileId);
+            btnGroup.className = 'btn-group files-btn-group';
+            fileObject.className = 'floor12-file-object';
+            percents.className = 'floor12-file-percents';
+            this.setProgressBar(bar);
 
-                this.setProgressBar(bar);
+            fileObject.innerHTML = svg;
 
-                fileObject.innerHTML = svg;
+            observer.observe(bar, {
+                attributes: true
+            });
 
-                observer.observe(bar, {
-                    attributes: true
-                });
+            fileObject.appendChild(bar);
+            fileObject.appendChild(percents);
+            btnGroup.appendChild(fileObject);
 
-                fileObject.appendChild(bar);
-                fileObject.appendChild(percents);
-                btnGroup.appendChild(fileObject);
-
-
-                if (mode == 'single') {
-                    $(filesList).html('');
-                }
-                $(filesList).append(btnGroup);
-
-
-            },
+            if (mode == 'single') {
+                $(filesList).html('');
+            }
+            $(filesList).append(btnGroup);
+        },
         onComplete: function (filename, response) {
             if (!response) {
                 console.log(filename + 'upload failed');
+                uploaderSettings[id].count--;
                 return false;
             }
             f12notification.info(FileUploadedText, 1);
             idName = "#" + generateId(filename);
             $(idName).replaceWith($(response));
-
             if (mode == 'single')
                 toggleSingleUploadButton(block);
         },
         onError: function (filename, errorType, status, statusText, response, uploadBtn, fileSize) {
+            console.log(uploaderSettings[id]);
+            uploaderSettings[id].count--;
             data = {
                 responseText: response,
                 status: status,
@@ -175,7 +177,6 @@ function generateId(filename) {
 
 function showUploadButton(event) {
     obj = $(event.target);
-    console.log(obj);
     obj.parents('div.floor12-files-widget-single-block').find('button').show();
 }
 
@@ -202,6 +203,8 @@ function removeFile(id) {
         $(this).remove();
         f12notification.info(FileRemovedText, 1);
     });
+    const blockId = $(id).parents('.floor12-files-widget-block').attr('id');
+    uploaderSettings[blockId].count--;
     return false;
 }
 
@@ -210,6 +213,8 @@ function removeAllFiles(event) {
     $(event.target).parents('div.floor12-files-widget-list').find('div.files-btn-group').fadeOut(200, function () {
         $(this).remove();
     });
+    const blockId = $(event.target).parents('.floor12-files-widget-block').attr('id');
+    uploaderSettings[blockId].count = 0;
     f12notification.info(FilesRemovedText, 1);
     return false;
 }
