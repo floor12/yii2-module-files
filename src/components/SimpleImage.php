@@ -120,14 +120,14 @@ class SimpleImage
     {
         $ratio = $width / $this->getWidth();
         $height = $this->getheight() * $ratio;
-        $this->resize($width, $height);
+        $this->resize((int)$width, (int)$height);
     }
 
     function scale($scale)
     {
         $width = $this->getWidth() * $scale / 100;
         $height = $this->getheight() * $scale / 100;
-        $this->resize($width, $height);
+        $this->resize((int)$width, (int)$height);
     }
 
     function rotate($direction)
