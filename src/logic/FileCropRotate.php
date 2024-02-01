@@ -43,12 +43,11 @@ class FileCropRotate
         $this->_width = (int)$data['width'];
         $this->_top = (int)$data['top'];
         $this->_left = (int)$data['left'];
-        $this->_rotated = (int)$data['rotated'];
+        $this->_rotated = (int)($data['rotated'] ?? 0);
 
         if (!$this->_height && !$this->_width) {
             list($this->_width, $this->_height) = getimagesize($this->_file->rootPath);
         }
-
 
     }
 
@@ -56,7 +55,7 @@ class FileCropRotate
     {
 
         $src = $this->imageCreateFromAny();
-        
+
         $src = imagerotate($src, -$this->_rotated, 0);
 
         $dest = imagecreatetruecolor($this->_width, $this->_height);
