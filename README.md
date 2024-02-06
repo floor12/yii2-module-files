@@ -1,6 +1,6 @@
 # yii2-module-files
 
-[![Build Status](https://travis-ci.org/floor12/yii2-module-files.svg?branch=master)](https://travis-ci.org/floor12/yii2-module-files)
+
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/floor12/yii2-module-files/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/floor12/yii2-module-files/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/floor12/yii2-module-files/v/stable)](https://packagist.org/packages/floor12/yii2-module-files)
 [![Latest Unstable Version](https://poser.pugx.org/floor12/yii2-module-files/v/unstable)](https://packagist.org/packages/floor12/yii2-module-files)
