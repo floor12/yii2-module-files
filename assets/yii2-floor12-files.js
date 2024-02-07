@@ -198,12 +198,13 @@ function sortableFiles() {
 
 function removeFile(id) {
     id = "#yii2-file-object-" + id;
+    const blockId = $(id).parents('.files-widget-block').attr('id');
 
     $(id).parents('div.files-btn-group').fadeOut(200, function () {
         $(this).remove();
         f12notification.info(FileRemovedText, 1);
     });
-    const blockId = $(id).parents('.floor12-files-widget-block').attr('id');
+
     uploaderSettings[blockId].count--;
     return false;
 }
