@@ -32,7 +32,9 @@ $doc_contents = [
 <div class="btn-group files-btn-group">
 
     <?php if ($model->type == FileType::IMAGE): ?>
-        <div id="yii2-file-object-<?= $model->id ?>" data-toggle="dropdown" aria-haspopup="true"
+        <div id="yii2-file-object-<?= $model->id ?>"
+             data-hash="<?= $model->hash ?>"
+             data-toggle="dropdown" aria-haspopup="true"
              aria-expanded="false" class="floor12-single-file-object">
             <img src="<?= $model->href ?>" class="img-responsive">
             <?= Html::hiddenInput((new ReflectionClass($model->class))->getShortName() . "[{$model->field}_ids][]", $model->id) ?>
@@ -42,6 +44,7 @@ $doc_contents = [
 
         <div data-title="<?= $model->title ?>"
              id="yii2-file-object-<?= $model->id ?>"
+             data-hash="<?= $model->hash ?>"
              class="dropdown-toggle btn-group floor12-single-file-object floor12-single-file-object-no-image"
              data-toggle="dropdown" aria-haspopup="true"
              aria-expanded="false" title="<?= $model->title ?>">

@@ -34,6 +34,7 @@ $doc_contents = [
     <div data-title="<?= $model->title ?>" id="yii2-file-object-<?= $model->id ?>"
          class="dropdown-toggle btn-group floor12-file-object <?= ($model->type == FileType::IMAGE) ? "floor12-file-object-image" : NULL ?>"
          style="<?= ($model->type == FileType::IMAGE) ? "background-image: url(" . $model->getPreviewWebPath(160) . ")" : NULL ?>"
+         data-hash="<?= $model->hash ?>"
          data-filename="<?= $model->getHref() ?>"
          data-title="<?= $model->title ?>"
          data-alt="<?= $model->alt ?>"
