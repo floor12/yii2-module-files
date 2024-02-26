@@ -19,6 +19,7 @@ $(document).on('change', '.yii2-files-upload-field', function () {
     formData.append('attribute', obj.data('attribute'));
     formData.append('mode', obj.data('mode'));
     formData.append('ratio', obj.data('ratio'));
+    formData.append('count', 1);
     formData.append('_fileFormToken', yii2FileFormToken);
 
 
