@@ -19,6 +19,7 @@ $(document).on('change', '.yii2-files-upload-field', function () {
     formData.append('attribute', obj.data('attribute'));
     formData.append('mode', obj.data('mode'));
     formData.append('ratio', obj.data('ratio'));
+    formData.append('name', obj.data('name'));
     formData.append('count', 1);
     formData.append('_fileFormToken', yii2FileFormToken);
 
@@ -63,7 +64,7 @@ var observer = new MutationObserver(function (mutations) {
 
 var lastUploader = null;
 
-function Yii2FilesUploaderSet(id, className, attribute, scenario) {
+function Yii2FilesUploaderSet(id, className, attribute, scenario, name) {
 
     var mode = 'multi';
     var blockName = "#" + id;
@@ -87,6 +88,7 @@ function Yii2FilesUploaderSet(id, className, attribute, scenario) {
         attribute: attribute,
         scenario: scenario,
         mode: mode,
+        name: name,
         ratio: ratio,
         count: block.find('.floor12-files-widget-list .floor12-file-object').length,
         _fileFormToken: yii2FileFormToken
