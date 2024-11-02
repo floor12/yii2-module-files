@@ -8,6 +8,7 @@
  * @var $this View
  * @var $model File
  * @var $ratio float
+ * @var $name string
  *
  */
 
@@ -37,7 +38,7 @@ $doc_contents = [
              data-toggle="dropdown" aria-haspopup="true"
              aria-expanded="false" class="floor12-single-file-object">
             <img src="<?= $model->href ?>" class="img-responsive">
-            <?= Html::hiddenInput((new ReflectionClass($model->class))->getShortName() . "[{$model->field}_ids][]", $model->id) ?>
+            <?= Html::hiddenInput($name ?: ((new ReflectionClass($model->class))->getShortName() . "[{$model->field}_ids][]"), $model->id) ?>
         </div>
 
     <?php else: ?>
@@ -50,7 +51,7 @@ $doc_contents = [
              aria-expanded="false" title="<?= $model->title ?>">
 
 
-            <?= Html::hiddenInput((new ReflectionClass($model->class))->getShortName() . "[{$model->field}_ids][]", $model->id) ?>
+            <?= Html::hiddenInput($name ?: ((new ReflectionClass($model->class))->getShortName() . "[{$model->field}_ids][]"), $model->id) ?>
 
             <?php if ($model->type != FileType::IMAGE): ?>
                 <?= $model->icon ?>

@@ -78,7 +78,7 @@ class DefaultController extends Controller
             throw new BadRequestHttpException('File-form token is wrong or missing.');
     }
 
-     /**
+    /**
      * @param array $hash
      * @param string $title
      */
@@ -165,6 +165,8 @@ class DefaultController extends Controller
 
         $ratio = Yii::$app->request->post('ratio') ?? null;
 
+        $name = Yii::$app->request->post('name') ?? null;
+
         $view = Yii::$app->request->post('mode') == 'single' ? "_single" : "_file";
 
         if ($ratio)
@@ -172,7 +174,8 @@ class DefaultController extends Controller
 
         return $this->renderAjax($view, [
             'model' => $model,
-            'ratio' => $ratio
+            'ratio' => $ratio,
+            'name' => $name
         ]);
     }
 

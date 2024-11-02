@@ -13,6 +13,8 @@
  * @var $scenario string
  * @var $model ActiveRecord
  * @var $ratio float
+ * @var $name string
+ * @var $value \floor12\files\models\File
  *
  */
 
@@ -31,19 +33,25 @@ if (YII_ENV == 'test') // This code is only for testing
         'data-modelclass' => $model::className(),
         'data-attribute' => $attribute,
         'data-mode' => 'single',
+        'data-name' => $name ?: (new ReflectionClass($model))->getShortName() . "[{$attribute}_ids][]",
         'data-ratio' => $ratio ?? 0,
         'data-block' => $block_id,
 
     ]) ?>
 
-<div class="floor12-files-widget-single-block files-widget-block" id="files-widget-block_<?= $block_id ?>" data-ratio="<?= $ratio ?>">
+<div class="floor12-files-widget-single-block files-widget-block" id="files-widget-block_<?= $block_id ?>"
+     data-ratio="<?= $ratio ?>">
     <button class="<?= $uploadButtonClass ?>" type="button">
         <div class="icon"><?= IconHelper::PLUS ?></div>
         <?= $uploadButtonText ?>
     </button>
-    <?= Html::hiddenInput((new ReflectionClass($model))->getShortName() . "[{$attribute}_ids][]", null) ?>
+    <?= Html::hiddenInput($name ?: (new ReflectionClass($model))->getShortName() . "[{$attribute}_ids][]", null) ?>
     <div class="floor12-files-widget-list">
-        <?php if ($model->$attribute) echo $this->render('@vendor/floor12/yii2-module-files/src/views/default/_single', ['model' => $model->$attribute, 'ratio' => $ratio]) ?>
+        <?php if ($value ?? $model->$attribute) echo $this->render('@vendor/floor12/yii2-module-files/src/views/default/_single', [
+            'model' => $value ?? $model->$attribute,
+            'ratio' => $ratio,
+            'name' => $name
+        ]) ?>
     </div>
     <div class="clearfix"></div>
 </div>
