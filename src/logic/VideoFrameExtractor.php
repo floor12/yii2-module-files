@@ -37,10 +37,26 @@ class VideoFrameExtractor
      */
     public function extract()
     {
+        $command = "{$this->ffmpegBin} -i {$this->videoSourceFilename}  -ss 00:00:05.000 -vframes 1  {$this->outputImageFilename}";
+        exec($command, $out, $result);
+        if (is_file($this->outputImageFilename)) {
+            return true;
+        }
+
         $command = "{$this->ffmpegBin} -i {$this->videoSourceFilename}  -ss 00:00:03.000 -vframes 1  {$this->outputImageFilename}";
         exec($command, $out, $result);
-        if ($result !== 0)
-            throw new ErrorException('FFmpeg frame extracting fail:' . print_r($out, true));
+        if (is_file($this->outputImageFilename)) {
+            return true;
+        }
+
+
+           $command = "{$this->ffmpegBin} -i {$this->videoSourceFilename}  -ss 00:00:01.000 -vframes 1  {$this->outputImageFilename}";
+        exec($command, $out, $result);
+        if (is_file($this->outputImageFilename)) {
+            return true;
+        }
+
+        throw new ErrorException('FFmpeg frame extracting fail:' . print_r($out, true));
     }
 
 }
