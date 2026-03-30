@@ -30,6 +30,7 @@ class m180627_121715_files extends Migration
                 'user_id' => $this->integer(11)->null(),
                 'size' => $this->integer(20)->notNull(),
                 'hash' => $this->string(255)->null(),
+                'alt' => $this->string(255)->null(),
             ], $tableOptions
         );
     }

@@ -59,12 +59,13 @@ class FileBehaviour extends Behavior
 
             foreach ($this->_values as $field => $ids) {
 
+                $ownerPk = $this->owner->getPrimaryKey();
                 Yii::$app->db->createCommand()->update(
-                    "{{%file}}",
+                    File::tableName(),
                     ['object_id' => 0],
                     [
                         'class' => $this->owner->className(),
-                        'object_id' => $this->owner->id,
+                        'object_id' => $ownerPk,
                         'field' => $field,
                     ]
                 )->execute();
@@ -74,9 +75,8 @@ class FileBehaviour extends Behavior
                         continue;
                     $file = File::findOne($id);
                     if ($file) {
-                        $file->object_id = $this->owner->id;
+                        $file->object_id = $ownerPk;
                         $file->ordering = $order++;
-                        $file->save();
                         if (!$file->save()) {
                             throw new ErrorException('Невозможно обновить объект File.');
                         }
@@ -91,7 +91,7 @@ class FileBehaviour extends Behavior
     {
         File::deleteAll([
             'class' => $this->owner->className(),
-            'object_id' => $this->owner->id,
+            'object_id' => $this->owner->getPrimaryKey(),
         ]);
     }
 
@@ -204,10 +204,9 @@ class FileBehaviour extends Behavior
     {
         if (isset($this->_values[$att_name])) {
             unset($this->_values[$att_name][0]);
-            if (sizeof($this->_values[$att_name]))
-                return array_map(function ($fileId) {
-                    return File::findOne($fileId);
-                }, $this->_values[$att_name]);
+            $ids = array_filter($this->_values[$att_name]);
+            if ($ids)
+                return File::find()->where(['id' => $ids])->orderBy('ordering ASC')->all();
         } else {
             if (!isset($this->cachedFiles[$att_name])) {
                 if (

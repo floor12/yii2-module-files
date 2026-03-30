@@ -13,6 +13,7 @@ use floor12\files\models\File;
 use floor12\files\models\FileType;
 use Yii;
 use yii\base\ErrorException;
+use yii\helpers\FileHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 
@@ -75,7 +76,7 @@ class FileCropRotate
         imagedestroy($src);
 
         $this->_file->filename = $newName;
-        $this->_file->content_type = $this->_file->mime_content_type($newPath);
+        $this->_file->content_type = FileHelper::getMimeType($newPath);
         $this->_file->size = filesize($newPath);
         $this->_file->changeHash();
         if ($this->_file->save()) {

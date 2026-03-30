@@ -35,6 +35,16 @@ class ConsoleController extends Controller
         if ($files) foreach ($files as $file) {
             $file->delete();
         }
+
+        $zipPath = Yii::getAlias('@runtime/zip');
+        if (file_exists($zipPath)) {
+            $cutoff = time() - 86400;
+            foreach (glob($zipPath . '/*.zip') as $zipFile) {
+                if (filemtime($zipFile) < $cutoff) {
+                    @unlink($zipFile);
+                }
+            }
+        }
     }
 
     function actionClear()

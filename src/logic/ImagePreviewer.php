@@ -78,21 +78,11 @@ class ImagePreviewer
     /**
      * Generate all folders for storing image thumbnails cache.
      */
-    protected function prepareFolder()
+    protected function prepareFolder(): void
     {
-        if (!file_exists(Yii::$app->getModule('files')->cacheFullPath))
-            mkdir(Yii::$app->getModule('files')->cacheFullPath);
-        $lastFolder = '/';
-        $explodes = explode('/', $this->fileName);
-        array_pop($explodes);
-        if (empty($explodes))
-            return;
-        foreach ($explodes as $folder) {
-            if (empty($folder))
-                continue;
-            $lastFolder = $lastFolder . $folder . '/';
-            if (!file_exists($lastFolder))
-                mkdir($lastFolder);
+        $dir = dirname($this->fileName);
+        if (!file_exists($dir)) {
+            mkdir($dir, 0777, true);
         }
     }
 

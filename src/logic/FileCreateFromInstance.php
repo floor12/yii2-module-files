@@ -13,6 +13,7 @@ use floor12\files\models\File;
 use floor12\files\models\FileType;
 use Yii;
 use yii\base\ErrorException;
+use yii\db\ActiveRecord;
 use yii\web\BadRequestHttpException;
 use yii\web\IdentityInterface;
 use yii\web\UploadedFile;
@@ -46,6 +47,8 @@ class FileCreateFromInstance
             throw new ErrorException("Tmp file not found on disk.");
 
         // Инициализируем класс владельца файла для валидаций и ставим сценарий
+        if (!is_subclass_of($data['modelClass'], ActiveRecord::class))
+            throw new BadRequestHttpException('Invalid model class.');
         $this->_owner = new $data['modelClass'];
 
         if (isset($data['scenario']))

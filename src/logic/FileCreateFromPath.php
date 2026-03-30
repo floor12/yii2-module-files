@@ -13,6 +13,7 @@ use floor12\files\components\SimpleImage;
 use floor12\files\models\FileType;
 use yii\base\ErrorException;
 use yii\db\ActiveRecordInterface;
+use yii\helpers\FileHelper;
 
 class FileCreateFromPath
 {
@@ -69,7 +70,7 @@ class FileCreateFromPath
             $this->model->title = $this->model->filename;
         else
             $this->model->title = rand(0, 99999); #такой прикол )
-        $this->model->content_type = $this->model->mime_content_type($new_path);
+        $this->model->content_type = FileHelper::getMimeType($new_path);
         $this->model->type = $this->detectType();
         $this->model->size = filesize($new_path);
         $this->model->created = time();
