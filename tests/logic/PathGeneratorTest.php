@@ -54,7 +54,7 @@ class PathGeneratorTest extends TestCase
         $path = 'tests/st1';
         new PathGenerator($path);
         $this->assertTrue(file_exists($path));
-        exec("rm -f $path");
+        exec("rm -rf $path");
     }
 
     /**

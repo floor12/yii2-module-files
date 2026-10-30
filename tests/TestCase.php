@@ -53,6 +53,8 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         ];
         Yii::$app->set('urlManager', $urlManager);
 
+        // a test that failed before tearDown leaves the table behind
+        Yii::$app->db->createCommand('DROP TABLE IF EXISTS {{%file}}')->execute();
         Yii::createObject(m180627_121715_files::class, [])->safeUp();
 
     }

@@ -11,7 +11,6 @@ namespace floor12\files\components;
 
 use Yii;
 use yii\base\ErrorException;
-use function PHPUnit\Framework\fileExists;
 
 class SimpleImage
 {

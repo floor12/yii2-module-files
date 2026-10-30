@@ -10,3 +10,6 @@ phpunit.xml
 tests/_output/*
 composer.lock
 assets/.sass-cache
+tests/sqlite.db
+.phpunit.result.cache
+.phpunit.cache
