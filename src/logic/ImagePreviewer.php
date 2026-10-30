@@ -99,15 +99,17 @@ class ImagePreviewer
     /**
      * Creat JPG preview
      * @param $sourceImagePath
+     * @param string|array|null $watermark `watermark` option of the FileBehaviour attribute
      * @throws ErrorException
      */
-    protected function createPreview($sourceImagePath, $watermarkInPng = null)
+    protected function createPreview($sourceImagePath, $watermark = null)
     {
         $img = new SimpleImage();
         $img->load($sourceImagePath);
 
-        if ($watermarkInPng)
-            $img->watermark($watermarkInPng);
+        // the legacy stamp is sized for the original, the positioned one is scaled to the preview
+        if ($watermark && !is_array($watermark))
+            $img->applyWatermark($watermark);
 
         $imgWidth = $img->getWidth();
         $imgHeight = $img->getHeight();
@@ -116,6 +118,9 @@ class ImagePreviewer
             $ratio = $this->width / $imgWidth;
             $img->resizeToWidth($this->width);
         }
+
+        if (is_array($watermark))
+            $img->applyWatermark($watermark);
 
         $saveType = $img->image_type;
         if ($saveType == IMG_WEBP || $saveType == IMG_QUADRATIC) {

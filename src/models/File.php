@@ -35,7 +35,7 @@ use yii\helpers\Url;
  * @property string $href
  * @property string $icon
  * @property string $rootPath
- * @property string|null $watermark
+ * @property string|array|null $watermark
  */
 class File extends ActiveRecord
 {

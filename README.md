@@ -157,6 +157,29 @@ Setup validation rules in the `rules()` method of ActiveRecord model:
      ...    
  ```
 
+### Watermark
+
+An image attribute can get a watermark. It is applied to every thumbnail and to the source served by `href`;
+the source file on disk stays untouched.
+
+ ```php
+  'attributes' => [
+      'images' => [
+          'watermark' => [
+              'path' => '@webroot/design/watermark.png', // PNG with alpha channel
+              'position' => 'bottom-right', // center, top-left, top-right, bottom-left, bottom-right
+              'scale' => 0.25,  // stamp width as a share of the image width
+              'margin' => 0.03, // distance from the edges as a share of the image width
+          ],
+      ],
+  ],
+ ```
+
+A plain string (`'watermark' => '/path/to/stamp.png'`) keeps the old behaviour: the PNG is laid over the top left
+corner of the original pixel to pixel, so it has to be at least as large as the biggest image.
+
+Thumbnails are cached, so after changing the watermark run `./yii files/console/clean-cache`.
+
 ### Work with files
 
 If `maxFiles`  in `FileValidator` equals to 1, this attribute will store an `floor12\files\models\File object`. Example:
