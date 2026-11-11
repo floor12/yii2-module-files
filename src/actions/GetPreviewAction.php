@@ -32,6 +32,11 @@ class GetPreviewAction extends Action
     public function run($hash, $width = null, $webp = null)
     {
         $this->loadAndCheckModel($hash);
+        // width приходит из query string: «200px», «1e3», массив — это битая ссылка, а не 500
+        if ($width !== null && $width !== '' && !(is_string($width) && ctype_digit($width))) {
+            throw new NotFoundHttpException('Некорректная ширина превью.');
+        }
+        $width = $width === null || $width === '' ? null : (int)$width;
         $this->width = $width;
 
         if ($width &&
@@ -68,7 +73,15 @@ class GetPreviewAction extends Action
      */
     protected function sendPreview($width, $webp)
     {
-        $filename = Yii::createObject(ImagePreviewer::class, [$this->model, $width, $webp])->getUrl();
+        try {
+            $filename = Yii::createObject(ImagePreviewer::class, [$this->model, $width, $webp])->getUrl();
+        } catch (\ErrorException|\TypeError $e) {
+            // битый или неподдерживаемый GD исходник («Unable to get width of image», imagesavealpha(false)) —
+            // отдаём файл как есть, браузер может его показать, а 500 на каждый запрос не нужен
+            Yii::warning("Preview for file #{$this->model->id} failed: {$e->getMessage()}", __METHOD__);
+            $this->sendAsIs();
+            return;
+        }
 
         if (!file_exists($filename))
             throw new NotFoundHttpException('Запрашиваемый файл не найден на диске.');
