@@ -80,8 +80,7 @@ class ImagePreviewer
      */
     protected function prepareFolder()
     {
-        if (!file_exists(Yii::$app->getModule('files')->cacheFullPath))
-            mkdir(Yii::$app->getModule('files')->cacheFullPath);
+        self::ensureDir(Yii::$app->getModule('files')->cacheFullPath);
         $lastFolder = '/';
         $explodes = explode('/', $this->fileName);
         array_pop($explodes);
@@ -91,8 +90,18 @@ class ImagePreviewer
             if (empty($folder))
                 continue;
             $lastFolder = $lastFolder . $folder . '/';
-            if (!file_exists($lastFolder))
-                mkdir($lastFolder);
+            self::ensureDir($lastFolder);
+        }
+    }
+
+    /**
+     * Создаёт папку, если её нет. Параллельные запросы превью могут создать её одновременно,
+     * поэтому «уже существует» после неудачного mkdir — не ошибка.
+     */
+    public static function ensureDir(string $path): void
+    {
+        if (!is_dir($path) && !@mkdir($path) && !is_dir($path)) {
+            throw new \RuntimeException("Unable to create directory {$path}");
         }
     }
 

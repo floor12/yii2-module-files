@@ -23,8 +23,7 @@ class PathGenerator
         if (!$storagePath)
             throw new ErrorException('Storage path not set for path generator.');
 
-        if (!file_exists($storagePath))
-            mkdir($storagePath);
+        ImagePreviewer::ensureDir($storagePath);
 
         if (!file_exists($storagePath))
             throw new ErrorException('Unable to create storage.');
@@ -38,10 +37,8 @@ class PathGenerator
         $fullPath0 = $storagePath . $path0;
         $fullPath1 = $storagePath . $path1;
 
-        if (!file_exists($fullPath0))
-            mkdir($fullPath0);
-        if (!file_exists($fullPath1))
-            mkdir($fullPath1);
+        ImagePreviewer::ensureDir($fullPath0);
+        ImagePreviewer::ensureDir($fullPath1);
 
         $this->path = $path1 . DIRECTORY_SEPARATOR . md5(rand(0, 1000) . time());
     }
