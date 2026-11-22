@@ -1,0 +1,55 @@
+includes:
+    - vendor/mspirkov/yii2-phpstan/extension.neon
+    - phpstan-baseline.neon
+
+parameters:
+    level: 5
+
+    paths:
+        - src
+        - tests
+
+    bootstrapFiles:
+        - tests/bootstrap.php
+
+    mspirkovYii2:
+        enableAllRules: false
+        enableValidationRules: true
+
+        applicationConfigs:
+            -
+                paths:
+                    - src
+                    - tests
+                files:
+                    - tools/phpstan/config.php
+
+        aliases:
+            '@vendor/floor12/yii2-module-files': .
+
+        yiiAppTypes:
+            -
+                paths:
+                    - src
+                type: yii\console\Application|yii\web\Application
+                nullable: false
+            -
+                paths:
+                    - src/actions
+                    - src/assets
+                    - src/components/FileInputWidget.php
+                    - src/components/FileListWidget.php
+                    - src/components/PictureListWidget.php
+                    - src/components/PictureWidget.php
+                    - src/components/VideoWidget.php
+                    - src/components/views
+                    - src/controllers/DefaultController.php
+                    - src/views
+                type: yii\web\Application
+                nullable: false
+            -
+                paths:
+                    - src/controllers/ConsoleController.php
+                    - tests
+                type: yii\console\Application
+                nullable: false

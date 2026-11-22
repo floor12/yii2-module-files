@@ -1,0 +1,73 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#1 \$string of function md5 expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/actions/GetPreviewAction.php
+
+		-
+			message: '#^Access to an undefined property yii\\db\\ActiveRecord\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 5
+			path: src/components/FileBehaviour.php
+
+		-
+			message: '#^Comparison operation "\>" between int\<1, max\> and 0 is always true\.$#'
+			identifier: greater.alwaysTrue
+			count: 1
+			path: src/components/PictureListWidget.php
+
+		-
+			message: '#^Parameter \#2 \$content of static method yii\\helpers\\BaseHtml\:\:tag\(\) expects string, null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/components/VideoWidget.php
+
+		-
+			message: '#^Parameter \#1 \$width of method floor12\\files\\models\\File\:\:getPreviewWebPath\(\) expects int, float given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/components/views/mediaPictureWidget.php
+
+		-
+			message: '#^Parameter \#1 \$width of method floor12\\files\\models\\File\:\:getPreviewWebPath\(\) expects int, float given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/components/views/pictureWidget.php
+
+		-
+			message: '#^Call to an undefined method yii\\base\\View\:\:registerJs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/controllers/DefaultController.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: src/logic/FileCreateFromPath.php
+
+		-
+			message: '#^Property floor12\\files\\logic\\FileCreateFromPath\:\:\$fileName is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/logic/FileCreateFromPath.php
+
+		-
+			message: '#^Parameter \#2 \$value of static method yii\\helpers\\BaseHtml\:\:hiddenInput\(\) expects string\|null, int given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/views/default/_file.php
+
+		-
+			message: '#^Loose comparison using \!\= between int\<min, 0\>\|int\<2, max\> and 1 will always evaluate to true\.$#'
+			identifier: notEqual.alwaysTrue
+			count: 1
+			path: src/views/default/_single.php
+
+		-
+			message: '#^Parameter \#2 \$value of static method yii\\helpers\\BaseHtml\:\:hiddenInput\(\) expects string\|null, int given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/views/default/_single.php

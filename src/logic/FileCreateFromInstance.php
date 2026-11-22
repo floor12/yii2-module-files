@@ -53,6 +53,7 @@ class FileCreateFromInstance
 
 
         if (isset($this->_owner->behaviors['files']->attributes[$this->_attribute]['validator'])) {
+            /** @var \yii\validators\FileValidator $validator */
             foreach ($this->_owner->behaviors['files']->attributes[$this->_attribute]['validator'] as $validator) {
                 if ($validator->maxFiles && (int)$data['count'] > $validator->maxFiles) {
                     throw new BadRequestHttpException('The maximum number of files has been exceeded: ' . $validator->maxFiles);
@@ -85,7 +86,7 @@ class FileCreateFromInstance
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function detectType()
     {

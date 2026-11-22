@@ -23,7 +23,6 @@ class FileCreateFromPathTest extends TestCase
     private $testOwnerClassName = 'floor12\files\tests\Person';
     private $testOwnerFieldName = 'files';
     private $storagePath = 'tests/storage';
-    private $model;
 
 
     /** Вызываем несуществующий файл
@@ -119,13 +118,12 @@ class FileCreateFromPathTest extends TestCase
             $this->storagePath,
             $this->testFileName
         );
-        $this->assertTrue(is_object($logicObject));
         $this->assertTrue($logicObject->execute());
 
 
         // Проверяем, что файл сохранился нормально.
         $this->assertFalse($file->isNewRecord);
-        $this->assertTrue(is_integer($file->id));
+        $this->assertGreaterThan(0, $file->id);
         $this->assertEquals($this->testOwnerClassName, $file->class);
         $this->assertEquals(FileType::IMAGE, $file->type);
         $this->assertEquals("image/jpeg", $file->content_type);

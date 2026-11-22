@@ -16,15 +16,15 @@ class GetPreviewAction extends Action
 {
     const HEADER_CACHE_TIME = 60 * 60 * 24 * 15;
 
-    /** @var int */
+    /** @var int|null */
     protected $width;
     /** @var File */
     protected $model;
 
     /**
-     * @param $hash
-     * @param null $width
-     * @param null $webp
+     * @param string $hash
+     * @param string|array<mixed>|null $width
+     * @param string|array<mixed>|null $webp
      * @throws NotFoundHttpException
      * @throws InvalidConfigException
      * @throws RangeNotSatisfiableHttpException

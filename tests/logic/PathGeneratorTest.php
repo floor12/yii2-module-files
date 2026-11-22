@@ -19,18 +19,10 @@ class PathGeneratorTest extends TestCase
 
     private $storagePath = "tests/storage";
 
-    /**
-     * Storage cleaning
-     */
-    private function clearStorage()
-    {
-        exec('rm -rf tests/storage/*');
-    }
-
     public function testNoStoragePath()
     {
         $this->expectException(ArgumentCountError::class);
-        new PathGenerator();
+        new PathGenerator(); // @phpstan-ignore arguments.count (the test checks the call without arguments)
     }
 
     /**

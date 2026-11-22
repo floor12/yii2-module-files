@@ -1,15 +1,16 @@
 <?php
-/**
- * @var $this View
- * @var $model File
- * @var $width array
- * @var $classPicture string
- * @var $classImg string
- * @var $alt string
- */
 
 use floor12\files\models\File;
 use yii\web\View;
+
+/**
+ * @var View $this
+ * @var File $model
+ * @var array $width
+ * @var string $classPicture
+ * @var string $classImg
+ * @var string $alt
+ */
 
 ?>
 
