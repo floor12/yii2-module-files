@@ -5,17 +5,19 @@
  * User: floor12
  * Date: 01.01.2018
  * Time: 12:14
- *
- * @var $this View
- * @var $model File
- * @var $lightboxKey string
- * @var $allowImageSrcDownload bool
  */
 
 use floor12\files\assets\IconHelper;
 use floor12\files\models\File;
 use floor12\files\models\FileType;
 use yii\web\View;
+
+/**
+ * @var View $this
+ * @var File $model
+ * @var string $lightboxKey
+ * @var bool $allowImageSrcDownload
+ */
 
 $doc_contents = [
     'application/msword',

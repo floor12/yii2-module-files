@@ -90,7 +90,7 @@ class FileCropRotate
 
     /**
      * Method to read files from any mime types
-     * @return resource
+     * @return \GdImage|false
      * @throws BadRequestHttpException
      */
 

@@ -37,7 +37,7 @@ class FileCreateFromInstanceTest extends TestCase
     public function testNoParams()
     {
         $this->expectException(ArgumentCountError::class);
-        new FileCreateFromInstance();
+        new FileCreateFromInstance(); // @phpstan-ignore arguments.count (the test checks the call without arguments)
     }
 
     /** Вызываем без параметров
@@ -96,7 +96,6 @@ class FileCreateFromInstanceTest extends TestCase
 
         $model = $logic->execute();
 
-        $this->assertTrue(is_object($model));
         $this->assertFalse($model->isNewRecord);
         $this->assertTrue(file_exists($model->rootPath), $model->rootPath);
         $this->assertTrue(file_exists($model->rootPath), $model->getPreviewWebPath());

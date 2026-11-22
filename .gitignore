@@ -13,3 +13,4 @@ assets/.sass-cache
 tests/sqlite.db
 .phpunit.result.cache
 .phpunit.cache
+phpstan.neon

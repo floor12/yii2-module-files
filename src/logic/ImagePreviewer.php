@@ -37,6 +37,7 @@ class ImagePreviewer
     /**
      * @return string
      * @throws \ErrorException
+     * @throws \TypeError GD fails on a broken source image
      * @throws \yii\base\InvalidConfigException
      */
     public function getUrl()

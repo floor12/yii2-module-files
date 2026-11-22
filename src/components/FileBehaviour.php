@@ -17,6 +17,9 @@ use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\validators\Validator;
 
+/**
+ * @extends Behavior<ActiveRecord>
+ */
 class FileBehaviour extends Behavior
 {
     /** Массив для хранения файловых атрибутов и их параметров.

@@ -4,11 +4,6 @@
  * User: floor12
  * Date: 01.01.2018
  * Time: 12:14
- *
- * @var $this View
- * @var $model File
- * @var $ratio float
- *
  */
 
 use floor12\files\assets\IconHelper;
@@ -16,6 +11,12 @@ use floor12\files\models\File;
 use floor12\files\models\FileType;
 use yii\helpers\Html;
 use yii\web\View;
+
+/**
+ * @var View $this
+ * @var File $model
+ * @var float $ratio
+ */
 
 $doc_contents = [
     'application/msword',

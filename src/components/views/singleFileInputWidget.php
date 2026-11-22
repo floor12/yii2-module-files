@@ -4,18 +4,6 @@
  * User: floor12
  * Date: 31.12.2017
  * Time: 16:10
- *
- * @var $this View
- * @var $uploadButtonText string
- * @var $uploadButtonClass string
- * @var $block_id integer
- * @var $attribute string
- * @var $scenario string
- * @var $model ActiveRecord
- * @var $ratio float
- * @var $name string
- * @var $value \floor12\files\models\File
- *
  */
 
 use floor12\files\assets\IconHelper;
@@ -23,6 +11,19 @@ use yii\bootstrap\BootstrapPluginAsset;
 use yii\db\ActiveRecord;
 use yii\helpers\Html;
 use yii\web\View;
+
+/**
+ * @var View $this
+ * @var string $uploadButtonText
+ * @var string $uploadButtonClass
+ * @var integer $block_id
+ * @var string $attribute
+ * @var string $scenario
+ * @var ActiveRecord $model
+ * @var float|null $ratio
+ * @var string $name
+ * @var \floor12\files\models\File|null $value
+ */
 
 BootstrapPluginAsset::register($this);
 

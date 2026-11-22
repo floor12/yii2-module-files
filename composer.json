@@ -20,6 +20,9 @@
       "role": "Developer"
     }
   ],
+  "scripts": {
+    "phpstan": "vendor/bin/phpstan"
+  },
   "require": {
     "php": ">=7.3",
     "yiisoft/yii2": "^2.0.",
@@ -35,7 +38,10 @@
     "ext-fileinfo": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "^10.5"
+    "phpunit/phpunit": "^10.5",
+    "phpstan/phpstan": "^2.3",
+    "mspirkov/yii2-phpstan": "^0.19",
+    "yiisoft/yii2-bootstrap": "^2.0"
   },
   "autoload": {
     "psr-4": {

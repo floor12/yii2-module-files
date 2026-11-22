@@ -4,12 +4,6 @@
  * User: floor12
  * Date: 01.01.2018
  * Time: 12:14
- *
- * @var $this View
- * @var $model File
- * @var $ratio float
- * @var $name string
- *
  */
 
 use floor12\files\assets\IconHelper;
@@ -17,6 +11,13 @@ use floor12\files\models\File;
 use floor12\files\models\FileType;
 use yii\helpers\Html;
 use yii\web\View;
+
+/**
+ * @var View $this
+ * @var File|array<File> $model
+ * @var float $ratio
+ * @var string $name
+ */
 
 if (is_array($model))
     $model = $model[array_key_first($model)];

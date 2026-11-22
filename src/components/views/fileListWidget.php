@@ -5,14 +5,6 @@
  * User: floor12
  * Date: 06.01.2018
  * Time: 12:09
- *
- * @var $this View
- * @var $title string
- * @var $zipTitle string
- * @var $downloadAll bool
- * @var $lightboxKey string
- * @var $allowImageSrcDownload bool
- * @var $files File[]
  */
 
 use floor12\files\assets\IconHelper;
@@ -20,6 +12,16 @@ use floor12\files\models\File;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
+
+/**
+ * @var View $this
+ * @var string $title
+ * @var string $zipTitle
+ * @var bool $downloadAll
+ * @var string $lightboxKey
+ * @var bool $allowImageSrcDownload
+ * @var File[] $files
+ */
 
 ?>
 

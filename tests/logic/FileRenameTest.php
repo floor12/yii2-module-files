@@ -15,6 +15,8 @@ use floor12\files\models\File;
 use floor12\files\models\FileType;
 use floor12\files\tests\TestCase;
 use Yii;
+use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
 
 class FileRenameTest extends TestCase
 {
@@ -37,7 +39,7 @@ class FileRenameTest extends TestCase
     public function testNoParams()
     {
         $this->expectException(ArgumentCountError::class);
-        $model = new FileRename();
+        $model = new FileRename(); // @phpstan-ignore arguments.count (the test checks the call without arguments)
     }
 
     /** Не передаем ID файла
@@ -47,7 +49,7 @@ class FileRenameTest extends TestCase
     public function testEmptyId()
     {
         $this->expectExceptionMessage("ID of file is not set.");
-        $this->expectException(yii\web\BadRequestHttpException::class);
+        $this->expectException(BadRequestHttpException::class);
         $data = [];
         $model = new FileRename($data);
     }
@@ -59,7 +61,7 @@ class FileRenameTest extends TestCase
     public function testEmptyTitle()
     {
         $this->expectExceptionMessage("Title of file is not set.");
-        $this->expectException(yii\web\BadRequestHttpException::class);
+        $this->expectException(BadRequestHttpException::class);
         $data = ['id' => 1];
         $model = new FileRename($data);
     }
@@ -71,7 +73,7 @@ class FileRenameTest extends TestCase
     public function testFileNotExitstInDb()
     {
         $this->expectExceptionMessage("File not found.");
-        $this->expectException(yii\web\NotFoundHttpException::class);
+        $this->expectException(NotFoundHttpException::class);
         $data = ['id' => 100, 'title' => 'new name'];
         $model = new FileRename($data);
     }

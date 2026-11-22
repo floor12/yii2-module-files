@@ -359,7 +359,7 @@ class File extends ActiveRecord
      * Return webp path to preview
      * @param int $width
      * @param bool $webp
-     * @return string
+     * @return string|null
      * @throws ErrorException
      */
     public function getPreviewWebPath(int $width = 0, bool $webp = false)
